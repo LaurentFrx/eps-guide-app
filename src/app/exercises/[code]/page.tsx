@@ -2,12 +2,13 @@ import { notFound } from "next/navigation";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
 import { getExercise } from "@/lib/exercise-data";
 
-export default function ExercisePage({
+export default async function ExercisePage({
   params,
 }: {
-  params: { code: string };
+  params: Promise<{ code: string }>;
 }) {
-  const exercise = getExercise(params.code);
+  const { code } = await params;
+  const exercise = getExercise(code);
 
   if (!exercise) {
     notFound();
