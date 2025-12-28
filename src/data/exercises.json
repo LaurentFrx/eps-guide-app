@@ -1,0 +1,229 @@
+{
+  "meta": {
+    "is_mock": true,
+    "warning": "Donnees de demonstration actives (DOCX manquants)."
+  },
+  "sessions": [
+    {
+      "num": 1,
+      "title": "Gainage & posture",
+      "subtitle": "Seance 1 \u2022 Gainage & posture",
+      "exercises": [
+        {
+          "code": "S1-01",
+          "title": "Planche coudes",
+          "level": "Intermediaire",
+          "equipment": "Tapis",
+          "muscles": "Abdominaux, lombaires",
+          "key_points": [
+            "Alignement",
+            "Respiration",
+            "Controle"
+          ],
+          "image": "/images/S1-01.jpg",
+          "objective": "Renforcer abdominaux et ameliorer la stabilite globale.",
+          "anatomy": "Abdominaux, lombaires \u2022 anti-extension et stabilite",
+          "safety": [
+            "Garder une colonne neutre",
+            "Respirer sans bloquer",
+            "Eviter la compensation lombaire"
+          ],
+          "regress": "Reduire la duree ou surelever les appuis.",
+          "progress": "Augmenter la duree ou ajouter une instabilite.",
+          "dosage": "3-4 x 20-40s \u2022 repos 45-60s \u2022 focus gainage"
+        },
+        {
+          "code": "S1-02",
+          "title": "Dead Bug",
+          "level": "Debutant",
+          "equipment": "Aucun",
+          "muscles": "Abdos profonds, flechisseurs de hanche",
+          "key_points": [
+            "Dos plaque",
+            "Mouvement lent",
+            "Souffle"
+          ],
+          "image": "/images/S1-02.jpg",
+          "objective": "Renforcer abdos profonds et ameliorer la stabilite globale.",
+          "anatomy": "Abdos profonds, flechisseurs de hanche \u2022 anti-extension et stabilite",
+          "safety": [
+            "Garder une colonne neutre",
+            "Respirer sans bloquer",
+            "Eviter la compensation lombaire"
+          ],
+          "regress": "Reduire la duree ou surelever les appuis.",
+          "progress": "Augmenter la duree ou ajouter une instabilite.",
+          "dosage": "3-4 x 20-40s \u2022 repos 45-60s \u2022 focus gainage"
+        },
+        {
+          "code": "S1-03",
+          "title": "Bird Dog",
+          "level": "Debutant",
+          "equipment": "Aucun",
+          "muscles": "Lombaires, fessiers, epaules",
+          "key_points": [
+            "Stabilite",
+            "Extension opposee",
+            "Regard sol"
+          ],
+          "image": "/images/S1-03.jpg",
+          "objective": "Renforcer lombaires et ameliorer la stabilite globale.",
+          "anatomy": "Lombaires, fessiers, epaules \u2022 stabilite globale",
+          "safety": [
+            "Mouvement controle",
+            "Amplitude adaptee",
+            "Respiration reguliere"
+          ],
+          "regress": "Simplifier la coordination du mouvement.",
+          "progress": "Augmenter la complexite ou la charge.",
+          "dosage": "3-4 x 8-12 reps \u2022 repos 60-90s \u2022 focus fluide"
+        },
+        {
+          "code": "S1-04",
+          "title": "Pont fessier",
+          "level": "Debutant",
+          "equipment": "Tapis",
+          "muscles": "Fessiers, ischios",
+          "key_points": [
+            "Pousser talons",
+            "Bassin neutre",
+            "Controle"
+          ],
+          "image": "/images/S1-04.jpg",
+          "objective": "Renforcer fessiers et ameliorer la stabilite globale.",
+          "anatomy": "Fessiers, ischios \u2022 extension de hanche",
+          "safety": [
+            "Charniere hanche dominante",
+            "Dos long et neutre",
+            "Charge proche du corps"
+          ],
+          "regress": "Diminuer la charge et ralentir le tempo.",
+          "progress": "Ajouter une charge ou augmenter l'amplitude.",
+          "dosage": "3-5 x 8-10 reps \u2022 repos 60-90s \u2022 focus charniere"
+        },
+        {
+          "code": "S1-05",
+          "title": "Squat poids du corps",
+          "level": "Debutant",
+          "equipment": "Aucun",
+          "muscles": "Quadriceps, fessiers",
+          "key_points": [
+            "Genoux alignes",
+            "Poitrine ouverte",
+            "Pied stable"
+          ],
+          "image": "/images/S1-05.jpg",
+          "objective": "Renforcer quadriceps et ameliorer la stabilite globale.",
+          "anatomy": "Quadriceps, fessiers \u2022 extension du genou et stabilite",
+          "safety": [
+            "Genoux alignes avec les orteils",
+            "Buste gaine",
+            "Amplitude progressive"
+          ],
+          "regress": "Limiter l'amplitude ou utiliser un support.",
+          "progress": "Ajouter une charge ou tempo excentrique.",
+          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus controle"
+        }
+      ]
+    },
+    {
+      "num": 2,
+      "title": "Poussee & tirage",
+      "subtitle": "Seance 2 \u2022 Poussee & tirage",
+      "exercises": [
+        {
+          "code": "S2-01",
+          "title": "Pompes inclinees",
+          "level": "Intermediaire",
+          "equipment": "Banc",
+          "muscles": "Pectoraux, triceps",
+          "key_points": [
+            "Gainage",
+            "Coudes 45deg",
+            "Controle"
+          ],
+          "image": "/images/S2-01.jpg",
+          "objective": "Renforcer pectoraux et ameliorer la stabilite globale.",
+          "anatomy": "Pectoraux, triceps \u2022 poussee horizontale",
+          "safety": [
+            "Epaules basses et stables",
+            "Coudes a 30-45 degres",
+            "Tronc engage"
+          ],
+          "regress": "Surelever les mains ou reduire la charge.",
+          "progress": "Augmenter la charge ou passer au sol.",
+          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus alignement"
+        },
+        {
+          "code": "S2-02",
+          "title": "Rowing elastique",
+          "level": "Intermediaire",
+          "equipment": "Elastique",
+          "muscles": "Dos, biceps",
+          "key_points": [
+            "Epaules basses",
+            "Poitrine ouverte",
+            "Retour lent"
+          ],
+          "image": "/images/S2-02.jpg",
+          "objective": "Renforcer dos et ameliorer la stabilite globale.",
+          "anatomy": "Dos, biceps \u2022 tirage horizontal",
+          "safety": [
+            "Poitrine ouverte",
+            "Epaules loin des oreilles",
+            "Controle du retour"
+          ],
+          "regress": "Utiliser un elastique plus leger.",
+          "progress": "Ajouter une charge ou un tempo lent.",
+          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus scapulas"
+        },
+        {
+          "code": "S2-03",
+          "title": "Fentes avant",
+          "level": "Intermediaire",
+          "equipment": "Aucun",
+          "muscles": "Quadriceps, fessiers",
+          "key_points": [
+            "Genou stable",
+            "Buste droit",
+            "Pied ancre"
+          ],
+          "image": "/images/S2-03.jpg",
+          "objective": "Renforcer quadriceps et ameliorer la stabilite globale.",
+          "anatomy": "Quadriceps, fessiers \u2022 extension du genou et stabilite",
+          "safety": [
+            "Genoux alignes avec les orteils",
+            "Buste gaine",
+            "Amplitude progressive"
+          ],
+          "regress": "Limiter l'amplitude ou utiliser un support.",
+          "progress": "Ajouter une charge ou tempo excentrique.",
+          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus controle"
+        },
+        {
+          "code": "S2-04",
+          "title": "Burpees controles",
+          "level": "Avance",
+          "equipment": "Aucun",
+          "muscles": "Corps entier",
+          "key_points": [
+            "Rythme propre",
+            "Atterrissage souple",
+            "Respiration"
+          ],
+          "image": "/images/S2-04.jpg",
+          "objective": "Renforcer corps entier et ameliorer la stabilite globale.",
+          "anatomy": "Corps entier \u2022 triple extension et reactivite",
+          "safety": [
+            "Atterrissage souple",
+            "Genoux stables",
+            "Repos suffisant entre les series"
+          ],
+          "regress": "Remplacer par un saut plus bas ou marche.",
+          "progress": "Augmenter la hauteur ou l'intensite.",
+          "dosage": "3-5 x 6-8 reps \u2022 repos 90-120s \u2022 focus explosivite"
+        }
+      ]
+    }
+  ]
+}
