@@ -2,13 +2,14 @@ import { notFound } from "next/navigation";
 import { SessionView } from "@/components/SessionView";
 import { getSession } from "@/lib/exercise-data";
 
-export default function SessionPage({
+export default async function SessionPage({
   params,
 }: {
-  params: { num: string };
+  params: Promise<{ num: string }>;
 }) {
-  const num = Number(params.num);
-  const session = Number.isNaN(num) ? null : getSession(num);
+  const { num } = await params;
+  const numValue = Number(num);
+  const session = Number.isNaN(numValue) ? null : getSession(numValue);
 
   if (!session) {
     notFound();
