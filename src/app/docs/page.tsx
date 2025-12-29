@@ -16,6 +16,9 @@ const docs = [
   },
 ];
 
+const releasePage =
+  "https://github.com/LaurentFrx/eps-guide-app/releases/latest";
+
 export default function DocsPage() {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
@@ -31,6 +34,18 @@ export default function DocsPage() {
         </p>
       </div>
 
+      <GlassCard className="space-y-2">
+        <p className="text-sm text-slate-700">
+          Les fichiers Word sont hébergés dans GitHub Releases pour éviter la
+          limite 100 MB sur Git. Les liens utilisent
+          /releases/latest/download/…
+        </p>
+        <p className="text-xs text-slate-500">
+          Si le téléchargement échoue, vérifier que la Release contient
+          eps-1.docx et eps-2.docx.
+        </p>
+      </GlassCard>
+
       <div className="grid gap-3">
         {docs.map((doc) => (
           <GlassCard
@@ -42,12 +57,22 @@ export default function DocsPage() {
                 {doc.title}
               </p>
               <p className="text-sm text-slate-600">{doc.description}</p>
+              <p className="text-xs text-slate-500">
+                Taille: Téléchargement via GitHub Releases
+              </p>
             </div>
-            <Button asChild variant="outline">
-              <a href={doc.href} download>
-                Télécharger {doc.title}
-              </a>
-            </Button>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-end">
+              <Button asChild variant="outline">
+                <a href={doc.href} download>
+                  Télécharger {doc.title}
+                </a>
+              </Button>
+              <Button asChild variant="ghost">
+                <a href={releasePage} target="_blank" rel="noreferrer">
+                  Voir sur GitHub
+                </a>
+              </Button>
+            </div>
           </GlassCard>
         ))}
       </div>
