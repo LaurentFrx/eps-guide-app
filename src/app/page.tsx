@@ -26,6 +26,9 @@ export default function HomePage() {
           <Badge className="border-0 bg-slate-100 text-slate-700">
             {allExercises.length} exercices
           </Badge>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/docs">Docs</Link>
+          </Button>
         </div>
       </div>
 
