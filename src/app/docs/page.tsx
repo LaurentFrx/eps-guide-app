@@ -1,6 +1,8 @@
 import { GlassCard } from "@/components/GlassCard";
 import { Button } from "@/components/ui/button";
 
+export const revalidate = 60;
+
 const docs = [
   {
     id: "eps-1",
@@ -19,7 +21,28 @@ const docs = [
 const releasePage =
   "https://github.com/LaurentFrx/eps-guide-app/releases/latest";
 
-export default function DocsPage() {
+const checkAvailability = async (url: string) => {
+  try {
+    const response = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+      cache: "no-store",
+    });
+    return response.status >= 200 && response.status < 400;
+  } catch {
+    return false;
+  }
+};
+
+export default async function DocsPage() {
+  const docsWithAvailability = await Promise.all(
+    docs.map(async (doc) => ({
+      ...doc,
+      available: await checkAvailability(doc.href),
+    }))
+  );
+  const missingDocs = docsWithAvailability.filter((doc) => !doc.available);
+
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-3">
@@ -34,6 +57,18 @@ export default function DocsPage() {
         </p>
       </div>
 
+      {missingDocs.length > 0 ? (
+        <GlassCard className="space-y-2 border-amber-200/70 bg-amber-50/70">
+          <p className="text-sm font-medium text-amber-900">
+            DOCX manquants sur GitHub Releases.
+          </p>
+          <p className="text-xs text-amber-900/80">
+            Fichiers concernés:{" "}
+            {missingDocs.map((doc) => doc.title).join(", ")}.
+          </p>
+        </GlassCard>
+      ) : null}
+
       <GlassCard className="space-y-2">
         <p className="text-sm text-slate-700">
           Les fichiers Word sont hébergés dans GitHub Releases pour éviter la
@@ -47,7 +82,7 @@ export default function DocsPage() {
       </GlassCard>
 
       <div className="grid gap-3">
-        {docs.map((doc) => (
+        {docsWithAvailability.map((doc) => (
           <GlassCard
             key={doc.id}
             className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
