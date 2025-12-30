@@ -13,15 +13,18 @@ const OWNER = "LaurentFrx";
 const REPO = "eps-guide-app";
 
 export default async function DocsPage() {
-  const release = await fetchLatestRelease(OWNER, REPO);
+  const fetchResult = await fetchLatestRelease(OWNER, REPO);
 
   const docsWithInfo = docs.map((d) => {
-    const asset = findAsset(release, d.assetName);
+    const asset = fetchResult.release ? findAsset(fetchResult.release, d.assetName) : null;
     return {
       ...d,
       available: Boolean(asset),
       downloadUrl: asset ? asset.browser_download_url : null,
-      releaseUrl: release ? release.html_url : `https://github.com/${OWNER}/${REPO}/releases/latest`,
+      assetSizeBytes: asset ? asset.size : null,
+      releaseUrl: fetchResult.release ? fetchResult.release.html_url : `https://github.com/${OWNER}/${REPO}/releases/latest`,
+      status: fetchResult.status,
+      error: fetchResult.error,
     };
   });
 

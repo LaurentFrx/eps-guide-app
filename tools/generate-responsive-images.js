@@ -5,7 +5,7 @@ const path = require('path');
 let sharp;
 try {
   sharp = require('sharp');
-} catch (e) {
+} catch {
   console.error('sharp is not installed. Run `npm ci` or `npm install --save-dev sharp`.');
   process.exit(1);
 }

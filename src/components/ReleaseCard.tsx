@@ -7,8 +7,15 @@ type Props = {
   assetName: string;
   releaseUrl: string | null;
   downloadUrl: string | null;
+  assetSizeBytes?: number | null;
   available: boolean;
+  status?: number | null;
+  error?: string | null;
 };
+
+function formatSize(bytes: number) {
+  return `${Math.round((bytes / 1024 / 1024) * 10) / 10} Mo`;
+}
 
 export default function ReleaseCard({
   title,
@@ -16,24 +23,43 @@ export default function ReleaseCard({
   assetName,
   releaseUrl,
   downloadUrl,
+  assetSizeBytes = null,
   available,
+  status = null,
+  error = null,
 }: Props) {
+  let message = null;
+  if (!available) {
+    if (status === 404) message = 'Aucune release / aucun asset trouvé.';
+    else if (status === 403) message = 'Rate-limit GitHub atteint (ajoutez un token serveur).';
+    else if (error) message = 'Erreur réseau / API.';
+    else message = 'Fichier manquant sur la Release.';
+  }
+
   return (
     <GlassCard className="space-y-2">
-      <p className="text-sm uppercase tracking-widest text-slate-500">{title}</p>
-      <p className="text-base text-slate-900">{description}</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <p className="text-sm uppercase tracking-widest text-slate-500">{title}</p>
+          <p className="text-base text-slate-900">{description}</p>
+        </div>
+        {assetSizeBytes ? <p className="text-xs text-slate-500">{formatSize(assetSizeBytes)}</p> : null}
+      </div>
+
       <div className="flex gap-2">
         <Button asChild variant="outline" size="sm">
           <a href={releaseUrl ?? "#"} target="_blank" rel="noreferrer">Voir la release</a>
         </Button>
+
         <Button asChild size="sm" disabled={!available}>
           <a href={downloadUrl ?? "#"} download={available} target={available ? "_blank" : undefined} rel="noreferrer">
             Télécharger ({assetName})
           </a>
         </Button>
       </div>
-      {!available ? (
-        <p className="text-xs text-amber-900/80">Fichier manquant sur la Release.</p>
+
+      {message ? (
+        <p className="text-xs text-amber-900/80">{message}</p>
       ) : null}
     </GlassCard>
   );

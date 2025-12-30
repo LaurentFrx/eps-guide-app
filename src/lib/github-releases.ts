@@ -12,25 +12,53 @@ export type ReleaseInfo = {
   assets: ReleaseAsset[];
 };
 
-export async function fetchLatestRelease(owner: string, repo: string): Promise<ReleaseInfo | null> {
+export type FetchResult = {
+  release: ReleaseInfo | null;
+  status: number | null;
+  error?: string | null;
+};
+
+export async function fetchLatestRelease(owner: string, repo: string): Promise<FetchResult> {
   try {
     const url = `https://api.github.com/repos/${owner}/${repo}/releases/latest`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) return null;
+    const headers: Record<string, string> = {
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+    };
+    const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN || process.env.GH_ACCESS_TOKEN;
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+    const res = await fetch(url, { cache: "no-store", headers });
+    if (!res.ok) {
+      return { release: null, status: res.status, error: `HTTP ${res.status}` };
+    }
     const data = await res.json();
-    return {
+    const assets: ReleaseAsset[] = Array.isArray(data.assets)
+      ? (data.assets as unknown[])
+          .map((a) => {
+            if (typeof a !== "object" || a === null) return null;
+            const aa = a as Record<string, unknown>;
+            return {
+              id: Number(aa.id),
+              name: String(aa.name ?? ""),
+              browser_download_url: String(aa.browser_download_url ?? ""),
+              size: Number(aa.size ?? 0),
+            };
+          })
+          .filter((x): x is ReleaseAsset => x !== null)
+      : [];
+
+    const release: ReleaseInfo = {
       tag_name: data.tag_name,
       html_url: data.html_url,
       name: data.name ?? null,
-      assets: Array.isArray(data.assets) ? data.assets.map((a: any) => ({
-        id: a.id,
-        name: a.name,
-        browser_download_url: a.browser_download_url,
-        size: a.size,
-      })) : [],
+      assets,
     };
-  } catch (e) {
-    return null;
+    return { release, status: res.status, error: null };
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return { release: null, status: null, error: msg };
   }
 }
 
