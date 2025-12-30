@@ -1,0 +1,7 @@
+{
+  "inputDir": "public/images",
+  "outputDir": "public/images/_responsive",
+  "widths": [480, 768, 1080, 1440],
+  "formats": ["webp", "avif"],
+  "quality": { "webp": 75, "avif": 50 }
+}
