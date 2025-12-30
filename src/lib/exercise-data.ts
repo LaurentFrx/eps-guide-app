@@ -42,7 +42,7 @@ const typed = data as ExercisesData;
 export const sessions = typed.sessions ?? [];
 export const isMockData = Boolean(typed.meta?.is_mock);
 export const mockWarning =
-  typed.meta?.warning ?? "Donnees de demonstration actives.";
+  typed.meta?.warning ?? "Données de démonstration actives.";
 
 export const allExercises: ExerciseWithSession[] = sessions.flatMap((session) =>
   session.exercises.map((exercise) => ({
