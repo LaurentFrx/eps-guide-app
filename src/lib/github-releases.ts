@@ -64,5 +64,12 @@ export async function fetchLatestRelease(owner: string, repo: string): Promise<F
 
 export function findAsset(release: ReleaseInfo | null, assetName: string) {
   if (!release) return null;
-  return release.assets.find((a) => a.name === assetName) ?? null;
+  const target = assetName.toLowerCase();
+  // match case-insensitively
+  return release.assets.find((a) => a.name.toLowerCase() === target) ?? null;
+}
+
+export function listAssetNames(release: ReleaseInfo | null) {
+  if (!release) return [] as string[];
+  return release.assets.map((a) => a.name);
 }
