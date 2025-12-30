@@ -1,6 +1,6 @@
 import { GlassCard } from "@/components/GlassCard";
 import ReleaseCard from "@/components/ReleaseCard";
-import { fetchLatestRelease, findAsset } from "@/lib/github-releases";
+import { fetchLatestRelease, findAsset, listAssetNames } from "@/lib/github-releases";
 
 export const revalidate = 60;
 
@@ -29,6 +29,7 @@ export default async function DocsPage() {
   });
 
   const missing = docsWithInfo.filter((d) => !d.available);
+  const availableNames = fetchResult.release ? listAssetNames(fetchResult.release) : [];
 
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
@@ -42,6 +43,9 @@ export default async function DocsPage() {
         <GlassCard className="space-y-2 border-amber-200/70 bg-amber-50/70">
           <p className="text-sm font-medium text-amber-900">DOCX manquants sur GitHub Releases.</p>
           <p className="text-xs text-amber-900/80">Fichiers concernés: {missing.map((m) => m.title).join(", ")}.</p>
+          {availableNames.length > 0 ? (
+            <p className="text-xs text-amber-900/80">Assets trouvés dans la Release: {availableNames.join(', ')}</p>
+          ) : null}
         </GlassCard>
       ) : null}
 

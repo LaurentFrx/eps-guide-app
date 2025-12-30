@@ -17,3 +17,4 @@ public/swe-worker*
 
 # Generated responsive images (do not commit)
 public/images/_responsive/
+release_assets/
