@@ -1,4 +1,5 @@
 /* tools/check-no-ha-refs.js */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs");
 const path = require("path");
 

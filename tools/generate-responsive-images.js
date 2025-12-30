@@ -1,4 +1,5 @@
 /* tools/generate-responsive-images.js */
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require('fs');
 const path = require('path');
 let sharp;

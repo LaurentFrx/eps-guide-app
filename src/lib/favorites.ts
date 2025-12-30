@@ -37,10 +37,9 @@ const writeFavorites = (favorites: string[]) => {
 };
 
 export const useFavorites = () => {
-  const [favorites, setFavorites] = useState<string[]>([]);
+  const [favorites, setFavorites] = useState<string[]>(() => readFavorites());
 
   useEffect(() => {
-    setFavorites(readFavorites());
     const handleStorage = (event: StorageEvent) => {
       if (event.key === STORAGE_KEY) {
         setFavorites(readFavorites());
