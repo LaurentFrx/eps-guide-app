@@ -64,3 +64,17 @@ Dans Safari : `Partager -> Sur l'ecran d'accueil`
 - Desinstaller la PWA puis relancer l'installation
 - Dans Chrome : DevTools -> Application -> Service Workers -> Unregister
 - Recharger la page avec `Hard Reload` si besoin
+
+## Images
+
+Les images d'exercices sont servies depuis `public/images`.
+
+- Utilisation: les composants utilisent `next/image` pour le lazy-loading et les tailles responsives.
+- Pour générer des versions optimisées (webp/avif, plusieurs largeurs) :
+
+```bash
+npm run images:optimize
+```
+
+Les dérivés sont placés par défaut dans `public/images/_responsive/` (ignoré par git).
+Le script utilise `sharp` et est idempotent — il saute les dérivés déjà présents.
