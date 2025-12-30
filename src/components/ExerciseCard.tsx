@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -36,10 +37,12 @@ export const ExerciseCard = ({
     <div className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/70 shadow-sm backdrop-blur">
       <Link href={`/exercises/${exercise.code}`} className="block">
         <div className="relative h-36 overflow-hidden">
-          <img
+          <Image
             src={imageSrc}
             alt={exercise.title}
-            className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.02]"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition duration-500 group-hover:scale-[1.02]"
             onError={() => setImageSrc("/images/placeholder.jpg")}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-900/10 to-transparent" />

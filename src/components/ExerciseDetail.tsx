@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronLeft, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -37,12 +38,16 @@ export const ExerciseDetail = ({ exercise }: ExerciseDetailProps) => {
             </Link>
           </Button>
         </div>
-        <img
-          src={imageSrc}
-          alt={exercise.title}
-          className="h-64 w-full object-cover"
-          onError={() => setImageSrc("/images/placeholder.jpg")}
-        />
+        <div className="relative h-64 w-full">
+          <Image
+            src={imageSrc}
+            alt={exercise.title}
+            fill
+            sizes="100vw"
+            className="object-cover"
+            onError={() => setImageSrc("/images/placeholder.jpg")}
+          />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/30 to-transparent" />
         <div className="absolute bottom-6 left-5 right-5 z-10 space-y-3 text-white">
           <p className="text-xs uppercase tracking-[0.3em] text-white/70">
