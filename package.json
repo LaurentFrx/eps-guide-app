@@ -7,6 +7,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "check:security": "node tools/check-no-ha-refs.js",
     "extract:data": "python3 tools/extract_eps_docx.py ../../source_docs/EPS-1.docx ../../source_docs/EPS-2.docx"
   },
   "dependencies": {
