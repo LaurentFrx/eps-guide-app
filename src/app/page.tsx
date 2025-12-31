@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GlassCard } from "@/components/GlassCard";
-import { allExercises, sessions } from "@/lib/exercise-data";
+import { sessions, exercises } from "@/lib/exercises";
 
 export default function HomePage() {
   return (
@@ -24,7 +24,7 @@ export default function HomePage() {
             {sessions.length} sessions
           </Badge>
           <Badge className="border-0 bg-slate-100 text-slate-700">
-            {allExercises.length} exercices
+            {exercises.length} exercices
           </Badge>
           <Button asChild variant="outline" size="sm">
             <Link href="/docs">Docs</Link>
@@ -60,29 +60,23 @@ export default function HomePage() {
         </div>
         <div className="grid gap-4">
           {sessions.map((session) => (
-            <Link
-              key={session.num}
-              href={`/sessions/${session.num}`}
-              className="block"
-            >
+            <Link key={session.id} href={`/exercices/${session.id}`} className="block">
               <GlassCard className="transition hover:-translate-y-0.5 hover:shadow-xl">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-slate-500">
-                      Session {session.num}
+                      {session.id}
                     </p>
                     <h3 className="font-display text-xl font-semibold text-slate-900">
                       {session.title}
                     </h3>
-                    <p className="mt-1 text-sm text-slate-600">
-                      {session.subtitle}
-                    </p>
+                    <p className="mt-1 text-sm text-slate-600">{session.subtitle}</p>
                   </div>
                   <ArrowUpRight className="h-5 w-5 text-slate-400" />
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Badge className="border-0 bg-slate-100 text-slate-700">
-                    {session.exercises.length} exercices
+                    {session.exerciseCount} exercices
                   </Badge>
                 </div>
               </GlassCard>
