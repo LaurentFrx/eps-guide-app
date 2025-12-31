@@ -1,6 +1,6 @@
 # Guide EPS (PWA)
 
-Application mobile-first pour consulter des fiches d'exercices EPS, filtrer, rechercher, sauvegarder en favoris et fonctionner hors ligne.
+Application mobile-first pour consulter les fiches d'exercices EPS, filtrer, rechercher, sauvegarder en favoris et fonctionner hors ligne.
 
 ## Installation
 
