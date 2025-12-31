@@ -1,3 +1,6 @@
+// src/lib/exercises.ts
+import { exercisesGenerated } from "./exercises.generated";
+
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
   title: string;
@@ -30,12 +33,11 @@ export type Exercise = {
   dosage: string;
 };
 
-export const sessions: Session[] = [
+const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
   {
     id: "S1",
     title: "Préparation générale",
     subtitle: "S1 — Mobilité, gainage et maîtrise du mouvement",
-    exerciseCount: 10,
     accent: "var(--s1)",
     heroImage: "/exercises/S1/hero.jpg",
     reperePedagogiques: [
@@ -48,7 +50,6 @@ export const sessions: Session[] = [
     id: "S2",
     title: "Force et explosivité",
     subtitle: "S2 — Travail de poussée, tirage et saut",
-    exerciseCount: 15,
     accent: "var(--s2)",
     heroImage: "/exercises/S2/hero.jpg",
     reperePedagogiques: ["Chaîne musculaire du membre supérieur", "Appui podal"],
@@ -57,7 +58,6 @@ export const sessions: Session[] = [
     id: "S3",
     title: "Endurance et enchaînements",
     subtitle: "S3 — Cardio, circuit et rythme",
-    exerciseCount: 20,
     accent: "var(--s3)",
     heroImage: "/exercises/S3/hero.jpg",
     reperePedagogiques: ["Gestion de l'effort", "Rythme et récupération"],
@@ -66,7 +66,6 @@ export const sessions: Session[] = [
     id: "S4",
     title: "Coordination et agilité",
     subtitle: "S4 — Change of direction, équilibre",
-    exerciseCount: 15,
     accent: "var(--s4)",
     heroImage: "/exercises/S4/hero.jpg",
     reperePedagogiques: ["Contrôle sensoriel", "Changement d'appui"],
@@ -75,15 +74,17 @@ export const sessions: Session[] = [
     id: "S5",
     title: "Performance avancée",
     subtitle: "S5 — Puissance et situations complexes",
-    exerciseCount: 10,
     accent: "var(--s5)",
     heroImage: "/exercises/S5/hero.jpg",
     reperePedagogiques: ["Analyse technique", "Automatisation"],
   },
 ];
 
-// Real S1 exercises (10 examples)
-const s1Exercises: Exercise[] = [
+/**
+ * Exercices “réels” : tu peux en ajouter ici au fur et à mesure.
+ * Ils écrasent les placeholders générés si l'id correspond.
+ */
+const manualExercises: Exercise[] = [
   {
     id: "S1-01",
     sessionId: "S1",
@@ -92,7 +93,10 @@ const s1Exercises: Exercise[] = [
     image: "/exercises/S1/S1-01.jpg",
     objectif: "Renforcer la sangle abdominale et stabiliser la colonne.",
     materiel: "Tapis",
-    anatomie: { muscles: "Grand droit, transverses, obliques", fonction: "Stabilisation du tronc" },
+    anatomie: {
+      muscles: "Grand droit, transverses, obliques",
+      fonction: "Stabilisation du tronc",
+    },
     techniquePoints: ["Aligner tête/tronc/pieds", "Ne pas cambrer le bas du dos"],
     securitePoints: ["Ne pas retenir la respiration", "Arrêter si douleur lombaire"],
     progression: { regression: "Planche genoux", progression: "Planche latérale / lever jambe" },
@@ -106,7 +110,10 @@ const s1Exercises: Exercise[] = [
     image: "/exercises/S1/S1-02.jpg",
     objectif: "Activer et renforcer les fessiers et l'arrière des cuisses.",
     materiel: "Tapis",
-    anatomie: { muscles: "Grand fessier, ischio-jambiers", fonction: "Extension de la hanche" },
+    anatomie: {
+      muscles: "Grand fessier, ischio-jambiers",
+      fonction: "Extension de la hanche",
+    },
     techniquePoints: ["Pousser avec les talons", "Ne pas cambrer la colonne"],
     securitePoints: ["Contrôler le bassin", "Ne pas forcer le cou"],
     progression: { regression: "Pont unilatéral assisté", progression: "Pont sur une jambe" },
@@ -134,7 +141,10 @@ const s1Exercises: Exercise[] = [
     image: "/exercises/S1/S1-04.jpg",
     objectif: "Travail unilatéral pour équilibre et force des membres inférieurs.",
     materiel: "Aucun / haltères optionnel",
-    anatomie: { muscles: "Quadriceps, ischios, fessiers", fonction: "Stabilisation et propulsion" },
+    anatomie: {
+      muscles: "Quadriceps, ischios, fessiers",
+      fonction: "Stabilisation et propulsion",
+    },
     techniquePoints: ["Genou avant aligné", "Tronc droit"],
     securitePoints: ["Ne pas laisser le genou dépasser trop loin", "Contrôler descente"],
     progression: { regression: "Fente statique", progression: "Fente saut" },
@@ -148,7 +158,10 @@ const s1Exercises: Exercise[] = [
     image: "/exercises/S1/S1-05.jpg",
     objectif: "Renforcer stabilité lombopelvienne et coordination.",
     materiel: "Tapis",
-    anatomie: { muscles: "Erecteurs du rachis, fessiers", fonction: "Extension du tronc et contrôle postural" },
+    anatomie: {
+      muscles: "Erecteurs du rachis, fessiers",
+      fonction: "Extension du tronc et contrôle postural",
+    },
     techniquePoints: ["Mouvement lent et contrôlé", "Ne pas cambrer"],
     securitePoints: ["Maintenir la neutralité rachidienne"],
     progression: { regression: "Lever une seule extrémité", progression: "Ajouter contraction isométrique" },
@@ -176,7 +189,10 @@ const s1Exercises: Exercise[] = [
     image: "/exercises/S1/S1-07.jpg",
     objectif: "Travail de poussée et stabilisation du tronc.",
     materiel: "Tapis",
-    anatomie: { muscles: "Pectoraux, triceps, deltoïdes antérieurs", fonction: "Poussée du membre supérieur" },
+    anatomie: {
+      muscles: "Pectoraux, triceps, deltoïdes antérieurs",
+      fonction: "Poussée du membre supérieur",
+    },
     techniquePoints: ["Corps aligné", "Amplitude contrôlée"],
     securitePoints: ["Ne pas cambrer le dos"],
     progression: { regression: "Pompes murales", progression: "Pompes classiques" },
@@ -226,36 +242,50 @@ const s1Exercises: Exercise[] = [
   },
 ];
 
-// Generate placeholders to reach 70 total exercises (we have 10 real S1 -> need 60 more)
-const placeholders: Exercise[] = Array.from({ length: 60 }).map((_, i) => {
-  const order = [
-    "S2","S2","S2","S2","S2",
-    "S3","S3","S3","S3","S3","S3","S3","S3","S3","S3",
-    "S3","S3","S3","S3","S3","S3",
-    "S4","S4","S4","S4","S4","S4","S4","S4","S4",
-    "S5","S5","S5","S5","S5","S5","S5","S5","S5","S5",
-    "S2","S3","S4","S2","S4","S3","S2","S4","S2","S3",
-    "S5","S5","S4","S3","S2","S2","S3","S3","S4","S4",
-    "S5","S5","S3","S3","S4","S2","S2","S5"
-  ];
-  const sid = (order[i % order.length] || "S2") as Exercise["sessionId"];
-  const num = String(i + 11).padStart(2, "0");
-  return {
-    id: `${sid}-${num}`,
-    sessionId: sid,
-    title: `Contenu à compléter (${sid}-${num})`,
-    level: ["Débutant", "Intermédiaire", "Avancé"][i % 3] as Exercise["level"],
-    image: `/exercises/${sid}/${sid}-${num}.jpg`,
-    objectif: "Contenu à compléter",
-    materiel: "Contenu à compléter",
-    anatomie: { muscles: "Contenu à compléter", fonction: "Contenu à compléter" },
-    techniquePoints: ["Contenu à compléter"],
-    securitePoints: ["Contenu à compléter"],
-    progression: { regression: "Contenu à compléter", progression: "Contenu à compléter" },
-    dosage: "Contenu à compléter",
-  } as Exercise;
-});
+const overrides = new Map<string, Exercise>(manualExercises.map((e) => [e.id, e]));
 
-export const exercises: Exercise[] = [...s1Exercises, ...placeholders];
+function mergeExercise(base: Exercise, o?: Exercise): Exercise {
+  if (!o) return base;
+  return {
+    ...base,
+    ...o,
+    anatomie: { ...base.anatomie, ...o.anatomie },
+    progression: { ...base.progression, ...o.progression },
+    techniquePoints: o.techniquePoints?.length ? o.techniquePoints : base.techniquePoints,
+    securitePoints: o.securitePoints?.length ? o.securitePoints : base.securitePoints,
+  };
+}
+
+// 1) Base = tout ce qui a une image (généré)
+// 2) Override = remplace les placeholders par les fiches réelles si même id
+const generatedMerged: Exercise[] = exercisesGenerated.map((e) =>
+  mergeExercise(e, overrides.get(e.id))
+);
+
+// Sécurité: si un exercice “réel” n’a pas d’image (donc absent du généré), on l’ajoute à la fin.
+const generatedIds = new Set(generatedMerged.map((e) => e.id));
+const manualOnly = manualExercises.filter((e) => !generatedIds.has(e.id));
+
+export const exercises: Exercise[] = [...generatedMerged, ...manualOnly];
+
+type HeroFallback = { id: string; image: string };
+const heroFallbackBySession: Partial<Record<Session["id"], HeroFallback>> = {};
+const heroIdCollator = new Intl.Collator("fr", { numeric: true, sensitivity: "base" });
+
+for (const exercise of exercises) {
+  const current = heroFallbackBySession[exercise.sessionId];
+  if (!current || heroIdCollator.compare(exercise.id, current.id) < 0) {
+    heroFallbackBySession[exercise.sessionId] = { id: exercise.id, image: exercise.image };
+  }
+}
+
+export const sessions: Session[] = sessionsBase.map((s) => ({
+  ...s,
+  heroImage:
+    s.heroImage && s.heroImage.trim().length
+      ? s.heroImage
+      : (heroFallbackBySession[s.id]?.image ?? "/exercises/fallback.jpg"),
+  exerciseCount: exercises.filter((e) => e.sessionId === s.id).length,
+}));
 
 export default exercises;
