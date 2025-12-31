@@ -17,7 +17,7 @@ export default function ExercicesPage() {
           <article key={s.id} className="rounded-2xl overflow-hidden border bg-white shadow-md">
             <Link href={`/exercices/${s.id}`} className="block">
               <div className="relative h-40 w-full">
-                <Image src={s.heroImage} alt={s.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+                <Image src={s.heroImage} alt={s.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
               </div>
               <div className="p-4">
                 <h2 className="text-lg font-medium">{s.title}</h2>
