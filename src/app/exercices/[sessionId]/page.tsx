@@ -14,7 +14,7 @@ export default function SessionPage(props: unknown) {
     <div className="p-6 space-y-6">
       <div className="rounded-2xl overflow-hidden">
         <div className="relative h-56 w-full">
-          <Image src={session.heroImage} alt={session.title} fill className="object-cover" />
+          <Image src={session.heroImage} alt={session.title} fill className="object-cover" unoptimized />
         </div>
         <div className="p-4">
           <h1 className="text-2xl font-semibold">{session.title}</h1>
