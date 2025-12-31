@@ -50,6 +50,13 @@
   --radius: 0.9rem;
   --background: oklch(0.985 0.01 250);
   --foreground: oklch(0.2 0.02 250);
+  /* Design tokens for exercices */
+  --brand: #2563eb;
+  --s1: #06b6d4;
+  --s2: #f59e0b;
+  --s3: #10b981;
+  --s4: #ef4444;
+  --s5: #7c3aed;
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
