@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Work_Sans } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
+import BuildStamp from "@/components/build-stamp";
 import { DataWarning } from "@/components/DataWarning";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
@@ -48,6 +49,7 @@ export default function RootLayout({
             {children}
           </main>
           <BottomNav />
+          <BuildStamp />
         </Providers>
       </body>
     </html>
