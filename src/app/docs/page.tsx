@@ -28,7 +28,8 @@ export default async function DocsPage() {
     };
   });
 
-  const missing = docsWithInfo.filter((d) => !d.available);
+  // Only show missing banner if assets are actually not resolved
+  const missingDocs = docs.filter((d) => !findAsset(fetchResult.release, d.assetName));
   const availableNames = fetchResult.release ? listAssetNames(fetchResult.release) : [];
 
   return (
@@ -39,10 +40,10 @@ export default async function DocsPage() {
         <p className="text-sm text-slate-600">Téléchargez les fiches EPS pour consultation hors ligne ou impression.</p>
       </div>
 
-      {missing.length > 0 ? (
+      {missingDocs.length > 0 ? (
         <GlassCard className="space-y-2 border-amber-200/70 bg-amber-50/70">
           <p className="text-sm font-medium text-amber-900">DOCX manquants sur GitHub Releases.</p>
-          <p className="text-xs text-amber-900/80">Fichiers concernés: {missing.map((m) => m.title).join(", ")}.</p>
+          <p className="text-xs text-amber-900/80">Fichiers concernés: {missingDocs.map((m) => m.title).join(", ")}.</p>
           {availableNames.length > 0 ? (
             <p className="text-xs text-amber-900/80">Assets trouvés dans la Release: {availableNames.join(', ')}</p>
           ) : null}
