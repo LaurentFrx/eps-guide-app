@@ -45,6 +45,19 @@ async function exists(filePath: string): Promise<boolean> {
   }
 }
 
+async function looksLikeSvg(filePath: string): Promise<boolean> {
+  try {
+    const handle = await fs.open(filePath, "r");
+    const buffer = Buffer.alloc(300);
+    const { bytesRead } = await handle.read(buffer, 0, buffer.length, 0);
+    await handle.close();
+    const snippet = buffer.subarray(0, bytesRead).toString("utf8").toLowerCase();
+    return snippet.includes("<svg");
+  } catch {
+    return false;
+  }
+}
+
 async function ensurePlaceholderSvg(filePath: string, label: string) {
   try {
     await fs.access(filePath);
@@ -124,7 +137,17 @@ async function main() {
 
     const heroJpgPath = path.join(folder, "hero.jpg");
     const heroSvgPath = path.join(folder, "hero.svg");
-    if (!force && (await exists(heroJpgPath))) {
+    let heroJpgExists = await exists(heroJpgPath);
+    if (heroJpgExists && (await looksLikeSvg(heroJpgPath))) {
+      if (await exists(heroSvgPath)) {
+        await fs.unlink(heroJpgPath);
+      } else {
+        await fs.rename(heroJpgPath, heroSvgPath);
+      }
+      heroJpgExists = false;
+      console.log(`Converted ${normalizeRel(path.relative(ROOT, heroSvgPath))}`);
+    }
+    if (!force && heroJpgExists) {
       console.log(`exists ${normalizeRel(path.relative(ROOT, heroJpgPath))}`);
       continue;
     }

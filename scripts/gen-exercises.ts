@@ -16,27 +16,6 @@ const PUBLIC_DIR = path.join(ROOT, "public", "exercises");
 const OUT_FILE = path.join(ROOT, "src", "lib", "exercises.generated.ts");
 const ALLOWED_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif", ".svg"]);
 
-const PLACEHOLDER_SVG = (label: string) => {
-  const safeLabel = label.replace(/[^A-Za-z0-9-]/g, "");
-  return (
-    `<?xml version="1.0" encoding="UTF-8"?>\n` +
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="${safeLabel} placeholder">\n` +
-    `  <rect width="100%" height="100%" fill="#e2e8f0"/>\n` +
-    `  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#64748b">${safeLabel}</text>\n` +
-    `</svg>\n`
-  );
-};
-
-async function ensurePlaceholderSvg(filePath: string, label: string) {
-  try {
-    await fs.access(filePath);
-    return;
-  } catch {
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
-    await fs.writeFile(filePath, PLACEHOLDER_SVG(label), "utf8");
-  }
-}
-
 // id like S2-51 or S3-7 or S3-07
 function naturalSortKey(id: string): [number, number, string] {
   const m = id.match(/^S([1-5])-(\d+)$/i);
@@ -63,6 +42,19 @@ async function exists(filePath: string): Promise<boolean> {
   try {
     await fs.access(filePath);
     return true;
+  } catch {
+    return false;
+  }
+}
+
+async function looksLikeSvg(filePath: string): Promise<boolean> {
+  try {
+    const handle = await fs.open(filePath, "r");
+    const buffer = Buffer.alloc(300);
+    const { bytesRead } = await handle.read(buffer, 0, buffer.length, 0);
+    await handle.close();
+    const snippet = buffer.subarray(0, bytesRead).toString("utf8").toLowerCase();
+    return snippet.includes("<svg");
   } catch {
     return false;
   }
@@ -99,20 +91,20 @@ async function main() {
     // - si fichier "S3-07.jpg" => id "S3-07"
     const id = `${sessionId}-${m[2]}`;
 
-    let webPath: string;
-    if (await exists(file)) {
-      // web path doit toujours etre en "/" (meme sous Windows)
-      const webRel = rel.split(path.sep).join("/");
-      webPath = `/exercises/${webRel}`;
-    } else {
-      const placeholderPath = path.join(PUBLIC_DIR, sessionId, `${id}.svg`);
-      await ensurePlaceholderSvg(placeholderPath, id);
-      const placeholderRel = path
-        .relative(PUBLIC_DIR, placeholderPath)
-        .split(path.sep)
-        .join("/");
-      webPath = `/exercises/${placeholderRel}`;
+    let relPath = rel;
+    if ((ext === ".jpg" || ext === ".jpeg") && (await looksLikeSvg(file))) {
+      const svgPath = path.join(path.dirname(file), `${filename}.svg`);
+      if (await exists(svgPath)) {
+        await fs.unlink(file);
+      } else {
+        await fs.rename(file, svgPath);
+      }
+      relPath = path.relative(PUBLIC_DIR, svgPath);
     }
+
+    // web path doit toujours etre en "/" (meme sous Windows)
+    const webRel = relPath.split(path.sep).join("/");
+    const webPath = `/exercises/${webRel}`;
 
     found.push({ id, sessionId, image: webPath });
   }
@@ -120,8 +112,18 @@ async function main() {
   // dedupe by id, keep first
   const map = new Map<string, Found>();
   for (const f of found) {
-    if (!map.has(f.id)) map.set(f.id, f);
-    else console.warn(`Duplicate image for ${f.id} - ignoring later one`);
+    const existing = map.get(f.id);
+    if (!existing) {
+      map.set(f.id, f);
+      continue;
+    }
+    const existingIsSvg = existing.image.toLowerCase().endsWith(".svg");
+    const currentIsSvg = f.image.toLowerCase().endsWith(".svg");
+    if (existingIsSvg && !currentIsSvg) {
+      map.set(f.id, f);
+      continue;
+    }
+    console.warn(`Duplicate image for ${f.id} - ignoring later one`);
   }
 
   const uniques = Array.from(map.values());
