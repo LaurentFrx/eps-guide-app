@@ -4,6 +4,7 @@ node_modules
 *.log
 .env
 .env.local
+src/lib/exercises.generated.ts
 
 # Serwist generated files
 public/sw*
