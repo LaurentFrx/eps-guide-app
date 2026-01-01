@@ -2,6 +2,7 @@
 import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ImageOff } from "lucide-react";
 import type { Exercise } from "@/lib/exercises";
 
 export default function ExercisesGrid({ exercises }: { exercises: Exercise[] }) {
@@ -32,7 +33,14 @@ export default function ExercisesGrid({ exercises }: { exercises: Exercise[] }) 
         {filtered.map((ex) => (
           <Link key={ex.id} href={`/exercises/${ex.sessionId}/${ex.id}`} className="block rounded-2xl border bg-white shadow-sm overflow-hidden">
             <div className="relative h-36 w-full">
-              <Image src={ex.image} alt={ex.title} fill className="object-cover" unoptimized />
+              {ex.image ? (
+                <Image src={ex.image} alt={ex.title} fill className="object-cover" unoptimized />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
+                  <ImageOff className="h-5 w-5" aria-hidden="true" />
+                  <span className="sr-only">Missing image</span>
+                </div>
+              )}
             </div>
             <div className="p-3">
               <h3 className="text-sm font-medium">{ex.title}</h3>
