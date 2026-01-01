@@ -27,6 +27,7 @@ export const ExerciseCard = ({
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(exercise.image);
   const favorite = isFavorite(exercise.code);
+  const isSvg = imageSrc.toLowerCase().endsWith(".svg");
 
   const levelClass = useMemo(
     () => levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700",
@@ -43,6 +44,7 @@ export const ExerciseCard = ({
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="object-cover transition duration-500 group-hover:scale-[1.02]"
+            unoptimized={isSvg}
             onError={() => setImageSrc("/images/placeholder.jpg")}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-900/10 to-transparent" />
