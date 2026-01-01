@@ -32,7 +32,7 @@ export default function ExercisesGrid({ exercises }: { exercises: Exercise[] }) 
         {filtered.map((ex) => (
           <Link key={ex.id} href={`/exercices/${ex.sessionId}/${ex.id}`} className="block rounded-2xl border bg-white shadow-sm overflow-hidden">
             <div className="relative h-36 w-full">
-              <Image src={ex.image} alt={ex.title} fill className="object-cover" />
+              <Image src={ex.image} alt={ex.title} fill className="object-cover" unoptimized />
             </div>
             <div className="p-3">
               <h3 className="text-sm font-medium">{ex.title}</h3>
