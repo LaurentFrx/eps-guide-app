@@ -4,7 +4,7 @@ import fs from "fs/promises";
 import path from "path";
 
 const ROOT = process.cwd();
-const TARGET_DIR = path.join(ROOT, "public", "exercises");
+const TARGET_DIR = path.join(ROOT, "public");
 const IMAGE_EXTS = new Set([".jpg", ".jpeg"]);
 
 async function walk(dir: string): Promise<string[]> {
@@ -37,7 +37,7 @@ async function main() {
   try {
     await fs.access(TARGET_DIR);
   } catch {
-    console.error("public/exercises folder not found.");
+    console.error("public folder not found.");
     process.exit(1);
   }
 
@@ -54,6 +54,7 @@ async function main() {
   }
 
   if (invalid.length > 0) {
+    console.error(`Scanned ${jpgFiles.length} .jpg/.jpeg files under public/.`);
     console.error("Found SVG content inside .jpg/.jpeg files:");
     invalid.forEach((file) => {
       console.error(`- ${file}`);
