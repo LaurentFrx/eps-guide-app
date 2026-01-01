@@ -21,7 +21,13 @@ export default function ExercisePage(props: unknown) {
     <div className="p-6 space-y-6">
       <div className="rounded-2xl bg-white shadow-md overflow-hidden">
         <div className="relative h-72 w-full">
-          <Image src={ex.image} alt={ex.title} fill className="object-cover rounded-t-2xl" unoptimized />
+          <Image
+            src={ex.image}
+            alt={ex.title}
+            fill
+            className="object-cover rounded-t-2xl"
+            unoptimized={ex.image.toLowerCase().endsWith(".svg")}
+          />
         </div>
         <div className="p-4 space-y-3">
           <h1 className="text-2xl font-semibold">{ex.title}</h1>

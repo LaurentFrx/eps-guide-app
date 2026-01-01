@@ -1,4 +1,6 @@
 // src/lib/exercises.ts
+import fs from "fs";
+import path from "path";
 import { exercisesGenerated } from "./exercises.generated";
 
 export type Session = {
@@ -32,6 +34,26 @@ export type Exercise = {
   progression: { regression: string; progression: string };
   dosage: string;
 };
+
+const PUBLIC_DIR = path.join(process.cwd(), "public");
+const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp", ".avif", ".svg"];
+
+function resolvePublicImagePath(preferred: string) {
+  const normalized = preferred.replace(/^\/+/, "");
+  const absPreferred = path.join(PUBLIC_DIR, normalized);
+  if (fs.existsSync(absPreferred)) return preferred;
+
+  const ext = path.extname(preferred);
+  const base = ext ? preferred.slice(0, -ext.length) : preferred;
+
+  for (const candidateExt of IMAGE_EXTS) {
+    const candidate = `${base}${candidateExt}`;
+    const abs = path.join(PUBLIC_DIR, candidate.replace(/^\/+/, ""));
+    if (fs.existsSync(abs)) return candidate;
+  }
+
+  return preferred;
+}
 
 const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
   {
@@ -84,7 +106,7 @@ const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
  * Exercices “réels” : tu peux en ajouter ici au fur et à mesure.
  * Ils écrasent les placeholders générés si l'id correspond.
  */
-const manualExercises: Exercise[] = [
+const manualExercisesBase: Exercise[] = [
   {
     id: "S1-01",
     sessionId: "S1",
@@ -242,6 +264,11 @@ const manualExercises: Exercise[] = [
   },
 ];
 
+const manualExercises: Exercise[] = manualExercisesBase.map((exercise) => ({
+  ...exercise,
+  image: resolvePublicImagePath(exercise.image),
+}));
+
 const overrides = new Map<string, Exercise>(manualExercises.map((e) => [e.id, e]));
 
 function mergeExercise(base: Exercise, o?: Exercise): Exercise {
@@ -279,12 +306,14 @@ for (const exercise of exercises) {
   }
 }
 
+const fallbackImage = "/exercises/fallback.svg";
+
 export const sessions: Session[] = sessionsBase.map((s) => ({
   ...s,
   heroImage:
     s.heroImage && s.heroImage.trim().length
-      ? s.heroImage
-      : (heroFallbackBySession[s.id]?.image ?? "/exercises/fallback.jpg"),
+      ? resolvePublicImagePath(s.heroImage)
+      : (heroFallbackBySession[s.id]?.image ?? fallbackImage),
   exerciseCount: exercises.filter((e) => e.sessionId === s.id).length,
 }));
 
