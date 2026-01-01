@@ -1,21 +1,33 @@
-node_modules
-.next
+# Dependencies / build
+node_modules/
+.next/
+
+# OS / editor
 .DS_Store
+
+# Logs
 *.log
+
+# Env
 .env
 .env.local
+
+# Generated data
 src/lib/exercises.generated.ts
 
 # Serwist generated files
 public/sw*
 public/swe-worker*
 
+# Docs (do not commit)
 public/docs/*.docx
-
-# Serwist generated files
-public/sw*
-public/swe-worker*
 
 # Generated responsive images (do not commit)
 public/images/_responsive/
+
+# Release artifacts
 release_assets/
+
+# Originals (keep only the folder scaffold)
+assets/originals/**
+!assets/originals/.gitkeep
