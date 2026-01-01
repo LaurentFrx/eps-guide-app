@@ -34,7 +34,13 @@ export default function ExercisesGrid({ exercises }: { exercises: Exercise[] }) 
           <Link key={ex.id} href={`/exercises/${ex.sessionId}/${ex.id}`} className="block rounded-2xl border bg-white shadow-sm overflow-hidden">
             <div className="relative h-36 w-full">
               {ex.image ? (
-                <Image src={ex.image} alt={ex.title} fill className="object-cover" unoptimized />
+                <Image
+                  src={ex.image}
+                  alt={ex.title}
+                  fill
+                  className="object-cover"
+                  unoptimized={ex.image.toLowerCase().endsWith(".svg")}
+                />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
                   <ImageOff className="h-5 w-5" aria-hidden="true" />

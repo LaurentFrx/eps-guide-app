@@ -21,6 +21,17 @@ const ALLOWED_EXTS = new Set([...PRIMARY_EXTS, ...FALLBACK_EXTS]);
 const EXERCISE_RE = /^S([1-5])-(\d+)\.(jpg|jpeg|png|webp|avif)$/i;
 const nameCollator = new Intl.Collator("en", { sensitivity: "base" });
 
+const PLACEHOLDER_SVG = (label: string) => {
+  const safeLabel = label.replace(/[^A-Za-z0-9-]/g, "");
+  return (
+    `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="${safeLabel} placeholder">\n` +
+    `  <rect width="100%" height="100%" fill="#e2e8f0"/>\n` +
+    `  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#64748b">${safeLabel}</text>\n` +
+    `</svg>\n`
+  );
+};
+
 function normalizeRel(filePath: string): string {
   return filePath.split(path.sep).join("/");
 }
@@ -31,6 +42,16 @@ async function exists(filePath: string): Promise<boolean> {
     return true;
   } catch {
     return false;
+  }
+}
+
+async function ensurePlaceholderSvg(filePath: string, label: string) {
+  try {
+    await fs.access(filePath);
+    return;
+  } catch {
+    await fs.mkdir(path.dirname(filePath), { recursive: true });
+    await fs.writeFile(filePath, PLACEHOLDER_SVG(label), "utf8");
   }
 }
 
@@ -101,9 +122,10 @@ async function main() {
       continue;
     }
 
-    const heroPath = path.join(folder, "hero.jpg");
-    if (!force && (await exists(heroPath))) {
-      console.log(`exists ${normalizeRel(path.relative(ROOT, heroPath))}`);
+    const heroJpgPath = path.join(folder, "hero.jpg");
+    const heroSvgPath = path.join(folder, "hero.svg");
+    if (!force && (await exists(heroJpgPath))) {
+      console.log(`exists ${normalizeRel(path.relative(ROOT, heroJpgPath))}`);
       continue;
     }
 
@@ -111,18 +133,26 @@ async function main() {
     const chosen = pickFirstCandidate(candidates);
 
     if (!chosen) {
-      console.warn(`No exercise images found for ${session} in ${normalizeRel(path.relative(ROOT, folder))}`);
+      console.warn(
+        `No exercise images found for ${session} in ${normalizeRel(path.relative(ROOT, folder))}`
+      );
+      if (force || !(await exists(heroSvgPath))) {
+        await ensurePlaceholderSvg(heroSvgPath, `${session}-hero`);
+        console.log(`Created ${normalizeRel(path.relative(ROOT, heroSvgPath))}`);
+      } else {
+        console.log(`exists ${normalizeRel(path.relative(ROOT, heroSvgPath))}`);
+      }
       continue;
     }
 
-    await fs.copyFile(chosen.filePath, heroPath);
+    await fs.copyFile(chosen.filePath, heroJpgPath);
 
     if (!PRIMARY_EXTS.has(chosen.ext)) {
       console.warn(`hero.jpg created from ${chosen.ext.slice(1)} (no conversion)`);
     }
 
     console.log(
-      `Created ${normalizeRel(path.relative(ROOT, heroPath))} from ${chosen.name}`
+      `Created ${normalizeRel(path.relative(ROOT, heroJpgPath))} from ${chosen.name}`
     );
   }
 }
