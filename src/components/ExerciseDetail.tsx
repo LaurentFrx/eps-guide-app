@@ -25,6 +25,7 @@ export const ExerciseDetail = ({ exercise }: ExerciseDetailProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(exercise.image);
   const favorite = isFavorite(exercise.code);
+  const isSvg = imageSrc.toLowerCase().endsWith(".svg");
   const levelClass = levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700";
 
   return (
@@ -45,6 +46,7 @@ export const ExerciseDetail = ({ exercise }: ExerciseDetailProps) => {
             fill
             sizes="100vw"
             className="object-cover"
+            unoptimized={isSvg}
             onError={() => setImageSrc("/images/placeholder.jpg")}
           />
         </div>

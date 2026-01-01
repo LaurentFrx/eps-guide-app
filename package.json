@@ -7,6 +7,7 @@
     "build": "npm run gen:heroes && npm run gen:exercises && npm run validate:assets && npm run validate:images && next build --webpack",
     "gen:exercises": "tsx scripts/gen-exercises.ts",
     "gen:heroes": "tsx scripts/gen-heroes.ts",
+    "gen:images": "tsx scripts/gen-images.ts",
     "validate:assets": "tsx scripts/validate-assets.ts",
     "validate:images": "tsx scripts/validate-public-images.ts",
     "start": "next start",
