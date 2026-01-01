@@ -31,3 +31,8 @@ release_assets/
 # Originals (keep only the folder scaffold)
 assets/originals/**
 !assets/originals/.gitkeep
+
+# Root duplicates (do not commit)
+eps-s*.png
+eps-s*.jpg
+eps-s*.jpeg
