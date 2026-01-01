@@ -60,7 +60,7 @@ export default function HomePage() {
         </div>
         <div className="grid gap-4">
           {sessions.map((session) => (
-            <Link key={session.id} href={`/exercices/${session.id}`} className="block">
+            <Link key={session.id} href={`/exercises/${session.id}`} className="block">
               <GlassCard className="transition hover:-translate-y-0.5 hover:shadow-xl">
                 <div className="flex items-start justify-between">
                   <div>

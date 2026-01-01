@@ -15,7 +15,7 @@ export default function ExercicesPage() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {sessions.map((s) => (
           <article key={s.id} className="rounded-2xl overflow-hidden border bg-white shadow-md">
-            <Link href={`/exercices/${s.id}`} className="block">
+            <Link href={`/exercises/${s.id}`} className="block">
               <div className="relative h-40 w-full">
                 <Image src={s.heroImage} alt={s.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" unoptimized />
               </div>

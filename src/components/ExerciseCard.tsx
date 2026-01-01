@@ -35,7 +35,7 @@ export const ExerciseCard = ({
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/70 shadow-sm backdrop-blur">
-      <Link href={`/exercises/${exercise.code}`} className="block">
+      <Link href={`/exercises/detail/${exercise.code}`} className="block">
         <div className="relative h-36 overflow-hidden">
           <Image
             src={imageSrc}

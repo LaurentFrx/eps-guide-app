@@ -83,9 +83,9 @@ export default function ExercisePage(props: unknown) {
           </div>
 
           <div className="flex items-center gap-2">
-            <Link href={`/exercices/${ex.sessionId}`} className="rounded-md px-3 py-2 border">Retour session</Link>
-            {prev ? <Link href={`/exercices/${prev.sessionId}/${prev.id}`} className="rounded-md px-3 py-2 border">Précédent</Link> : null}
-            {next ? <Link href={`/exercices/${next.sessionId}/${next.id}`} className="rounded-md px-3 py-2 border">Suivant</Link> : null}
+            <Link href={`/exercises/${ex.sessionId}`} className="rounded-md px-3 py-2 border">Retour session</Link>
+            {prev ? <Link href={`/exercises/${prev.sessionId}/${prev.id}`} className="rounded-md px-3 py-2 border">Précédent</Link> : null}
+            {next ? <Link href={`/exercises/${next.sessionId}/${next.id}`} className="rounded-md px-3 py-2 border">Suivant</Link> : null}
           </div>
         </div>
       </div>
