@@ -1,6 +1,11 @@
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 
-export default function ExerciseRedirect(props: { params: { exerciseId: string } }) {
-  const { exerciseId } = props.params;
-  redirect(`/exercises/${exerciseId}`);
+export default async function ExerciseRedirect({
+  params,
+}: {
+  params: Promise<{ exerciseId: string }>;
+}) {
+  const { exerciseId } = await params;
+  const normalized = exerciseId.trim().toUpperCase();
+  permanentRedirect(`/exercises/detail/${normalized}`);
 }
