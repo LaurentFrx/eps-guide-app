@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "npm run gen:heroes && npm run gen:exercises && next dev --webpack",
-    "build": "npm run gen:heroes && npm run gen:exercises && next build --webpack",
+    "build": "npm run gen:heroes && npm run gen:exercises && npm run validate:assets && next build --webpack",
     "gen:exercises": "tsx scripts/gen-exercises.ts",
     "gen:heroes": "tsx scripts/gen-heroes.ts",
+    "validate:assets": "tsx scripts/validate-assets.ts",
     "start": "next start",
     "lint": "eslint",
     "check:security": "node tools/check-no-ha-refs.js",
