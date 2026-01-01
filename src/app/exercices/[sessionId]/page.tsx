@@ -3,12 +3,26 @@ import ExercisesGrid from "@/components/ExercisesGrid";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-export default function SessionPage(props: unknown) {
-  const { params } = props as { params: { sessionId: string } };
-  const session = sessions.find((s) => s.id === params.sessionId);
+function normalizeSessionId(raw: string | undefined | null) {
+  const s = (raw ?? "").trim();
+  if (!s) return "";
+  if (/^\d+$/.test(s)) return `S${Number(s)}`;
+  if (/^S\d+$/i.test(s)) return `S${Number(s.slice(1))}`;
+  return s.toUpperCase();
+}
+
+export default async function SessionPage(props: unknown) {
+  const { params } = props as {
+    params: { sessionId: string } | Promise<{ sessionId: string }>;
+  };
+  const resolvedParams = await Promise.resolve(params);
+  const sessionIdNorm = normalizeSessionId(resolvedParams?.sessionId);
+  const session = sessions.find((s) => normalizeSessionId(s.id) === sessionIdNorm);
   if (!session) return notFound();
 
-  const sessionExercises = exercises.filter((e) => e.sessionId === session.id);
+  const sessionExercises = exercises.filter(
+    (e) => normalizeSessionId(e.sessionId) === sessionIdNorm
+  );
 
   return (
     <div className="p-6 space-y-6">
