@@ -95,7 +95,7 @@ async function ensurePlaceholderSvg(filePath: string, label: string) {
 async function main() {
   try {
     await fs.access(PUBLIC_DIR);
-  } catch (_err) {
+  } catch {
     console.error(
       "public/exercises folder not found. Create it and add images before running this script."
     );
