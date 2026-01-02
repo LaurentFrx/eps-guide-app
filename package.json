@@ -38,6 +38,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "pdf-parse": "^2.4.5",
     "serwist": "^9.4.2",
     "sharp": "^0.32.6",
     "tailwindcss": "^4",

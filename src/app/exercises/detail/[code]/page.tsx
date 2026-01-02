@@ -3,9 +3,10 @@ import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import { GlassCard } from "@/components/GlassCard";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
-import { exercises } from "@/lib/exercises";
 import { getExercise } from "@/lib/exercise-data";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
+import { pdfHasCode } from "@/data/pdfIndex";
+import { getCatalogItem } from "@/lib/exercisesCatalog";
 
 export default async function ExercisePage({
   params,
@@ -14,7 +15,7 @@ export default async function ExercisePage({
 }) {
   const { code } = await params;
   const normalized = normalizeExerciseCode(code);
-  if (!isValidExerciseCode(normalized)) {
+  if (!isValidExerciseCode(normalized) || !pdfHasCode(normalized)) {
     notFound();
   }
 
@@ -23,21 +24,15 @@ export default async function ExercisePage({
   }
 
   const exercise = getExercise(normalized);
-  const listEntry =
-    exercises.find((ex) => normalizeExerciseCode(ex.id) === normalized) ?? null;
-  const status = listEntry?.status ?? "draft";
+  const catalogItem = getCatalogItem(normalized);
 
   if (!exercise) {
-    return <UnavailableExercise code={normalized} sessionId={listEntry?.sessionId} />;
-  }
-
-  if (status === "draft") {
     return (
-      <DraftExercise
+      <InProgressExercise
         code={normalized}
-        title={exercise.title}
-        image={listEntry?.image}
-        sessionId={listEntry?.sessionId}
+        title={catalogItem?.title ?? normalized}
+        image={catalogItem?.image ?? undefined}
+        sessionId={catalogItem?.series}
       />
     );
   }
@@ -45,7 +40,7 @@ export default async function ExercisePage({
   return <ExerciseDetail exercise={exercise} />;
 }
 
-function DraftExercise({
+function InProgressExercise({
   code,
   title,
   image,
@@ -80,7 +75,7 @@ function DraftExercise({
           <p className="text-xs uppercase tracking-[0.3em] text-white/70">{code}</p>
           <h1 className="font-display text-3xl font-semibold">{title}</h1>
           <span className="inline-flex rounded-full bg-white/15 px-3 py-1 text-xs uppercase tracking-widest">
-            Bientot
+            Fiche en cours
           </span>
         </div>
       </div>
@@ -88,7 +83,7 @@ function DraftExercise({
       <GlassCard className="space-y-2">
         <p className="text-xs uppercase tracking-widest text-slate-500">Contenu en cours</p>
         <p className="text-sm text-slate-700">
-          Cette fiche est en cours de préparation. Revenez bientôt pour la version complète.
+          Cette fiche est en cours d&apos;integration. Revenez bientot pour la version complete.
         </p>
         <div className="flex flex-wrap gap-2 pt-2 text-sm">
           {sessionId ? (
@@ -105,30 +100,3 @@ function DraftExercise({
   );
 }
 
-function UnavailableExercise({
-  code,
-  sessionId,
-}: {
-  code: string;
-  sessionId?: string;
-}) {
-  return (
-    <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
-      <GlassCard className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-slate-500">Exercice indisponible</p>
-        <h1 className="font-display text-2xl font-semibold text-slate-900">{code}</h1>
-        <p className="text-sm text-slate-700">Cette fiche n’est pas encore intégrée.</p>
-        <div className="flex flex-wrap gap-2 pt-2 text-sm">
-          {sessionId ? (
-            <Link href={`/exercises/${sessionId}`} className="rounded-md border px-3 py-2">
-              Retour à la session
-            </Link>
-          ) : null}
-          <Link href="/exercises" className="rounded-md border px-3 py-2">
-            Voir toutes les sessions
-          </Link>
-        </div>
-      </GlassCard>
-    </div>
-  );
-}

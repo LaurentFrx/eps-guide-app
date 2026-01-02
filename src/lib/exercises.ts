@@ -1,10 +1,10 @@
 // src/lib/exercises.ts
 import fs from "fs";
 import path from "path";
-import { exercisesManifest, type ExerciseManifestEntry } from "@/data/exercisesManifest";
+import { PDF_INDEX, cleanPdfTitle, type PdfIndexItem } from "@/data/pdfIndex";
 import { allExercises, type ExerciseWithSession } from "@/lib/exercise-data";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
-import { getExerciseStatus, type ExerciseStatus } from "@/lib/exerciseStatus";
+import type { ExerciseStatus } from "@/lib/exerciseStatus";
 
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
@@ -34,7 +34,7 @@ export type Exercise = {
 };
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
-const IMAGE_EXTS = [".jpg", ".jpeg", ".png", ".webp", ".avif", ".svg"];
+const IMAGE_EXTS = [".webp", ".avif", ".jpg", ".jpeg", ".png", ".svg"];
 const FALLBACK_IMAGE = "/exercises/fallback.svg";
 const PLACEHOLDER_TEXT = "Contenu a completer";
 
@@ -53,6 +53,14 @@ function resolvePublicImagePath(preferred: string) {
   }
 
   return preferred;
+}
+
+function resolveExerciseImage(code: string, series: string): string {
+  for (const ext of IMAGE_EXTS) {
+    const abs = path.join(PUBLIC_DIR, "exercises", series, `${code}${ext}`);
+    if (fs.existsSync(abs)) return `/exercises/${series}/${code}${ext}`;
+  }
+  return FALLBACK_IMAGE;
 }
 
 const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
@@ -106,15 +114,16 @@ const detailByCode = new Map<string, ExerciseWithSession>(
   allExercises.map((exercise) => [normalizeExerciseCode(exercise.code), exercise])
 );
 
-function toExercise(entry: ExerciseManifestEntry): Exercise {
+function toExercise(entry: PdfIndexItem): Exercise {
   const normalized = normalizeExerciseCode(entry.code);
   const detail = detailByCode.get(normalized);
-  const image = entry.image ? resolvePublicImagePath(entry.image) : FALLBACK_IMAGE;
+  const title = detail?.title ?? cleanPdfTitle(entry.title) ?? `Exercice ${normalized}`;
+  const image = resolveExerciseImage(normalized, entry.series);
 
   const exercise: Exercise = {
     id: normalized,
-    sessionId: entry.sessionId,
-    title: detail?.title ?? `Exercice ${normalized}`,
+    sessionId: entry.series as Session["id"],
+    title,
     subtitleEn: undefined,
     level: detail?.level ?? "A definir",
     image,
@@ -133,11 +142,11 @@ function toExercise(entry: ExerciseManifestEntry): Exercise {
     dosage: detail?.dosage ?? PLACEHOLDER_TEXT,
   };
 
-  exercise.status = getExerciseStatus({ id: normalized, image });
+  exercise.status = detail ? "ready" : "draft";
   return exercise;
 }
 
-export const exercises: Exercise[] = exercisesManifest.map(toExercise);
+export const exercises: Exercise[] = PDF_INDEX.map(toExercise);
 
 type HeroFallback = { id: string; image: string };
 const heroFallbackBySession: Partial<Record<Session["id"], HeroFallback>> = {};
