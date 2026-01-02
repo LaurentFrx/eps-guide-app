@@ -2,18 +2,11 @@
 /* eslint-disable no-console */
 import fs from "fs/promises";
 import path from "path";
-import data from "../src/data/exercises.json";
+import { allExercises } from "../src/lib/exercise-data";
 import pdfIndex from "../src/data/pdfIndex.json";
 import { normalizeExerciseCode, isValidExerciseCode } from "../src/lib/exerciseCode";
 
 type SeriesId = "S1" | "S2" | "S3" | "S4" | "S5";
-
-type ExercisesData = {
-  sessions: Array<{
-    num: number;
-    exercises: Array<{ code: string }>;
-  }>;
-};
 
 type ReportSection = {
   label: string;
@@ -104,16 +97,11 @@ async function getAssetCodes(): Promise<Set<string>> {
 }
 
 function getDataCodes(): Set<string> {
-  const typed = data as ExercisesData;
   const codes = new Set<string>();
-
-  for (const session of typed.sessions ?? []) {
-    for (const exercise of session.exercises ?? []) {
-      const code = normalizeCode(exercise.code ?? "");
-      if (code) codes.add(code);
-    }
+  for (const exercise of allExercises) {
+    const code = normalizeCode(exercise.code);
+    if (code) codes.add(code);
   }
-
   return codes;
 }
 
