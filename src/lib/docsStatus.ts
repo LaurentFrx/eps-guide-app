@@ -17,19 +17,27 @@ async function probeUrl(url: string): Promise<DocsStatus> {
       next: { revalidate: REVALIDATE_SECONDS },
     });
 
-    if (res.status >= 200 && res.status < 400) return "ok";
+    if (res.status >= 200 && res.status < 300) return "ok";
     if (res.status === 404) return "missing";
 
     res = await fetch(url, {
       method: "GET",
       headers: { Range: "bytes=0-0" },
-      redirect: "manual",
+      redirect: "follow",
       signal: controller.signal,
       next: { revalidate: REVALIDATE_SECONDS },
     });
 
     if (res.status === 404) return "missing";
-    if ((res.status >= 200 && res.status < 400) || res.status === 416) return "ok";
+    if (res.status === 200 || res.status === 206 || res.status === 416) {
+      const contentType = res.headers.get("content-type")?.toLowerCase() ?? "";
+      const contentDisposition = res.headers.get("content-disposition")?.toLowerCase() ?? "";
+      const hasAttachment =
+        contentDisposition.includes("attachment") ||
+        contentDisposition.includes("filename=");
+      if (contentType.includes("text/html") && !hasAttachment) return "unknown";
+      return "ok";
+    }
 
     return "unknown";
   } catch {
