@@ -7,6 +7,7 @@ import { Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
+import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseWithSession } from "@/lib/exercise-data";
 
 const levelStyles: Record<string, string> = {
@@ -36,7 +37,10 @@ export const ExerciseCard = ({
 
   return (
     <div className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/70 shadow-sm backdrop-blur">
-      <Link href={`/exercises/detail/${exercise.code}`} className="block">
+      <Link
+        href={`/exercises/detail/${normalizeExerciseCode(exercise.code)}`}
+        className="block"
+      >
         <div className="relative h-36 overflow-hidden">
           <Image
             src={imageSrc}
