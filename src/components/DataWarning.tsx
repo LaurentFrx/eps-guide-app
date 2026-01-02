@@ -1,9 +1,15 @@
 import { Info } from "lucide-react";
 import { isMockData, mockWarning } from "@/lib/exercise-data";
+import { getDocsStatus } from "@/lib/docsStatus";
 import { cn } from "@/lib/utils";
 
-export const DataWarning = ({ className }: { className?: string }) => {
+export const DataWarning = async ({ className }: { className?: string }) => {
   if (!isMockData) {
+    return null;
+  }
+
+  const status = await getDocsStatus();
+  if (status !== "missing") {
     return null;
   }
 
