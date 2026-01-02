@@ -11,49 +11,57 @@
       "exercises": [
         {
           "code": "S1-01",
-          "title": "Planche coudes",
-          "level": "Intermediaire",
+          "title": "Planche frontale sur coudes",
+          "level": "Debutant",
           "equipment": "Tapis",
-          "muscles": "Abdominaux, lombaires",
+          "muscles": "Transverse, grand droit, obliques, \u00e9recteurs spinaux, delto\u00efdes, fessiers",
           "key_points": [
-            "Alignement",
-            "Respiration",
-            "Controle"
+            "Anti-extension lombaire : maintenir le bas du dos plat, nombril rentr\u00e9",
+            "Alignement t\u00eate-\u00e9paules-bassin-chevilles",
+            "Contracter les fessiers pour stabiliser le bassin",
+            "\u00c9viter les cambrures lombaires ou les fesses trop hautes",
+            "Respiration fluide : pas d'apn\u00e9e",
+            "Engagement des omoplates et appui ferme des avant-bras"
           ],
-          "image": "/images/S1-01.jpg",
-          "objective": "Renforcer abdominaux et ameliorer la stabilite globale.",
-          "anatomy": "Abdominaux, lombaires \u2022 anti-extension et stabilite",
+          "image": "/exercises/S1/S1-01.webp",
+          "objective": "Renforcer l'endurance et la stabilit\u00e9 du tronc pour am\u00e9liorer la posture, pr\u00e9venir les lombalgies, et optimiser la transmission des forces entre le haut et le bas du corps.",
+          "anatomy": "Le transverse de l'abdomen stabilise la colonne ; le grand droit maintient le tronc ; les obliques contr\u00f4lent les rotations ; les \u00e9recteurs spinaux assurent l'\u00e9quilibre ; les fessiers maintiennent le bassin en r\u00e9troversion neutre. Cha\u00eene ant\u00e9rieure activ\u00e9e statiquement, cha\u00eene post\u00e9rieure en soutien isom\u00e9trique.",
           "safety": [
-            "Garder une colonne neutre",
-            "Respirer sans bloquer",
-            "Eviter la compensation lombaire"
+            "Adapter en cas de douleurs lombaires : genoux au sol ou planche inclin\u00e9e",
+            "\u00c9viter chez les personnes en hernie discale non stabilis\u00e9e",
+            "Surpoids ou seniors : privil\u00e9gier planche inclin\u00e9e ou fractionn\u00e9e",
+            "Ne jamais forcer si la posture s'effondre : qualit\u00e9 > dur\u00e9e"
           ],
-          "regress": "Reduire la duree ou surelever les appuis.",
-          "progress": "Augmenter la duree ou ajouter une instabilite.",
-          "dosage": "3-4 x 20-40s \u2022 repos 45-60s \u2022 focus gainage"
+          "regress": "Planche sur genoux (r\u00e9duit le levier) \u2022 Planche inclin\u00e9e (avant-bras sur banc ou mur) \u2022 Fractionner en s\u00e9ries de 10s avec r\u00e9cup\u00e9ration",
+          "progress": "Augmenter progressivement la dur\u00e9e \u2022 Lever un pied ou un bras (gainage asym\u00e9trique) \u2022 Appuis instables (coussin, Swiss Ball) \u2022 Ajout de charge l\u00e9g\u00e8re (gilet lest\u00e9)",
+          "dosage": "3 \u00e0 5 s\u00e9ries de 20 \u00e0 45 secondes. Pour travail qualitatif : 8 s\u00e9ries de 10s (m\u00e9thode McGill), 30s de repos entre chaque. Arr\u00eater si perte de posture."
         },
         {
           "code": "S1-02",
-          "title": "Dead Bug",
+          "title": "Planche frontale sur mains",
           "level": "Debutant",
-          "equipment": "Aucun",
-          "muscles": "Abdos profonds, flechisseurs de hanche",
+          "equipment": "Tapis",
+          "muscles": "Transverse, grand droit, obliques, triceps, delto\u00efdes, pectoraux, dentel\u00e9 ant\u00e9rieur",
           "key_points": [
-            "Dos plaque",
-            "Mouvement lent",
-            "Souffle"
+            "Mains sous les \u00e9paules, bras tendus mais non verrouill\u00e9s",
+            "Rentrez le ventre et contractez les fessiers",
+            "Pousser le sol avec les mains pour activer le dentel\u00e9",
+            "Garder l'alignement t\u00eate-tronc-jambes",
+            "Respiration continue : \u00e9viter l'apn\u00e9e",
+            "Arr\u00eater si le bassin s'affaisse ou remonte"
           ],
-          "image": "/images/S1-02.jpg",
-          "objective": "Renforcer abdos profonds et ameliorer la stabilite globale.",
-          "anatomy": "Abdos profonds, flechisseurs de hanche \u2022 anti-extension et stabilite",
+          "image": "/exercises/S1/S1-02.webp",
+          "objective": "Renforcer le tronc tout en sollicitant activement les bras et les \u00e9paules. Pr\u00e9parer aux pompes, am\u00e9liorer la stabilit\u00e9 scapulaire et posturale.",
+          "anatomy": "Engagement similaire \u00e0 la planche sur coudes mais avec plus de charge sur les bras. Triceps et delto\u00efdes verrouillent les coudes. Dentel\u00e9 ant\u00e9rieur stabilise les omoplates. Les poignets supportent une flexion prolong\u00e9e. L'ensemble du tronc travaille en anti-extension.",
           "safety": [
-            "Garder une colonne neutre",
-            "Respirer sans bloquer",
-            "Eviter la compensation lombaire"
+            "Douleurs poignets : utiliser poign\u00e9es ou appui sur poings",
+            "\u00c9paule instable : privil\u00e9gier la version sur coudes",
+            "Faible force bras : version genoux au sol",
+            "Interdit si douleur lombaire ou perte d'alignement"
           ],
-          "regress": "Reduire la duree ou surelever les appuis.",
-          "progress": "Augmenter la duree ou ajouter une instabilite.",
-          "dosage": "3-4 x 20-40s \u2022 repos 45-60s \u2022 focus gainage"
+          "regress": "Planche sur genoux \u2022 Planche inclin\u00e9e (mains sur banc ou mur)",
+          "progress": "Lever une main ou un pied (gainage asym\u00e9trique) \u2022 Marches lat\u00e9rales en planche \u2022 Appuis instables (BOSU, coussin mousse) \u2022 Transitions vers pompes dynamiques",
+          "dosage": "4 \u00e0 6 s\u00e9ries de 15 \u00e0 30 secondes. Travail en intervalles courts r\u00e9p\u00e9t\u00e9s pour renforcer bras/\u00e9paules. Qualit\u00e9 de l'alignement prioritaire sur la dur\u00e9e."
         },
         {
           "code": "S1-03",
