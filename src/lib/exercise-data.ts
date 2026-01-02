@@ -1,4 +1,5 @@
 import data from "@/data/exercises.json";
+import { EXERCISES_FROM_PDF } from "@/data/exercisesFromPdf";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
 
 export type Exercise = {
@@ -40,7 +41,61 @@ export type ExerciseWithSession = Exercise & {
 
 const typed = data as ExercisesData;
 
-export const sessions = typed.sessions ?? [];
+function getSessionNumFromCode(code: string): number | null {
+  const match = code.match(/^S([1-5])-/);
+  if (!match) return null;
+  return Number(match[1]);
+}
+
+const pdfExercises = EXERCISES_FROM_PDF.map((exercise) => ({
+  ...exercise,
+  code: normalizeExerciseCode(exercise.code),
+}));
+
+const baseSessions = (typed.sessions ?? []).map((session) => ({
+  ...session,
+  exercises: session.exercises.map((exercise) => ({
+    ...exercise,
+    code: normalizeExerciseCode(exercise.code),
+  })),
+}));
+
+const mergedSessions: Session[] = baseSessions.map((session) => {
+  const existing = new Map(session.exercises.map((exercise) => [exercise.code, exercise]));
+  const exercises = [...session.exercises];
+
+  for (const exercise of pdfExercises) {
+    const sessionNum = getSessionNumFromCode(exercise.code);
+    if (sessionNum !== session.num) continue;
+    if (existing.has(exercise.code)) continue;
+    exercises.push(exercise);
+  }
+
+  return {
+    ...session,
+    exercises,
+  };
+});
+
+const sessionNums = new Set(mergedSessions.map((session) => session.num));
+for (const exercise of pdfExercises) {
+  const sessionNum = getSessionNumFromCode(exercise.code);
+  if (!sessionNum || sessionNums.has(sessionNum)) continue;
+  const exercises = pdfExercises.filter(
+    (item) => getSessionNumFromCode(item.code) === sessionNum
+  );
+  mergedSessions.push({
+    num: sessionNum,
+    title: `Session ${sessionNum}`,
+    subtitle: `Session ${sessionNum}`,
+    exercises,
+  });
+  sessionNums.add(sessionNum);
+}
+
+mergedSessions.sort((a, b) => a.num - b.num);
+
+export const sessions = mergedSessions;
 export const isMockData = Boolean(typed.meta?.is_mock);
 export const mockWarning =
   typed.meta?.warning ?? "Données de démonstration actives.";
