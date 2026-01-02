@@ -6,7 +6,6 @@ import { ExerciseDetail } from "@/components/ExerciseDetail";
 import { exercises } from "@/lib/exercises";
 import { getExercise } from "@/lib/exercise-data";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
-import { getExerciseStatus } from "@/lib/exerciseStatus";
 
 export default async function ExercisePage({
   params,
@@ -26,9 +25,7 @@ export default async function ExercisePage({
   const exercise = getExercise(normalized);
   const listEntry =
     exercises.find((ex) => normalizeExerciseCode(ex.id) === normalized) ?? null;
-  const status = listEntry
-    ? getExerciseStatus({ id: listEntry.id, image: listEntry.image })
-    : "draft";
+  const status = listEntry?.status ?? "draft";
 
   if (!exercise) {
     return <UnavailableExercise code={normalized} sessionId={listEntry?.sessionId} />;
