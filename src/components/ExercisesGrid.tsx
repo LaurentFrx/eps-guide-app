@@ -77,7 +77,7 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
               </>
             );
 
-            if (isDraft || !ex.href) {
+            if (!ex.href) {
               return (
                 <div
                   key={ex.code}
@@ -93,7 +93,11 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
               <Link
                 key={ex.code}
                 href={ex.href}
-                className="block rounded-2xl border bg-white shadow-sm overflow-hidden"
+                className={
+                  isDraft
+                    ? "block rounded-2xl border bg-white/70 shadow-sm overflow-hidden opacity-80"
+                    : "block rounded-2xl border bg-white shadow-sm overflow-hidden"
+                }
               >
                 {Card}
               </Link>

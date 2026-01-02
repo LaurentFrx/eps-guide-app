@@ -5,6 +5,7 @@ import { PDF_INDEX, cleanPdfTitle, type PdfIndexItem } from "@/data/pdfIndex";
 import { allExercises, type ExerciseWithSession } from "@/lib/exercise-data";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseStatus } from "@/lib/exerciseStatus";
+import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
 
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
@@ -55,12 +56,8 @@ function resolvePublicImagePath(preferred: string) {
   return preferred;
 }
 
-function resolveExerciseImage(code: string, series: string): string {
-  for (const ext of IMAGE_EXTS) {
-    const abs = path.join(PUBLIC_DIR, "exercises", series, `${code}${ext}`);
-    if (fs.existsSync(abs)) return `/exercises/${series}/${code}${ext}`;
-  }
-  return FALLBACK_IMAGE;
+function resolveExerciseImage(code: string): string {
+  return getExerciseHeroSrcOrFallback(code, FALLBACK_IMAGE);
 }
 
 const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
@@ -118,7 +115,7 @@ function toExercise(entry: PdfIndexItem): Exercise {
   const normalized = normalizeExerciseCode(entry.code);
   const detail = detailByCode.get(normalized);
   const title = detail?.title ?? cleanPdfTitle(entry.title) ?? `Exercice ${normalized}`;
-  const image = resolveExerciseImage(normalized, entry.series);
+  const image = resolveExerciseImage(normalized);
 
   const exercise: Exercise = {
     id: normalized,

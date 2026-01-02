@@ -19,11 +19,12 @@ const levelStyles: Record<string, string> = {
 
 type ExerciseDetailProps = {
   exercise: ExerciseWithSession;
+  heroSrc?: string | null;
 };
 
-export const ExerciseDetail = ({ exercise }: ExerciseDetailProps) => {
+export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
-  const [imageSrc, setImageSrc] = useState(exercise.image);
+  const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image);
   const favorite = isFavorite(exercise.code);
   const isSvg = imageSrc.toLowerCase().endsWith(".svg");
   const levelClass = levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700";

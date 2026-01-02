@@ -1,8 +1,7 @@
-import fs from "fs";
-import path from "path";
 import { getExercise } from "@/lib/exercise-data";
 import { cleanPdfTitle, getPdfItem, getPdfSeries, pdfHasCode } from "@/data/pdfIndex";
 import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
+import { getExerciseHeroSrc } from "@/lib/exerciseAssets";
 
 export type ExerciseCatalogStatus = "ready" | "draft" | "ghost";
 
@@ -16,8 +15,6 @@ export type SeriesCard = {
   series: string;
 };
 
-const PUBLIC_DIR = path.join(process.cwd(), "public");
-const IMAGE_EXTS = [".webp", ".avif", ".jpg", ".jpeg", ".png", ".svg"];
 const IMAGE_CACHE = new Map<string, string | null>();
 
 function resolveExerciseImage(code: string): string | null {
@@ -25,25 +22,9 @@ function resolveExerciseImage(code: string): string | null {
   if (IMAGE_CACHE.has(normalized)) {
     return IMAGE_CACHE.get(normalized) ?? null;
   }
-  if (!isValidExerciseCode(normalized)) {
-    IMAGE_CACHE.set(normalized, null);
-    return null;
-  }
-
-  const series = normalized.split("-")[0];
-  const base = path.join(PUBLIC_DIR, "exercises", series, normalized);
-
-  for (const ext of IMAGE_EXTS) {
-    const abs = `${base}${ext}`;
-    if (fs.existsSync(abs)) {
-      const rel = `/exercises/${series}/${normalized}${ext}`;
-      IMAGE_CACHE.set(normalized, rel);
-      return rel;
-    }
-  }
-
-  IMAGE_CACHE.set(normalized, null);
-  return null;
+  const value = getExerciseHeroSrc(normalized);
+  IMAGE_CACHE.set(normalized, value);
+  return value;
 }
 
 export function getExerciseStatus(code: string): ExerciseCatalogStatus {
@@ -68,7 +49,7 @@ export function getCatalogItem(code: string): SeriesCard | null {
     title: title || normalized,
     level: detail?.level,
     status,
-    href: status === "ready" ? `/exercises/detail/${normalized}` : undefined,
+    href: `/exercises/detail/${normalized}`,
     image,
     series,
   };
@@ -88,7 +69,7 @@ export function getSeriesCards(series: string): SeriesCard[] {
       title: title || code,
       level: detail?.level,
       status,
-      href: status === "ready" ? `/exercises/detail/${code}` : undefined,
+      href: `/exercises/detail/${code}`,
       image,
       series: item.series,
     };
