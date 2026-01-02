@@ -7,6 +7,7 @@ import { getExercise } from "@/lib/exercise-data";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
 import { pdfHasCode } from "@/data/pdfIndex";
 import { getCatalogItem } from "@/lib/exercisesCatalog";
+import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
 
 export default async function ExercisePage({
   params,
@@ -25,19 +26,20 @@ export default async function ExercisePage({
 
   const exercise = getExercise(normalized);
   const catalogItem = getCatalogItem(normalized);
+  const heroSrc = getExerciseHeroSrcOrFallback(normalized);
 
   if (!exercise) {
     return (
       <InProgressExercise
         code={normalized}
         title={catalogItem?.title ?? normalized}
-        image={catalogItem?.image ?? undefined}
+        image={heroSrc}
         sessionId={catalogItem?.series}
       />
     );
   }
 
-  return <ExerciseDetail exercise={exercise} />;
+  return <ExerciseDetail exercise={exercise} heroSrc={heroSrc} />;
 }
 
 function InProgressExercise({
