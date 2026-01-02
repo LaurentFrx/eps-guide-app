@@ -1,19 +1,12 @@
 import { GlassCard } from "@/components/GlassCard";
 import ReleaseCard from "@/components/ReleaseCard";
+import { docs, DOCS_OWNER, DOCS_REPO } from "@/lib/docsManifest";
 import { fetchLatestRelease, findAsset, listAssetNames } from "@/lib/github-releases";
 
 export const revalidate = 60;
 
-const docs = [
-  { id: "eps-1", title: "EPS 1", description: "Fiche d'exercices EPS 1 au format Word.", assetName: "eps-1.docx" },
-  { id: "eps-2", title: "EPS 2", description: "Fiche d'exercices EPS 2 au format Word.", assetName: "eps-2.docx" },
-];
-
-const OWNER = "LaurentFrx";
-const REPO = "eps-guide-app";
-
 export default async function DocsPage() {
-  const fetchResult = await fetchLatestRelease(OWNER, REPO);
+  const fetchResult = await fetchLatestRelease(DOCS_OWNER, DOCS_REPO);
 
   const docsWithInfo = docs.map((d) => {
     const asset = fetchResult.release ? findAsset(fetchResult.release, d.assetName) : null;
@@ -22,7 +15,9 @@ export default async function DocsPage() {
       available: Boolean(asset),
       downloadUrl: asset ? asset.browser_download_url : null,
       assetSizeBytes: asset ? asset.size : null,
-      releaseUrl: fetchResult.release ? fetchResult.release.html_url : `https://github.com/${OWNER}/${REPO}/releases/latest`,
+      releaseUrl: fetchResult.release
+        ? fetchResult.release.html_url
+        : `https://github.com/${DOCS_OWNER}/${DOCS_REPO}/releases/latest`,
       status: fetchResult.status,
       error: fetchResult.error,
     };

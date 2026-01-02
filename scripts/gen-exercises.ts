@@ -111,7 +111,7 @@ async function main() {
     if (!ALLOWED_EXT.has(ext)) continue;
 
     // rel from public/exercises: ex "S2/S2-51.jpg" or "S2-51.jpg"
-    let rel = path.relative(PUBLIC_DIR, filePath);
+    const rel = path.relative(PUBLIC_DIR, filePath);
 
     const filename = path.basename(rel, ext); // "S2-51"
     const m = filename.match(/^(S[1-5])-(\d+)$/i);
