@@ -1,5 +1,4 @@
 import { sessions, exercises } from "@/lib/exercises";
-import { getExerciseStatus } from "@/lib/exerciseStatus";
 import ExercisesGrid from "@/components/ExercisesGrid";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -21,12 +20,9 @@ export default async function SessionPage(props: unknown) {
   const session = sessions.find((s) => normalizeSessionId(s.id) === sessionIdNorm);
   if (!session) return notFound();
 
-  const sessionExercises = exercises
-    .filter((e) => normalizeSessionId(e.sessionId) === sessionIdNorm)
-    .map((exercise) => ({
-      ...exercise,
-      status: getExerciseStatus({ id: exercise.id, image: exercise.image }),
-    }));
+  const sessionExercises = exercises.filter(
+    (e) => normalizeSessionId(e.sessionId) === sessionIdNorm
+  );
 
   return (
     <div className="p-6 space-y-6">
