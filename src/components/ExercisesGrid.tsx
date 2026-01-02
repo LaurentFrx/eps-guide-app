@@ -3,21 +3,24 @@ import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ImageOff } from "lucide-react";
-import type { Exercise } from "@/lib/exercises";
-import { normalizeExerciseCode } from "@/lib/exerciseCode";
+import type { SeriesCard } from "@/lib/exercisesCatalog";
 
-type ExerciseItem = Exercise & { status?: "ready" | "draft" };
-
-export default function ExercisesGrid({ exercises }: { exercises: ExerciseItem[] }) {
+export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }) {
   const [q, setQ] = useState("");
   const [levelFilter, setLevelFilter] = useState<string | null>(null);
 
-  const levels = useMemo(() => Array.from(new Set(exercises.map((e) => e.level))), [exercises]);
+  const levels = useMemo(
+    () => Array.from(new Set(exercises.map((e) => e.level).filter(Boolean))),
+    [exercises]
+  );
 
   const filtered = exercises.filter((e) => {
     if (levelFilter && e.level !== levelFilter) return false;
     if (!q) return true;
-    return e.title.toLowerCase().includes(q.toLowerCase());
+    const needle = q.toLowerCase();
+    return (
+      e.title.toLowerCase().includes(needle) || e.code.toLowerCase().includes(needle)
+    );
   });
 
   return (
@@ -27,7 +30,9 @@ export default function ExercisesGrid({ exercises }: { exercises: ExerciseItem[]
         <select value={levelFilter ?? ""} onChange={(ev) => setLevelFilter(ev.target.value || null)} className="rounded-md border px-3 py-2">
           <option value="">Tous niveaux</option>
           {levels.map((l) => (
-            <option key={l} value={l}>{l}</option>
+            <option key={l} value={l}>
+              {l}
+            </option>
           ))}
         </select>
       </div>
@@ -35,9 +40,8 @@ export default function ExercisesGrid({ exercises }: { exercises: ExerciseItem[]
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((ex) => (
           (() => {
-            const status = ex.status ?? "ready";
-            const isDraft = status === "draft";
-            const normalizedCode = normalizeExerciseCode(ex.id);
+            const status = ex.status ?? "draft";
+            const isDraft = status !== "ready";
             const Card = (
               <>
                 <div className="relative h-36 w-full">
@@ -64,17 +68,19 @@ export default function ExercisesGrid({ exercises }: { exercises: ExerciseItem[]
                 <div className="p-3">
                   <h3 className="text-sm font-medium">{ex.title}</h3>
                   <div className="mt-2 flex items-center justify-between">
-                    <span className="text-xs text-slate-500">{ex.level}</span>
-                    <span className="text-xs text-slate-400">{ex.sessionId}</span>
+                    <span className="text-xs text-slate-500">
+                      {ex.level ?? "Niveau a definir"}
+                    </span>
+                    <span className="text-xs text-slate-400">{ex.code}</span>
                   </div>
                 </div>
               </>
             );
 
-            if (isDraft) {
+            if (isDraft || !ex.href) {
               return (
                 <div
-                  key={ex.id}
+                  key={ex.code}
                   className="block rounded-2xl border border-dashed border-slate-200 bg-white/70 shadow-sm overflow-hidden opacity-80"
                   aria-disabled="true"
                 >
@@ -85,8 +91,8 @@ export default function ExercisesGrid({ exercises }: { exercises: ExerciseItem[]
 
             return (
               <Link
-                key={ex.id}
-                href={`/exercises/detail/${normalizedCode}`}
+                key={ex.code}
+                href={ex.href}
                 className="block rounded-2xl border bg-white shadow-sm overflow-hidden"
               >
                 {Card}

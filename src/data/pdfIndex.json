@@ -1,0 +1,352 @@
+[
+  {
+    "code": "S1-01",
+    "title": "PLANCHE FRONTALE SUR COUDES 12",
+    "series": "S1"
+  },
+  {
+    "code": "S1-02",
+    "title": "PLANCHE FRONTALE SUR MAINS 13",
+    "series": "S1"
+  },
+  {
+    "code": "S1-03",
+    "title": "PLANCHE LATÉRALE COUDE DROIT 14",
+    "series": "S1"
+  },
+  {
+    "code": "S1-04",
+    "title": "PLANCHE LATÉRALE COUDE GAUCHE 15",
+    "series": "S1"
+  },
+  {
+    "code": "S1-05",
+    "title": "PLANCHE HAUTE PIEDS SUR SWISS BALL",
+    "series": "S1"
+  },
+  {
+    "code": "S1-06",
+    "title": "HOLLOW BODY HOLD (Position 17",
+    "series": "S1"
+  },
+  {
+    "code": "S1-07",
+    "title": "SUPERMAN / EXTENSION DORSALE 18",
+    "series": "S1"
+  },
+  {
+    "code": "S1-08",
+    "title": "L-SIT AU SOL (Floor L-sit) 19",
+    "series": "S1"
+  },
+  {
+    "code": "S1-09",
+    "title": "L-SIT AUX BARRES PARALLÈLES 20",
+    "series": "S1"
+  },
+  {
+    "code": "S1-10",
+    "title": "DEAD BUG (INSECTE MORT) 21",
+    "series": "S1"
+  },
+  {
+    "code": "S2-01",
+    "title": "MOUNTAIN CLIMBERS (Grimpeurs) 23",
+    "series": "S2"
+  },
+  {
+    "code": "S2-02",
+    "title": "MOUNTAIN CLIMBERS AVEC MÉDECINE-BALL",
+    "series": "S2"
+  },
+  {
+    "code": "S2-03",
+    "title": "PLANCHE AVEC SHOULDER TAPS 25",
+    "series": "S2"
+  },
+  {
+    "code": "S2-04",
+    "title": "BIRD DOG (CHIEN D'ARRÊT) 26",
+    "series": "S2"
+  },
+  {
+    "code": "S2-05",
+    "title": "BEAR CRAWL (MARCHE DE L'OURS) 27",
+    "series": "S2"
+  },
+  {
+    "code": "S2-06",
+    "title": "CRUNCH CLASSIQUE (Basic Crunch) 28",
+    "series": "S2"
+  },
+  {
+    "code": "S2-07",
+    "title": "CRUNCH CROISÉ (Cross-Body 29",
+    "series": "S2"
+  },
+  {
+    "code": "S2-08",
+    "title": "BICYCLE CRUNCH (Pédalage 30",
+    "series": "S2"
+  },
+  {
+    "code": "S2-09",
+    "title": "RELEVÉ DE JAMBES AU SOL (Lying 31",
+    "series": "S2"
+  },
+  {
+    "code": "S2-10",
+    "title": "RELEVÉ DE JAMBES SUSPENDU BARRE FIXE",
+    "series": "S2"
+  },
+  {
+    "code": "S2-11",
+    "title": "V-UPS / V-SIT (Relevé en V) 33",
+    "series": "S2"
+  },
+  {
+    "code": "S2-12",
+    "title": "RUSSIAN TWISTS AVEC MÉDECINE-BALL",
+    "series": "S2"
+  },
+  {
+    "code": "S2-13",
+    "title": "PALLOF PRESS AVEC ÉLASTIQUE 35",
+    "series": "S2"
+  },
+  {
+    "code": "S2-14",
+    "title": "AB WHEEL ROLLOUT (ROULETTE 36",
+    "series": "S2"
+  },
+  {
+    "code": "S2-15",
+    "title": "PLANCHE LATÉRALE AVEC ROTATION 37",
+    "series": "S2"
+  },
+  {
+    "code": "S3-01",
+    "title": "POMPES CLASSIQUES 39",
+    "series": "S3"
+  },
+  {
+    "code": "S3-02",
+    "title": "POMPES DIAMANT (Diamond 40",
+    "series": "S3"
+  },
+  {
+    "code": "S3-03",
+    "title": "POMPES DÉCLINÉES (PIEDS SURÉLEVÉS)",
+    "series": "S3"
+  },
+  {
+    "code": "S3-04",
+    "title": "POMPES INCLINÉES (MAINS SURÉLEVÉES)",
+    "series": "S3"
+  },
+  {
+    "code": "S3-05",
+    "title": "POMPES AVEC ROTATION (T 43",
+    "series": "S3"
+  },
+  {
+    "code": "S3-06",
+    "title": "DIPS AUX BARRES PARALLÈLES 44",
+    "series": "S3"
+  },
+  {
+    "code": "S3-07",
+    "title": "TRACTIONS PRONATION (PULL-UPS) 45",
+    "series": "S3"
+  },
+  {
+    "code": "S3-08",
+    "title": "TRACTIONS SUPINATION (CHIN-UPS) 46",
+    "series": "S3"
+  },
+  {
+    "code": "S3-09",
+    "title": "TRACTIONS PRISE NEUTRE (Neutral 47",
+    "series": "S3"
+  },
+  {
+    "code": "S3-10",
+    "title": "DÉVELOPPÉ HALTÈRES COUCHÉ SUR BANC",
+    "series": "S3"
+  },
+  {
+    "code": "S3-11",
+    "title": "DÉVELOPPÉ HALTÈRES INCLINÉ 49",
+    "series": "S3"
+  },
+  {
+    "code": "S3-12",
+    "title": "ROWING HALTÈRE UN BRAS 50",
+    "series": "S3"
+  },
+  {
+    "code": "S3-13",
+    "title": "ROWING HALTÈRES PENCHÉ 51",
+    "series": "S3"
+  },
+  {
+    "code": "S3-14",
+    "title": "ÉLÉVATIONS LATÉRALES HALTÈRES 52",
+    "series": "S3"
+  },
+  {
+    "code": "S3-15",
+    "title": "ÉLÉVATIONS FRONTALES HALTÈRES 53",
+    "series": "S3"
+  },
+  {
+    "code": "S3-16",
+    "title": "CURL BICEPS HALTÈRES DEBOUT 54",
+    "series": "S3"
+  },
+  {
+    "code": "S3-17",
+    "title": "CURL BICEPS MARTEAU (HAMMER 55",
+    "series": "S3"
+  },
+  {
+    "code": "S3-18",
+    "title": "EXTENSION TRICEPS OVERHEAD HALTÈRE",
+    "series": "S3"
+  },
+  {
+    "code": "S3-19",
+    "title": "KICKBACK TRICEPS HALTÈRE 57",
+    "series": "S3"
+  },
+  {
+    "code": "S3-20",
+    "title": "FACE PULLS ÉLASTIQUE (Resistance 58",
+    "series": "S3"
+  },
+  {
+    "code": "S4-01",
+    "title": "SQUAT CLASSIQUE AU POIDS DU CORPS",
+    "series": "S4"
+  },
+  {
+    "code": "S4-02",
+    "title": "GOBLET SQUAT AVEC KETTLEBELL 61",
+    "series": "S4"
+  },
+  {
+    "code": "S4-03",
+    "title": "SQUAT BULGARE (SPLIT SQUAT ARRIÈRE)",
+    "series": "S4"
+  },
+  {
+    "code": "S4-04",
+    "title": "FENTES AVANT MARCHÉES (Walking 63",
+    "series": "S4"
+  },
+  {
+    "code": "S4-05",
+    "title": "FENTES ARRIÈRE (Reverse Lunges) 64",
+    "series": "S4"
+  },
+  {
+    "code": "S4-06",
+    "title": "FENTES LATÉRALES (Lateral Lunges) 65",
+    "series": "S4"
+  },
+  {
+    "code": "S4-07",
+    "title": "SOULEVÉ DE TERRE ROUMAIN HALTÈRES",
+    "series": "S4"
+  },
+  {
+    "code": "S4-08",
+    "title": "HIP THRUST AU SOL (Floor Hip 67",
+    "series": "S4"
+  },
+  {
+    "code": "S4-09",
+    "title": "HIP THRUST SUR BANC AVEC CHARGE",
+    "series": "S4"
+  },
+  {
+    "code": "S4-10",
+    "title": "GLUTE BRIDGE (PONT FESSIER) 69",
+    "series": "S4"
+  },
+  {
+    "code": "S4-11",
+    "title": "STEP-UPS SUR CAISSON (Box 70",
+    "series": "S4"
+  },
+  {
+    "code": "S4-12",
+    "title": "PISTOL SQUAT (SQUAT SUR UNE 71",
+    "series": "S4"
+  },
+  {
+    "code": "S4-13",
+    "title": "NORDIC CURLS À L'ESPALIER (Nordic 72",
+    "series": "S4"
+  },
+  {
+    "code": "S4-14",
+    "title": "MOLLETS DEBOUT (Standing Calf 73",
+    "series": "S4"
+  },
+  {
+    "code": "S4-15",
+    "title": "JUMP SQUATS (SQUAT SAUTÉ) 74",
+    "series": "S4"
+  },
+  {
+    "code": "S5-01",
+    "title": "BURPEES COMPLETS (Full Burpees) 76",
+    "series": "S5"
+  },
+  {
+    "code": "S5-02",
+    "title": "BURPEES SANS POMPE (DÉBUTANT) 77",
+    "series": "S5"
+  },
+  {
+    "code": "S5-03",
+    "title": "BURPEES SUR STEP (BOX JUMP 78",
+    "series": "S5"
+  },
+  {
+    "code": "S5-04",
+    "title": "THRUSTERS HALTÈRES (Dumbbell 79",
+    "series": "S5"
+  },
+  {
+    "code": "S5-05",
+    "title": "KETTLEBELL SWING (Balancement 80",
+    "series": "S5"
+  },
+  {
+    "code": "S5-06",
+    "title": "TURKISH GET-UP (RELEVÉ TURC) 81",
+    "series": "S5"
+  },
+  {
+    "code": "S5-07",
+    "title": "Soulevé de terre roumain haltères 82",
+    "series": "S5"
+  },
+  {
+    "code": "S5-08",
+    "title": "WALL BALLS (Lancers muraux) 83",
+    "series": "S5"
+  },
+  {
+    "code": "S5-09",
+    "title": "FARMERS WALK (MARCHE DU 84",
+    "series": "S5"
+  },
+  {
+    "code": "S5-10",
+    "title": "BOX JUMPS (SAUTS SUR CAISSON) 85",
+    "series": "S5"
+  }
+]

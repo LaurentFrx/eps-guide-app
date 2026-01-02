@@ -1,4 +1,5 @@
-import { sessions, exercises } from "@/lib/exercises";
+import { sessions } from "@/lib/exercises";
+import { getSeriesCards } from "@/lib/exercisesCatalog";
 import ExercisesGrid from "@/components/ExercisesGrid";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -20,9 +21,7 @@ export default async function SessionPage(props: unknown) {
   const session = sessions.find((s) => normalizeSessionId(s.id) === sessionIdNorm);
   if (!session) return notFound();
 
-  const sessionExercises = exercises.filter(
-    (e) => normalizeSessionId(e.sessionId) === sessionIdNorm
-  );
+  const sessionExercises = getSeriesCards(sessionIdNorm);
 
   return (
     <div className="p-6 space-y-6">
