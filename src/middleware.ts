@@ -1,16 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-
-const CODE_RE = /^\/exercises\/(S\d+-\d+)$/i;
+import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const match = pathname.match(CODE_RE);
-  if (match) {
-    const code = match[1].toUpperCase();
+  if (pathname.startsWith("/exercises/")) {
+    const rest = pathname.slice("/exercises/".length);
+    if (!rest.includes("/")) {
+      const normalized = normalizeExerciseCode(rest);
+      if (!isValidExerciseCode(normalized)) {
+        return NextResponse.next();
+      }
     const url = request.nextUrl.clone();
-    url.pathname = `/exercises/detail/${code}`;
-    return NextResponse.redirect(url, 308);
+      url.pathname = `/exercises/detail/${normalized}`;
+      return NextResponse.redirect(url, 308);
+    }
   }
   return NextResponse.next();
 }

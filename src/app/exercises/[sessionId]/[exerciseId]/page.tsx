@@ -1,4 +1,5 @@
-import { permanentRedirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
 
 export default async function ExerciseRedirect({
   params,
@@ -6,6 +7,9 @@ export default async function ExerciseRedirect({
   params: Promise<{ exerciseId: string }>;
 }) {
   const { exerciseId } = await params;
-  const normalized = exerciseId.trim().toUpperCase();
+  const normalized = normalizeExerciseCode(exerciseId);
+  if (!isValidExerciseCode(normalized)) {
+    notFound();
+  }
   permanentRedirect(`/exercises/detail/${normalized}`);
 }

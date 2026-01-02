@@ -1,4 +1,5 @@
 import data from "@/data/exercises.json";
+import { normalizeExerciseCode } from "@/lib/exerciseCode";
 
 export type Exercise = {
   code: string;
@@ -68,8 +69,10 @@ export const sessionOptions = sessions.map((session) => ({
 export const getSession = (num: number) =>
   sessions.find((session) => session.num === num) ?? null;
 
-export const getExercise = (code: string) =>
-  allExercises.find((exercise) => exercise.code === code.toUpperCase()) ?? null;
+export const getExercise = (code: string) => {
+  const normalized = normalizeExerciseCode(code);
+  return allExercises.find((exercise) => exercise.code === normalized) ?? null;
+};
 
 const normalizeText = (value: string) =>
   value

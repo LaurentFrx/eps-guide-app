@@ -8,6 +8,7 @@
     "gen:exercises": "tsx scripts/gen-exercises.ts",
     "gen:heroes": "tsx scripts/gen-heroes.ts",
     "gen:images": "tsx scripts/gen-images.ts",
+    "check:exercises": "tsx scripts/check-exercises.ts",
     "validate:assets": "tsx scripts/validate-assets.ts",
     "validate:images": "tsx scripts/validate-public-images.ts",
     "start": "next start",

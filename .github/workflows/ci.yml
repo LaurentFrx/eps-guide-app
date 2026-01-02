@@ -42,5 +42,7 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
+      - name: Exercises check
+        run: npm run check:exercises
       - name: Build
         run: npm run build

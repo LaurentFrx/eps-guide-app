@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from "path";
 import { exercisesGenerated } from "./exercises.generated";
+import type { ExerciseStatus } from "@/lib/exerciseStatus";
 
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
@@ -33,6 +34,7 @@ export type Exercise = {
   securitePoints: string[];
   progression: { regression: string; progression: string };
   dosage: string;
+  status?: ExerciseStatus;
 };
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
