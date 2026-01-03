@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GlassCard } from "@/components/GlassCard";
-import { GlossaryText } from "@/components/GlossaryText";
+import { MarkdownText } from "@/components/MarkdownText";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
 import type { ExerciseRecord } from "@/lib/exercises/schema";
@@ -54,8 +54,21 @@ export const ExerciseDetail = ({
     ? exercise.sources.join("\n")
     : "";
 
-  const canCopyKeyPoints = keyPoints.length > 0;
-  const canCopyDosage = Boolean(exercise.dosage);
+  const consignesMd =
+    exercise.consignesMd ?? (keyPoints.length ? keyPoints.join("\n") : "");
+  const dosageMd = exercise.dosageMd ?? exercise.dosage ?? "";
+  const securiteMd =
+    exercise.securiteMd ?? (safetyItems.length ? safetyItems.join("\n") : "");
+  const materielMd = exercise.materielMd ?? exercise.equipment ?? "";
+  const detailMd = exercise.detailMd ?? "";
+
+  const consignesText = consignesMd || "Aucune consigne.";
+  const dosageText = dosageMd || "Aucun";
+  const securiteText = securiteMd || "Aucun";
+  const materielText = materielMd || "Aucun";
+
+  const canCopyKeyPoints = Boolean(consignesText);
+  const canCopyDosage = Boolean(dosageText);
 
   const handleCopy = async (
     value: string,
@@ -171,49 +184,37 @@ export const ExerciseDetail = ({
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList>
           <TabsTrigger value="terrain">Terrain</TabsTrigger>
-          <TabsTrigger value="detail">Détail</TabsTrigger>
+          <TabsTrigger value="detail">Detail</TabsTrigger>
         </TabsList>
 
         <TabsContent value="terrain">
           <div className="grid gap-4">
-            {exercise.equipment ? (
-              <GlassCard>
-                <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Matériel
-                </p>
-                <p className="mt-2 text-base text-slate-900">
-                  {exercise.equipment}
-                </p>
-              </GlassCard>
-            ) : null}
+            <GlassCard>
+              <p className="text-xs uppercase tracking-widest text-slate-500">
+                Materiel
+              </p>
+              <MarkdownText
+                text={materielText}
+                className="mt-2 text-base text-slate-900"
+              />
+            </GlassCard>
 
             <GlassCard className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Consignes clés
+                  Consignes cles
                 </p>
                 <Button
                   type="button"
                   size="sm"
                   variant="secondary"
                   disabled={!canCopyKeyPoints}
-                  onClick={() => handleCopy(keyPoints.join("\n"), setCopiedKeyPoints)}
+                  onClick={() => handleCopy(consignesText, setCopiedKeyPoints)}
                 >
-                  {copiedKeyPoints ? "Copié" : "Copier consignes"}
+                  {copiedKeyPoints ? "Copie" : "Copier consignes"}
                 </Button>
               </div>
-              {keyPoints.length ? (
-                <ul className="space-y-2 text-sm text-slate-700">
-                  {keyPoints.map((point) => (
-                    <li key={point} className="flex items-start gap-2">
-                      <span className="mt-2 h-2 w-2 rounded-full bg-slate-400" />
-                      <GlossaryText text={point} className="space-y-1" />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-sm text-slate-500">À compléter.</p>
-              )}
+              <MarkdownText text={consignesText} />
             </GlassCard>
 
             <GlassCard className="space-y-3">
@@ -226,49 +227,43 @@ export const ExerciseDetail = ({
                   size="sm"
                   variant="secondary"
                   disabled={!canCopyDosage}
-                  onClick={() => handleCopy(exercise.dosage, setCopiedDosage)}
+                  onClick={() => handleCopy(dosageText, setCopiedDosage)}
                 >
-                  {copiedDosage ? "Copié" : "Copier dosage"}
+                  {copiedDosage ? "Copie" : "Copier dosage"}
                 </Button>
               </div>
-              <GlossaryText
-                text={exercise.dosage}
-                className="text-base text-slate-900"
-              />
+              <MarkdownText text={dosageText} className="text-base text-slate-900" />
             </GlassCard>
 
-            {safetyItems.length ? (
-              <GlassCard>
-                <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Sécurité
-                </p>
-                <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                  {safetyItems.map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="mt-2 h-2 w-2 rounded-full bg-amber-500" />
-                      <GlossaryText text={item} className="space-y-1" />
-                    </li>
-                  ))}
-                </ul>
-              </GlassCard>
-            ) : null}
+            <GlassCard>
+              <p className="text-xs uppercase tracking-widest text-slate-500">
+                Securite
+              </p>
+              <MarkdownText text={securiteText} className="mt-3" />
+            </GlassCard>
           </div>
         </TabsContent>
 
         <TabsContent value="detail">
-          <div className="space-y-3">
-            <DetailSection title="Anatomie" text={exercise.anatomy} />
-            <DetailSection title="Objectifs" text={exercise.objective} />
-            <DetailSection title="Biomécanique" text={exercise.biomechanics} />
-            <DetailSection title="Bénéfices" text={exercise.benefits} />
-            <DetailSection
-              title="Contre-indications"
-              text={exercise.contraindications}
-            />
-            <DetailSection title="Progressions" text={exercise.progress} />
-            <DetailSection title="Régressions" text={exercise.regress} />
-            <DetailSection title="Dosage" text={exercise.dosage} />
-            <DetailSection title="Sources de l'exercice" text={sourcesText} />
+          <div className="grid gap-4">
+            <GlassCard>
+              <p className="text-xs uppercase tracking-widest text-slate-500">
+                Detail
+              </p>
+              {detailMd ? (
+                <MarkdownText text={detailMd} className="mt-3" />
+              ) : (
+                <p className="mt-3 text-sm text-slate-500">Contenu indisponible.</p>
+              )}
+            </GlassCard>
+            {sourcesText ? (
+              <GlassCard>
+                <p className="text-xs uppercase tracking-widest text-slate-500">
+                  Sources de l'exercice
+                </p>
+                <MarkdownText text={sourcesText} className="mt-3" />
+              </GlassCard>
+            ) : null}
           </div>
         </TabsContent>
       </Tabs>
@@ -276,19 +271,5 @@ export const ExerciseDetail = ({
   );
 };
 
-type DetailSectionProps = {
-  title: string;
-  text?: string;
-};
 
-const DetailSection = ({ title, text }: DetailSectionProps) => {
-  if (!text) return null;
-  return (
-    <details className="rounded-2xl border border-slate-200 bg-white/70 p-4">
-      <summary className="cursor-pointer text-sm font-semibold text-slate-900">
-        {title}
-      </summary>
-      <GlossaryText text={text} className="mt-3" />
-    </details>
-  );
-};
+
