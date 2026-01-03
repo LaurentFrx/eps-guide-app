@@ -19,10 +19,21 @@ type GlossaryTextProps = {
   className?: string;
 };
 
-const WORD_CHAR_RE = /[A-Za-z0-9\u00c0-\u00ff]/;
+const WORD_CHAR_RE = /[A-Za-z0-9]/;
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const normalizeForMatch = (value: string) =>
+  value
+    .replace(/[œŒ]/g, "oe")
+    .replace(/[æÆ]/g, "ae")
+    .normalize("NFKD")
+    .replace(/\p{M}/gu, "")
+    .toLowerCase();
+
+const normalizeTermKey = (value: string) =>
+  normalizeForMatch(value).replace(/\s+/g, " ").trim();
 
 function isWordChar(value?: string): boolean {
   if (!value) return false;
@@ -33,13 +44,22 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
   const trimmed = text?.trim();
   const { regex, lookup } = useMemo(() => {
     const entries = Object.entries(glossary);
-    const terms = entries
-      .map(([term]) => term)
+    const normalizedEntries = entries.map(([term, entry]) => ({
+      key: normalizeTermKey(term),
+      entry: entry as GlossaryEntry,
+    }));
+    const terms = normalizedEntries
+      .map(({ key }) => key)
       .sort((a, b) => b.length - a.length)
-      .map(escapeRegExp);
-    const regexValue = new RegExp(terms.join("|"), "gi");
+      .map((key) =>
+        key
+          .split(/\s+/g)
+          .map((chunk) => escapeRegExp(chunk))
+          .join("\\s+")
+      );
+    const regexValue = terms.length ? new RegExp(terms.join("|"), "giu") : null;
     const lookupValue = new Map(
-      entries.map(([term, entry]) => [term.toLowerCase(), entry as GlossaryEntry])
+      normalizedEntries.map(({ key, entry }) => [key, entry])
     );
     return { regex: regexValue, lookup: lookupValue };
   }, []);
@@ -55,7 +75,7 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
     <div className={cn("space-y-3 text-sm text-slate-700", className)}>
       {paragraphs.map((paragraph, index) => (
         <p key={`${paragraph.slice(0, 16)}-${index}`} className="leading-relaxed">
-          {renderParagraph(paragraph, regex, lookup)}
+          {regex ? renderParagraph(paragraph, regex, lookup) : paragraph}
         </p>
       ))}
     </div>
@@ -68,32 +88,40 @@ function renderParagraph(
   lookup: Map<string, GlossaryEntry>
 ) {
   const nodes: ReactNode[] = [];
+  const { normalized, startMap, endMap } = normalizeWithMap(paragraph);
   let lastIndex = 0;
 
-  for (const match of paragraph.matchAll(regex)) {
+  for (const match of normalized.matchAll(regex)) {
     const matched = match[0];
     const index = match.index ?? 0;
-    const before = paragraph[index - 1];
-    const after = paragraph[index + matched.length];
+    const endIndex = index + matched.length;
+    const before = normalized[index - 1];
+    const after = normalized[endIndex];
 
     if (isWordChar(before) || isWordChar(after)) {
       continue;
     }
 
-    if (index > lastIndex) {
-      nodes.push(paragraph.slice(lastIndex, index));
+    const startOriginal = startMap[index];
+    const endOriginal = endMap[endIndex - 1];
+    if (startOriginal == null || endOriginal == null) {
+      continue;
     }
 
-    const entry = lookup.get(matched.toLowerCase());
+    if (startOriginal > lastIndex) {
+      nodes.push(paragraph.slice(lastIndex, startOriginal));
+    }
+
+    const entry = lookup.get(normalizeTermKey(matched));
     if (entry) {
       nodes.push(
-        <Popover key={`${matched}-${index}`}>
+        <Popover key={`${matched}-${startOriginal}`}>
           <PopoverTrigger asChild>
             <button
               type="button"
               className="inline-flex items-center gap-1 border-b border-dotted border-slate-400 text-slate-900 transition hover:text-slate-600"
             >
-              {matched}
+              {paragraph.slice(startOriginal, endOriginal)}
             </button>
           </PopoverTrigger>
           <PopoverContent
@@ -108,10 +136,10 @@ function renderParagraph(
         </Popover>
       );
     } else {
-      nodes.push(matched);
+      nodes.push(paragraph.slice(startOriginal, endOriginal));
     }
 
-    lastIndex = index + matched.length;
+    lastIndex = endOriginal;
   }
 
   if (lastIndex < paragraph.length) {
@@ -119,4 +147,33 @@ function renderParagraph(
   }
 
   return nodes.length ? nodes : paragraph;
+}
+
+function normalizeWithMap(value: string) {
+  let normalized = "";
+  const startMap: number[] = [];
+  const endMap: number[] = [];
+  let index = 0;
+
+  for (const char of value) {
+    const start = index;
+    const length = char.length;
+    index += length;
+
+    const decomposed = char
+      .replace(/[œŒ]/g, "oe")
+      .replace(/[æÆ]/g, "ae")
+      .normalize("NFKD")
+      .replace(/\p{M}/gu, "")
+      .toLowerCase();
+    if (!decomposed) continue;
+
+    for (const outChar of decomposed) {
+      normalized += outChar.toLowerCase();
+      startMap.push(start);
+      endMap.push(start + length);
+    }
+  }
+
+  return { normalized, startMap, endMap };
 }

@@ -7,229 +7,240 @@
     {
       "num": 1,
       "title": "Gainage & posture",
-      "subtitle": "Seance 1 \u2022 Gainage & posture",
+      "subtitle": "Seance 1 • Gainage & posture",
       "exercises": [
         {
           "code": "S1-01",
           "title": "Planche frontale sur coudes",
-          "level": "Debutant",
+          "level": "Débutant",
           "equipment": "Tapis",
-          "muscles": "Transverse, grand droit, obliques, \u00e9recteurs spinaux, delto\u00efdes, fessiers",
+          "muscles": "Transverse, grand droit, obliques, érecteurs du rachis (stabilisation), fessiers, deltoïdes / dentelé antérieur.",
           "key_points": [
-            "Anti-extension lombaire : maintenir le bas du dos plat, nombril rentr\u00e9",
-            "Alignement t\u00eate-\u00e9paules-bassin-chevilles",
-            "Contracter les fessiers pour stabiliser le bassin",
-            "\u00c9viter les cambrures lombaires ou les fesses trop hautes",
-            "Respiration fluide : pas d'apn\u00e9e",
-            "Engagement des omoplates et appui ferme des avant-bras"
+            "Coudes sous les épaules, avant-bras parallèles, nuque longue.",
+            "Rentrer le ventre (gainage) et contracter légèrement les fessiers.",
+            "Garder l’alignement tête–tronc–bassin–jambes (éviter de cambrer).",
+            "Pousser le sol avec les avant-bras (épaules “loin des oreilles”).",
+            "Respirer en continu sans bloquer."
           ],
           "image": "/exercises/S1/S1-01.webp",
-          "objective": "Renforcer l'endurance et la stabilit\u00e9 du tronc pour am\u00e9liorer la posture, pr\u00e9venir les lombalgies, et optimiser la transmission des forces entre le haut et le bas du corps.",
-          "anatomy": "Le transverse de l'abdomen stabilise la colonne ; le grand droit maintient le tronc ; les obliques contr\u00f4lent les rotations ; les \u00e9recteurs spinaux assurent l'\u00e9quilibre ; les fessiers maintiennent le bassin en r\u00e9troversion neutre. Cha\u00eene ant\u00e9rieure activ\u00e9e statiquement, cha\u00eene post\u00e9rieure en soutien isom\u00e9trique.",
+          "objective": "Renforcer l’endurance et la stabilité du tronc (ceinture abdominale) pour protéger la zone lombaire et améliorer le transfert de force.",
+          "anatomy": "Le transverse et les obliques stabilisent le bassin et le rachis; les érecteurs du rachis et le grand droit maintiennent l’alignement; les fessiers contribuent à la stabilité lombo‑pelvienne; les muscles scapulaires stabilisent les épaules.",
           "safety": [
-            "Adapter en cas de douleurs lombaires : genoux au sol ou planche inclin\u00e9e",
-            "\u00c9viter chez les personnes en hernie discale non stabilis\u00e9e",
-            "Surpoids ou seniors : privil\u00e9gier planche inclin\u00e9e ou fractionn\u00e9e",
-            "Ne jamais forcer si la posture s'effondre : qualit\u00e9 > dur\u00e9e"
+            "Adapter en cas de douleurs lombaires : réduire la durée, passer sur genoux, ou incliner l’appui.",
+            "Éviter en cas de hernie discale aiguë, douleur irradiée, ou pathologie non stabilisée (avis pro).",
+            "Surpoids / seniors : privilégier une planche inclinée (mains sur banc) ou sur genoux.",
+            "Ne pas forcer si la posture s’effondre (bassin qui tombe / hyperlordose)."
           ],
-          "regress": "Planche sur genoux (r\u00e9duit le levier) \u2022 Planche inclin\u00e9e (avant-bras sur banc ou mur) \u2022 Fractionner en s\u00e9ries de 10s avec r\u00e9cup\u00e9ration",
-          "progress": "Augmenter progressivement la dur\u00e9e \u2022 Lever un pied ou un bras (gainage asym\u00e9trique) \u2022 Appuis instables (coussin, Swiss Ball) \u2022 Ajout de charge l\u00e9g\u00e8re (gilet lest\u00e9)",
-          "dosage": "3 \u00e0 5 s\u00e9ries de 20 \u00e0 45 secondes. Pour travail qualitatif : 8 s\u00e9ries de 10s (m\u00e9thode McGill), 30s de repos entre chaque. Arr\u00eater si perte de posture."
+          "regress": "Planche sur genoux (réduit le levier) ou planche inclinée (mains sur banc/mur), avec durées plus courtes.",
+          "progress": "Augmenter progressivement la durée; ajouter une instabilité (avant-bras sur ballon) ou surélever les pieds.",
+          "dosage": "3 à 5 séries de 20 à 45 secondes, repos 30 à 60 secondes (objectif qualité avant quantité)."
         },
         {
           "code": "S1-02",
           "title": "Planche frontale sur mains",
-          "level": "Debutant",
+          "level": "Débutant",
           "equipment": "Tapis",
-          "muscles": "Transverse, grand droit, obliques, triceps, delto\u00efdes, pectoraux, dentel\u00e9 ant\u00e9rieur",
+          "muscles": "Transverse, grand droit, obliques, triceps, deltoïdes, stabilisateurs scapulaires, fessiers.",
           "key_points": [
-            "Mains sous les \u00e9paules, bras tendus mais non verrouill\u00e9s",
-            "Rentrez le ventre et contractez les fessiers",
-            "Pousser le sol avec les mains pour activer le dentel\u00e9",
-            "Garder l'alignement t\u00eate-tronc-jambes",
-            "Respiration continue : \u00e9viter l'apn\u00e9e",
-            "Arr\u00eater si le bassin s'affaisse ou remonte"
+            "Mains sous les épaules, doigts écartés, appui réparti sur toute la paume.",
+            "Bras tendus sans verrouiller (micro‑flexion), épaules stables.",
+            "Rentrer le ventre, serrer légèrement les fessiers, bassin neutre.",
+            "Corps en “planche” (éviter fesses trop hautes ou dos creusé).",
+            "Respiration contrôlée, regard au sol."
           ],
           "image": "/exercises/S1/S1-02.webp",
-          "objective": "Renforcer le tronc tout en sollicitant activement les bras et les \u00e9paules. Pr\u00e9parer aux pompes, am\u00e9liorer la stabilit\u00e9 scapulaire et posturale.",
-          "anatomy": "Engagement similaire \u00e0 la planche sur coudes mais avec plus de charge sur les bras. Triceps et delto\u00efdes verrouillent les coudes. Dentel\u00e9 ant\u00e9rieur stabilise les omoplates. Les poignets supportent une flexion prolong\u00e9e. L'ensemble du tronc travaille en anti-extension.",
+          "objective": "Développer le gainage en chaîne antérieure et la stabilité des épaules en appui, utile pour la posture et la prévention des lombalgies.",
+          "anatomy": "Le gainage sollicite principalement le transverse/obliques et le grand droit pour limiter les mouvements du bassin; les triceps/deltoïdes assurent l’appui; le dentelé antérieur et les fixateurs scapulaires stabilisent l’omoplate.",
           "safety": [
-            "Douleurs poignets : utiliser poign\u00e9es ou appui sur poings",
-            "\u00c9paule instable : privil\u00e9gier la version sur coudes",
-            "Faible force bras : version genoux au sol",
-            "Interdit si douleur lombaire ou perte d'alignement"
+            "Poignets sensibles : utiliser poignées, poings, ou appui sur avant-bras; limiter la durée.",
+            "Douleurs d’épaule : réduire la charge (planche inclinée) et renforcer la stabilité scapulaire.",
+            "Stop si apparition de douleur vive, engourdissement, ou perte d’alignement."
           ],
-          "regress": "Planche sur genoux \u2022 Planche inclin\u00e9e (mains sur banc ou mur)",
-          "progress": "Lever une main ou un pied (gainage asym\u00e9trique) \u2022 Marches lat\u00e9rales en planche \u2022 Appuis instables (BOSU, coussin mousse) \u2022 Transitions vers pompes dynamiques",
-          "dosage": "4 \u00e0 6 s\u00e9ries de 15 \u00e0 30 secondes. Travail en intervalles courts r\u00e9p\u00e9t\u00e9s pour renforcer bras/\u00e9paules. Qualit\u00e9 de l'alignement prioritaire sur la dur\u00e9e."
+          "regress": "Planche sur genoux, ou planche inclinée (mains sur banc/mur), ou appui sur avant-bras.",
+          "progress": "Planche déclinée (pieds surélevés), ajout de “shoulder taps”, ou variations instables (tapis mousse).",
+          "dosage": "3 à 4 séries de 20 à 45 secondes, repos 30 à 60 secondes."
         },
         {
           "code": "S1-03",
-          "title": "Bird Dog",
-          "level": "Debutant",
-          "equipment": "Aucun",
-          "muscles": "Lombaires, fessiers, epaules",
+          "title": "Planche latérale sur coude droit",
+          "level": "Débutant",
+          "equipment": "Tapis",
+          "muscles": "Obliques, carré des lombes (QL), transverse, moyen fessier (stabilité bassin), deltoïde / coiffe des rotateurs.",
           "key_points": [
-            "Stabilite",
-            "Extension opposee",
-            "Regard sol"
+            "Coude droit sous l’épaule, avant-bras au sol.",
+            "Corps aligné (tête–tronc–bassin–jambes), bassin “haut”.",
+            "Épaule basse et stable, poitrine ouverte.",
+            "Hanches empilées (éviter de tourner vers le sol).",
+            "Respirer sans bloquer."
           ],
           "image": "/images/S1-03.jpg",
-          "objective": "Renforcer lombaires et ameliorer la stabilite globale.",
-          "anatomy": "Lombaires, fessiers, epaules \u2022 stabilite globale",
+          "objective": "Renforcer les stabilisateurs latéraux du tronc (anti‑inclinaison) et la stabilité lombo‑pelvienne, utile pour l’équilibre et la prévention des douleurs lombaires.",
+          "anatomy": "Les obliques et le QL stabilisent le tronc en latéral; le moyen fessier stabilise le bassin; les stabilisateurs de l’épaule maintiennent l’appui en charge.",
           "safety": [
-            "Mouvement controle",
-            "Amplitude adaptee",
-            "Respiration reguliere"
+            "En cas de douleur d’épaule : réduire la charge (version sur genoux ou appui incliné).",
+            "Douleurs lombaires : vérifier l’alignement et réduire la durée.",
+            "Stop si douleur vive ou perte de contrôle du bassin."
           ],
-          "regress": "Simplifier la coordination du mouvement.",
-          "progress": "Augmenter la complexite ou la charge.",
-          "dosage": "3-4 x 8-12 reps \u2022 repos 60-90s \u2022 focus fluide"
+          "regress": "Planche latérale genoux fléchis au sol (levier réduit) ou appui sur banc.",
+          "progress": "Lever la jambe du dessus, ajouter une rotation contrôlée, ou maintenir plus longtemps.",
+          "dosage": "2 à 4 séries de 20 à 40 secondes (côté droit), repos 30 à 60 secondes."
         },
         {
           "code": "S1-04",
-          "title": "Pont fessier",
-          "level": "Debutant",
+          "title": "Planche latérale sur coude gauche",
+          "level": "Débutant",
           "equipment": "Tapis",
-          "muscles": "Fessiers, ischios",
+          "muscles": "Obliques, carré des lombes (QL), transverse, moyen fessier (stabilité bassin), deltoïde / coiffe des rotateurs.",
           "key_points": [
-            "Pousser talons",
-            "Bassin neutre",
-            "Controle"
+            "Coude gauche sous l’épaule, avant-bras au sol.",
+            "Corps aligné (tête–tronc–bassin–jambes), bassin “haut”.",
+            "Épaule basse et stable, poitrine ouverte.",
+            "Hanches empilées (éviter de tourner vers le sol).",
+            "Respirer sans bloquer."
           ],
           "image": "/images/S1-04.jpg",
-          "objective": "Renforcer fessiers et ameliorer la stabilite globale.",
-          "anatomy": "Fessiers, ischios \u2022 extension de hanche",
+          "objective": "Renforcer les stabilisateurs latéraux du tronc (anti‑inclinaison) et la stabilité lombo‑pelvienne, utile pour l’équilibre et la prévention des douleurs lombaires.",
+          "anatomy": "Les obliques et le QL stabilisent le tronc en latéral; le moyen fessier stabilise le bassin; les stabilisateurs de l’épaule maintiennent l’appui en charge.",
           "safety": [
-            "Charniere hanche dominante",
-            "Dos long et neutre",
-            "Charge proche du corps"
+            "En cas de douleur d’épaule : réduire la charge (version sur genoux ou appui incliné).",
+            "Douleurs lombaires : vérifier l’alignement et réduire la durée.",
+            "Stop si douleur vive ou perte de contrôle du bassin."
           ],
-          "regress": "Diminuer la charge et ralentir le tempo.",
-          "progress": "Ajouter une charge ou augmenter l'amplitude.",
-          "dosage": "3-5 x 8-10 reps \u2022 repos 60-90s \u2022 focus charniere"
+          "regress": "Planche latérale genoux fléchis au sol (levier réduit) ou appui sur banc.",
+          "progress": "Lever la jambe du dessus, ajouter une rotation contrôlée, ou maintenir plus longtemps.",
+          "dosage": "2 à 4 séries de 20 à 40 secondes (côté gauche), repos 30 à 60 secondes."
         },
         {
           "code": "S1-05",
-          "title": "Squat poids du corps",
-          "level": "Debutant",
-          "equipment": "Aucun",
-          "muscles": "Quadriceps, fessiers",
+          "title": "Planche haute pieds sur Swiss Ball",
+          "level": "Intermédiaire",
+          "equipment": "Swiss Ball (gros ballon), tapis",
+          "muscles": "Transverse, grand droit, obliques, stabilisateurs lombaires, deltoïdes, triceps, fessiers; forte sollicitation proprioceptive.",
           "key_points": [
-            "Genoux alignes",
-            "Poitrine ouverte",
-            "Pied stable"
+            "Mains sous les épaules, bras tendus, gainage engagé avant de monter sur le ballon.",
+            "Pieds sur le ballon (ou tibias selon niveau), écartés pour la stabilité.",
+            "Garder le bassin neutre (éviter de “casser” la taille).",
+            "Mouvement minimal du ballon : contrôler, respirer, rester gainé.",
+            "Descendre en sécurité (un pied puis l’autre) avant la fatigue."
           ],
           "image": "/images/S1-05.jpg",
-          "objective": "Renforcer quadriceps et ameliorer la stabilite globale.",
-          "anatomy": "Quadriceps, fessiers \u2022 extension du genou et stabilite",
+          "objective": "Augmenter la demande de gainage et de stabilité par l’instabilité du ballon, en renforçant le contrôle du tronc et des épaules.",
+          "anatomy": "L’instabilité augmente la co‑contraction des abdominaux (transverse/obliques) et des stabilisateurs lombaires; les épaules et la ceinture scapulaire travaillent fortement pour maintenir l’appui.",
           "safety": [
-            "Genoux alignes avec les orteils",
-            "Buste gaine",
-            "Amplitude progressive"
+            "Déconseillé aux débutants sans maîtrise de la planche classique.",
+            "Risque de chute : prévoir espace dégagé et ballon stable, progresser prudemment.",
+            "Poignets/épaules sensibles : limiter la durée, préférer version avant-bras ou tibias."
           ],
-          "regress": "Limiter l'amplitude ou utiliser un support.",
-          "progress": "Ajouter une charge ou tempo excentrique.",
-          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus controle"
+          "regress": "Tibias sur ballon (plus stable), ou un pied au sol; alternative : pieds sur support fixe (banc) avant le ballon.",
+          "progress": "Réduire l’écartement des pieds, ajouter des “rollouts” légers (amplitude courte) ou lever un pied (avancé).",
+          "dosage": "3 séries de 15 à 30 secondes, repos 45 à 90 secondes (qualité prioritaire)."
         }
       ]
     },
     {
       "num": 2,
       "title": "Poussee & tirage",
-      "subtitle": "Seance 2 \u2022 Poussee & tirage",
+      "subtitle": "Seance 2 • Poussee & tirage",
       "exercises": [
         {
           "code": "S2-01",
-          "title": "Pompes inclinees",
-          "level": "Intermediaire",
-          "equipment": "Banc",
-          "muscles": "Pectoraux, triceps",
+          "title": "Mountain Climbers",
+          "level": "Débutant",
+          "equipment": "Tapis",
+          "muscles": "Abdominaux (transverse/obliques), fléchisseurs de hanche, deltoïdes, triceps, quadriceps; composante cardio.",
           "key_points": [
-            "Gainage",
-            "Coudes 45deg",
-            "Controle"
+            "Position planche mains sous épaules, gainage serré.",
+            "Ramener un genou vers la poitrine sans arrondir le dos.",
+            "Bassin stable (éviter de “sauter” avec les hanches).",
+            "Rythme contrôlé, pieds qui glissent/alternent sans impact excessif.",
+            "Expirer sur l’effort, garder une amplitude maîtrisée."
           ],
           "image": "/images/S2-01.jpg",
-          "objective": "Renforcer pectoraux et ameliorer la stabilite globale.",
-          "anatomy": "Pectoraux, triceps \u2022 poussee horizontale",
+          "objective": "Travailler le gainage dynamique (anti‑rotation) et l’endurance cardio‑respiratoire via une alternance rapide des jambes en appui.",
+          "anatomy": "Le tronc stabilise le bassin pendant que les fléchisseurs de hanche amènent le genou; les stabilisateurs scapulaires maintiennent l’épaule en charge; effort métabolique élevé selon la vitesse.",
           "safety": [
-            "Epaules basses et stables",
-            "Coudes a 30-45 degres",
-            "Tronc engage"
+            "Poignets/épaules sensibles : réduire la durée, utiliser poignées, ou faire version inclinée.",
+            "Lombalgies : ralentir, réduire l’amplitude, vérifier l’alignement.",
+            "Surpoids/débutant : préférer version “marche” (sans sauts)."
           ],
-          "regress": "Surelever les mains ou reduire la charge.",
-          "progress": "Augmenter la charge ou passer au sol.",
-          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus alignement"
+          "regress": "Version lente en marche (un genou à la fois), amplitude réduite, ou mains sur banc (incliné).",
+          "progress": "Accélérer (intervalle), variante croisée (genou vers coude opposé), ou glisseurs/serviette pour augmenter le contrôle.",
+          "dosage": "3 à 5 séries de 20 à 40 secondes (ou 20 à 30 répétitions par jambe), repos 30 à 60 secondes."
         },
         {
           "code": "S2-02",
-          "title": "Rowing elastique",
-          "level": "Intermediaire",
-          "equipment": "Elastique",
-          "muscles": "Dos, biceps",
+          "title": "Mountain Climbers avec médecine-ball",
+          "level": "Intermédiaire",
+          "equipment": "Médecine-ball, tapis",
+          "muscles": "Abdominaux (transverse/obliques), épaules/bras (stabilisation), fléchisseurs de hanche; forte sollicitation du gainage par instabilité.",
           "key_points": [
-            "Epaules basses",
-            "Poitrine ouverte",
-            "Retour lent"
+            "Mains sur le médecine‑ball (prise stable), épaules au‑dessus du ballon.",
+            "Gainage fort : limiter les rotations du tronc.",
+            "Alterner les genoux vers l’avant avec contrôle (éviter l’élan).",
+            "Pieds légèrement écartés pour stabiliser.",
+            "Respiration régulière, vitesse adaptée."
           ],
           "image": "/images/S2-02.jpg",
-          "objective": "Renforcer dos et ameliorer la stabilite globale.",
-          "anatomy": "Dos, biceps \u2022 tirage horizontal",
+          "objective": "Augmenter la difficulté des mountain climbers grâce à l’instabilité du ballon, en renforçant la stabilité des épaules et du tronc.",
+          "anatomy": "L’appui instable augmente la demande sur les stabilisateurs scapulaires et les muscles du tronc (anti‑rotation). Les fléchisseurs de hanche restent moteurs du mouvement.",
           "safety": [
-            "Poitrine ouverte",
-            "Epaules loin des oreilles",
-            "Controle du retour"
+            "Instabilité d’épaule/poignet : commencer par planche statique sur ballon ou version inclinée.",
+            "Risque de glissement : utiliser ballon adapté et surface antidérapante.",
+            "Stop si douleur d’épaule ou perte de contrôle."
           ],
-          "regress": "Utiliser un elastique plus leger.",
-          "progress": "Ajouter une charge ou un tempo lent.",
-          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus scapulas"
+          "regress": "Planche statique mains sur médecine‑ball, ou mountain climbers mains au sol (classique) avec rythme lent.",
+          "progress": "Augmenter la vitesse, réduire l’écartement des pieds, ou utiliser support encore plus instable (avancé, à encadrer).",
+          "dosage": "3 à 4 séries de 15 à 30 secondes (ou 10 à 20 répétitions par jambe), repos 45 à 90 secondes."
         },
         {
           "code": "S2-03",
-          "title": "Fentes avant",
-          "level": "Intermediaire",
-          "equipment": "Aucun",
-          "muscles": "Quadriceps, fessiers",
+          "title": "Planche avec shoulder taps (toucher d’épaule)",
+          "level": "Intermédiaire",
+          "equipment": "Tapis",
+          "muscles": "Abdominaux (anti‑rotation), stabilisateurs scapulaires, deltoïdes, triceps, fessiers.",
           "key_points": [
-            "Genou stable",
-            "Buste droit",
-            "Pied ancre"
+            "Position planche haute (mains sous épaules), pieds un peu écartés.",
+            "Toucher une épaule avec la main opposée sans tourner le bassin.",
+            "Garder le nombril rentré et les fessiers engagés.",
+            "Mouvement lent et contrôlé, appui stable sur la main au sol.",
+            "Expirer lors du tap, regard au sol."
           ],
           "image": "/images/S2-03.jpg",
-          "objective": "Renforcer quadriceps et ameliorer la stabilite globale.",
-          "anatomy": "Quadriceps, fessiers \u2022 extension du genou et stabilite",
+          "objective": "Renforcer le gainage anti‑rotation et la stabilité de l’épaule en appui unilatéral alterné.",
+          "anatomy": "Le transverse/obliques s’opposent à la rotation du bassin; la ceinture scapulaire stabilise l’omoplate sur le thorax pendant l’appui unilatéral.",
           "safety": [
-            "Genoux alignes avec les orteils",
-            "Buste gaine",
-            "Amplitude progressive"
+            "Poignets sensibles : utiliser poignées ou faire version sur avant-bras.",
+            "Douleur d’épaule : réduire l’amplitude/vitesse, augmenter l’écartement des pieds, ou faire sur genoux.",
+            "Stop si douleur vive ou perte d’alignement."
           ],
-          "regress": "Limiter l'amplitude ou utiliser un support.",
-          "progress": "Ajouter une charge ou tempo excentrique.",
-          "dosage": "3-5 x 8-12 reps \u2022 repos 60-90s \u2022 focus controle"
+          "regress": "Version sur genoux, pieds très écartés, ou tap sur cuisse (amplitude réduite).",
+          "progress": "Pieds plus rapprochés, pause de 1–2 s en appui, ou tap + déplacement latéral (avancé).",
+          "dosage": "2 à 4 séries de 10 à 20 taps (total) ou 20 à 40 secondes, repos 45 à 90 secondes."
         },
         {
           "code": "S2-04",
-          "title": "Burpees controles",
-          "level": "Avance",
-          "equipment": "Aucun",
-          "muscles": "Corps entier",
+          "title": "Bird-Dog (gainage quadrupédie)",
+          "level": "Débutant",
+          "equipment": "Tapis",
+          "muscles": "Transverse, multifides, érecteurs du rachis (stabilité), fessiers, deltoïdes; coordination.",
           "key_points": [
-            "Rythme propre",
-            "Atterrissage souple",
-            "Respiration"
+            "À quatre pattes : mains sous épaules, genoux sous hanches.",
+            "Dos neutre, ventre rentré; hanches face au sol.",
+            "Tendre bras et jambe opposés sans cambrer.",
+            "Marquer une courte pause, puis revenir contrôlé.",
+            "Respiration continue; mouvement lent et précis."
           ],
           "image": "/images/S2-04.jpg",
-          "objective": "Renforcer corps entier et ameliorer la stabilite globale.",
-          "anatomy": "Corps entier \u2022 triple extension et reactivite",
+          "objective": "Améliorer la stabilité lombo‑pelvienne et la coordination croisée (contrôle du tronc en mouvement), exercice de base pour prévenir les douleurs lombaires.",
+          "anatomy": "Les multifides et le transverse stabilisent segmentairement le rachis; les fessiers contrôlent la hanche; l’exercice sollicite la chaîne postérieure en contrôle sans forte compression.",
           "safety": [
-            "Atterrissage souple",
-            "Genoux stables",
-            "Repos suffisant entre les series"
+            "Genoux douloureux : coussin sous les genoux.",
+            "Lombalgies : réduire l’amplitude, garder la colonne neutre, privilégier le contrôle.",
+            "Stop si douleur irradiée ou perte d’équilibre importante."
           ],
-          "regress": "Remplacer par un saut plus bas ou marche.",
-          "progress": "Augmenter la hauteur ou l'intensite.",
-          "dosage": "3-5 x 6-8 reps \u2022 repos 90-120s \u2022 focus explosivite"
+          "regress": "Lever uniquement le bras ou uniquement la jambe; amplitude réduite; maintien statique court.",
+          "progress": "Allonger le temps de maintien, ajouter une légère charge, ou variante coude‑genou (contrôle accru).",
+          "dosage": "3 séries de 5 à 10 répétitions par côté (maintien 1 à 3 s), repos 30 à 60 secondes."
         }
       ]
     }

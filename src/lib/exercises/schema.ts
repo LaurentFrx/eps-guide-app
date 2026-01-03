@@ -8,8 +8,13 @@ export type ExerciseRecord = {
   muscles: string;
   objective: string;
   anatomy: string;
+  biomechanics: string;
+  benefits: string;
+  contraindications: string;
   safety: string[];
   key_points: string[];
+  cues: string[];
+  sources: string[];
   regress: string;
   progress: string;
   dosage: string;
@@ -24,8 +29,13 @@ type ExerciseInput = Partial<{
   muscles: unknown;
   objective: unknown;
   anatomy: unknown;
+  biomechanics: unknown;
+  benefits: unknown;
+  contraindications: unknown;
   safety: unknown;
   key_points: unknown;
+  cues: unknown;
+  sources: unknown;
   regress: unknown;
   progress: unknown;
   dosage: unknown;
@@ -69,8 +79,13 @@ export function normalizeExerciseRecord(input: ExerciseInput): ExerciseRecord {
     muscles: toString(input.muscles),
     objective: toString(input.objective),
     anatomy: toString(input.anatomy),
+    biomechanics: toString(input.biomechanics),
+    benefits: toString(input.benefits),
+    contraindications: toString(input.contraindications),
     safety: toStringArray(input.safety),
     key_points: toStringArray(input.key_points),
+    cues: toStringArray(input.cues),
+    sources: toStringArray(input.sources),
     regress: toString(input.regress),
     progress: toString(input.progress),
     dosage: toString(input.dosage),
