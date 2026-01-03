@@ -167,7 +167,8 @@ export const ExerciseDetail = ({
                 src={imageSrc}
                 alt={exercise.title}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, 1200px"
+                priority
                 className="object-cover"
                 onError={() => setImageSrc("/images/placeholder.jpg")}
               />
