@@ -13,11 +13,15 @@ try {
   process.exit(1);
 }
 
-const sourceIcon = path.join(process.cwd(), 'assets', 'branding', 'app-icon-fp-1024.png');
+const sourceIconCandidates = [
+  path.join(process.cwd(), 'assets', 'branding', 'EPS-AppIcon-Master-1024.png'),
+  path.join(process.cwd(), 'assets', 'branding', 'EPS-AppIcon-Master-1024_RGB.png'),
+];
+const sourceIcon = sourceIconCandidates.find((candidate) => fs.existsSync(candidate));
 const publicDir = path.join(process.cwd(), 'public');
 
-if (!fs.existsSync(sourceIcon)) {
-  console.error(`Source icon not found: ${sourceIcon}`);
+if (!sourceIcon) {
+  console.error(`Source icon not found. Checked: ${sourceIconCandidates.join(", ")}`);
   process.exit(1);
 }
 
