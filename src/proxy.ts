@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   if (pathname.startsWith("/exercises/")) {
     const rest = pathname.slice("/exercises/".length);
