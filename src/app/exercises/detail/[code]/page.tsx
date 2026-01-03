@@ -2,7 +2,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
 import { getExerciseByCode } from "@/lib/exercises/index";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
-import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
+import { getHeroSrc } from "@/lib/exerciseAssets";
 
 export default async function ExercisePage({
   params,
@@ -24,8 +24,13 @@ export default async function ExercisePage({
     notFound();
   }
 
-  const heroSrc =
-    exercise.image ?? getExerciseHeroSrcOrFallback(normalized);
+  const heroAsset = getHeroSrc(normalized);
 
-  return <ExerciseDetail exercise={exercise} heroSrc={heroSrc} />;
+  return (
+    <ExerciseDetail
+      exercise={exercise}
+      heroSrc={heroAsset.src}
+      heroIsSvg={heroAsset.isSvg}
+    />
+  );
 }

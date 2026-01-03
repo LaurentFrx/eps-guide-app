@@ -12,6 +12,7 @@
     "check:exercises": "tsx scripts/check-exercises.ts",
     "validate:assets": "tsx scripts/validate-assets.ts",
     "validate:images": "tsx scripts/validate-public-images.ts",
+    "import:editorial": "tsx scripts/import-editorial.ts",
     "start": "next start",
     "lint": "eslint",
     "check:security": "node tools/check-no-ha-refs.js",

@@ -22,15 +22,20 @@ const levelStyles: Record<string, string> = {
 type ExerciseDetailProps = {
   exercise: ExerciseRecord;
   heroSrc?: string | null;
+  heroIsSvg?: boolean;
 };
 
-export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
+export const ExerciseDetail = ({
+  exercise,
+  heroSrc,
+  heroIsSvg,
+}: ExerciseDetailProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image ?? "");
   const [copiedKeyPoints, setCopiedKeyPoints] = useState(false);
   const [copiedDosage, setCopiedDosage] = useState(false);
   const favorite = isFavorite(exercise.code);
-  const isSvg = imageSrc.toLowerCase().endsWith(".svg");
+  const isSvg = heroIsSvg ?? imageSrc.toLowerCase().endsWith(".svg");
   const levelClass = levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700";
 
   const sessionId = exercise.code.split("-")[0] ?? "";
@@ -41,8 +46,15 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
       .map((item) => item.trim())
       .filter(Boolean);
   }, [exercise.muscles]);
+  const keyPoints = exercise.key_points.length
+    ? exercise.key_points
+    : exercise.cues ?? [];
+  const safetyItems = exercise.safety ?? [];
+  const sourcesText = exercise.sources.length
+    ? exercise.sources.join("\n")
+    : "";
 
-  const canCopyKeyPoints = exercise.key_points.length > 0;
+  const canCopyKeyPoints = keyPoints.length > 0;
   const canCopyDosage = Boolean(exercise.dosage);
 
   const handleCopy = async (
@@ -71,15 +83,24 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
         </div>
         <div className="relative h-64 w-full">
           {imageSrc ? (
-            <Image
-              src={imageSrc}
-              alt={exercise.title}
-              fill
-              sizes="100vw"
-              className="object-cover"
-              unoptimized={isSvg}
-              onError={() => setImageSrc("/images/placeholder.jpg")}
-            />
+            isSvg ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={imageSrc}
+                alt={exercise.title}
+                className="h-full w-full object-cover"
+                onError={() => setImageSrc("/images/placeholder.jpg")}
+              />
+            ) : (
+              <Image
+                src={imageSrc}
+                alt={exercise.title}
+                fill
+                sizes="100vw"
+                className="object-cover"
+                onError={() => setImageSrc("/images/placeholder.jpg")}
+              />
+            )
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-slate-200 text-slate-500">
               Image indisponible
@@ -141,6 +162,12 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
         </div>
       ) : null}
 
+      <div className="flex flex-wrap gap-2">
+        <Button asChild size="sm" variant="secondary">
+          <Link href="/guide">Voir le guide</Link>
+        </Button>
+      </div>
+
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList>
           <TabsTrigger value="terrain">Terrain</TabsTrigger>
@@ -149,15 +176,16 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
 
         <TabsContent value="terrain">
           <div className="grid gap-4">
-            <GlassCard>
-              <p className="text-xs uppercase tracking-widest text-slate-500">
-                Objectif
-              </p>
-              <GlossaryText
-                text={exercise.objective}
-                className="mt-2 text-base text-slate-900"
-              />
-            </GlassCard>
+            {exercise.equipment ? (
+              <GlassCard>
+                <p className="text-xs uppercase tracking-widest text-slate-500">
+                  Matériel
+                </p>
+                <p className="mt-2 text-base text-slate-900">
+                  {exercise.equipment}
+                </p>
+              </GlassCard>
+            ) : null}
 
             <GlassCard className="space-y-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -169,16 +197,14 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
                   size="sm"
                   variant="secondary"
                   disabled={!canCopyKeyPoints}
-                  onClick={() =>
-                    handleCopy(exercise.key_points.join("\n"), setCopiedKeyPoints)
-                  }
+                  onClick={() => handleCopy(keyPoints.join("\n"), setCopiedKeyPoints)}
                 >
-                  {copiedKeyPoints ? "Copie" : "Copier consignes"}
+                  {copiedKeyPoints ? "Copié" : "Copier consignes"}
                 </Button>
               </div>
-              {exercise.key_points.length ? (
+              {keyPoints.length ? (
                 <ul className="space-y-2 text-sm text-slate-700">
-                  {exercise.key_points.map((point) => (
+                  {keyPoints.map((point) => (
                     <li key={point} className="flex items-start gap-2">
                       <span className="mt-2 h-2 w-2 rounded-full bg-slate-400" />
                       <GlossaryText text={point} className="space-y-1" />
@@ -202,7 +228,7 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
                   disabled={!canCopyDosage}
                   onClick={() => handleCopy(exercise.dosage, setCopiedDosage)}
                 >
-                  {copiedDosage ? "Copie" : "Copier dosage"}
+                  {copiedDosage ? "Copié" : "Copier dosage"}
                 </Button>
               </div>
               <GlossaryText
@@ -211,13 +237,13 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
               />
             </GlassCard>
 
-            {exercise.safety.length ? (
+            {safetyItems.length ? (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-slate-500">
                   Sécurité
                 </p>
                 <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                  {exercise.safety.map((item) => (
+                  {safetyItems.map((item) => (
                     <li key={item} className="flex items-start gap-2">
                       <span className="mt-2 h-2 w-2 rounded-full bg-amber-500" />
                       <GlossaryText text={item} className="space-y-1" />
@@ -233,11 +259,16 @@ export const ExerciseDetail = ({ exercise, heroSrc }: ExerciseDetailProps) => {
           <div className="space-y-3">
             <DetailSection title="Anatomie" text={exercise.anatomy} />
             <DetailSection title="Objectifs" text={exercise.objective} />
-            <DetailListSection title="Consignes" items={exercise.key_points} />
+            <DetailSection title="Biomécanique" text={exercise.biomechanics} />
+            <DetailSection title="Bénéfices" text={exercise.benefits} />
+            <DetailSection
+              title="Contre-indications"
+              text={exercise.contraindications}
+            />
             <DetailSection title="Progressions" text={exercise.progress} />
             <DetailSection title="Régressions" text={exercise.regress} />
-            <DetailListSection title="Sécurité" items={exercise.safety} />
             <DetailSection title="Dosage" text={exercise.dosage} />
+            <DetailSection title="Sources de l'exercice" text={sourcesText} />
           </div>
         </TabsContent>
       </Tabs>
@@ -258,30 +289,6 @@ const DetailSection = ({ title, text }: DetailSectionProps) => {
         {title}
       </summary>
       <GlossaryText text={text} className="mt-3" />
-    </details>
-  );
-};
-
-type DetailListSectionProps = {
-  title: string;
-  items?: string[];
-};
-
-const DetailListSection = ({ title, items }: DetailListSectionProps) => {
-  if (!items || items.length === 0) return null;
-  return (
-    <details className="rounded-2xl border border-slate-200 bg-white/70 p-4">
-      <summary className="cursor-pointer text-sm font-semibold text-slate-900">
-        {title}
-      </summary>
-      <ul className="mt-3 space-y-2 text-sm text-slate-700">
-        {items.map((item) => (
-          <li key={item} className="flex items-start gap-2">
-            <span className="mt-2 h-2 w-2 rounded-full bg-slate-400" />
-            <GlossaryText text={item} className="space-y-1" />
-          </li>
-        ))}
-      </ul>
     </details>
   );
 };
