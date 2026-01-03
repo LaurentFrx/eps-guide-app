@@ -8,9 +8,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GlassCard } from "@/components/GlassCard";
-import { MarkdownText } from "@/components/MarkdownText";
+import { EditorialCard } from "@/components/EditorialCard";
+import { DetailSections } from "@/components/DetailSections";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
+import {
+  isPlaceholderText,
+  splitByInlineLabels,
+  type LabelSpec,
+} from "@/lib/editorial/uiParse";
 import type { ExerciseRecord } from "@/lib/exercises/schema";
 
 const levelStyles: Record<string, string> = {
@@ -18,6 +24,60 @@ const levelStyles: Record<string, string> = {
   Intermediaire: "bg-sky-100 text-sky-800",
   Avance: "bg-rose-100 text-rose-800",
 };
+
+const DETAIL_LABEL_SPECS: LabelSpec[] = [
+  {
+    key: "description",
+    title: "Description anatomique",
+    labels: ["Description anatomique", "Description"],
+  },
+  {
+    key: "objectifs",
+    title: "Objectifs fonctionnels",
+    labels: ["Objectifs fonctionnels", "Objectifs"],
+  },
+  {
+    key: "justif",
+    title: "Justifications biomecaniques",
+    labels: ["Justifications biomecaniques", "Justifications"],
+  },
+  {
+    key: "benefices",
+    title: "Benefices averes",
+    labels: ["Benefices averes", "Benefices"],
+  },
+  {
+    key: "contreind",
+    title: "Contre-indications / adaptations",
+    labels: [
+      "Contre-indications / adaptations",
+      "Contre-indications",
+      "Contre indications",
+      "Adaptations",
+    ],
+  },
+  {
+    key: "progReg",
+    title: "Progressions / regressions",
+    labels: [
+      "Progressions / regressions",
+      "Progressions/Regressions",
+      "Progression",
+      "Regression",
+      "Regressions",
+    ],
+  },
+  {
+    key: "consignes",
+    title: "Consignes pedagogiques",
+    labels: ["Consignes pedagogiques", "Consignes"],
+  },
+  {
+    key: "dosage",
+    title: "Dosage recommande",
+    labels: ["Dosage recommande", "Dosage"],
+  },
+];
 
 type ExerciseDetailProps = {
   exercise: ExerciseRecord;
@@ -32,8 +92,6 @@ export const ExerciseDetail = ({
 }: ExerciseDetailProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image ?? "");
-  const [copiedKeyPoints, setCopiedKeyPoints] = useState(false);
-  const [copiedDosage, setCopiedDosage] = useState(false);
   const favorite = isFavorite(exercise.code);
   const isSvg = heroIsSvg ?? imageSrc.toLowerCase().endsWith(".svg");
   const levelClass = levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700";
@@ -54,34 +112,34 @@ export const ExerciseDetail = ({
     ? exercise.sources.join("\n")
     : "";
 
-  const consignesMd =
-    exercise.consignesMd ?? (keyPoints.length ? keyPoints.join("\n") : "");
-  const dosageMd = exercise.dosageMd ?? exercise.dosage ?? "";
-  const securiteMd =
-    exercise.securiteMd ?? (safetyItems.length ? safetyItems.join("\n") : "");
-  const materielMd = exercise.materielMd ?? exercise.equipment ?? "";
-  const detailMd = exercise.detailMd ?? "";
-
-  const consignesText = consignesMd || "Aucune consigne.";
-  const dosageText = dosageMd || "Aucun";
-  const securiteText = securiteMd || "Aucun";
-  const materielText = materielMd || "Aucun";
-
-  const canCopyKeyPoints = Boolean(consignesText);
-  const canCopyDosage = Boolean(dosageText);
-
-  const handleCopy = async (
-    value: string,
-    setter: (next: boolean) => void
-  ) => {
-    try {
-      await navigator.clipboard.writeText(value);
-      setter(true);
-      window.setTimeout(() => setter(false), 1800);
-    } catch {
-      setter(false);
+  const resolveText = (...values: Array<string | undefined>) => {
+    for (const value of values) {
+      if (!value) continue;
+      if (isPlaceholderText(value)) continue;
+      if (!value.trim()) continue;
+      return value;
     }
+    return "";
   };
+
+  const consignesText =
+    resolveText(
+      exercise.consignesMd,
+      keyPoints.length ? keyPoints.join("\n") : ""
+    ) || "Aucune consigne.";
+  const dosageText = resolveText(exercise.dosageMd, exercise.dosage) || "Aucun";
+  const securiteText =
+    resolveText(
+      exercise.securiteMd,
+      safetyItems.length ? safetyItems.join("\n") : ""
+    ) || "Aucun";
+  const materielText =
+    resolveText(exercise.materielMd, exercise.equipment) || "Aucun";
+  const detailSource = resolveText(exercise.detailMd, exercise.fullMdRaw);
+  const detailSections = useMemo(
+    () => splitByInlineLabels(detailSource, DETAIL_LABEL_SPECS),
+    [detailSource]
+  );
 
   return (
     <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
@@ -189,79 +247,54 @@ export const ExerciseDetail = ({
 
         <TabsContent value="terrain">
           <div className="grid gap-4">
-            <GlassCard>
-              <p className="text-xs uppercase tracking-widest text-slate-500">
-                Materiel
-              </p>
-              <MarkdownText
-                text={materielText}
-                className="mt-2 text-base text-slate-900"
-              />
-            </GlassCard>
-
-            <GlassCard className="space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Consignes cles
-                </p>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="secondary"
-                  disabled={!canCopyKeyPoints}
-                  onClick={() => handleCopy(consignesText, setCopiedKeyPoints)}
-                >
-                  {copiedKeyPoints ? "Copie" : "Copier consignes"}
-                </Button>
-              </div>
-              <MarkdownText text={consignesText} />
-            </GlassCard>
-
-            <GlassCard className="space-y-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Dosage
-                </p>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="secondary"
-                  disabled={!canCopyDosage}
-                  onClick={() => handleCopy(dosageText, setCopiedDosage)}
-                >
-                  {copiedDosage ? "Copie" : "Copier dosage"}
-                </Button>
-              </div>
-              <MarkdownText text={dosageText} className="text-base text-slate-900" />
-            </GlassCard>
-
-            <GlassCard>
-              <p className="text-xs uppercase tracking-widest text-slate-500">
-                Securite
-              </p>
-              <MarkdownText text={securiteText} className="mt-3" />
-            </GlassCard>
+            <EditorialCard
+              title="Materiel"
+              content={materielText}
+              copyLabel="Copier"
+            />
+            <EditorialCard
+              title="Consignes cles"
+              content={consignesText}
+              copyLabel="Copier consignes"
+              displayMode="smartList"
+            />
+            <EditorialCard
+              title="Dosage"
+              content={dosageText}
+              copyLabel="Copier dosage"
+              displayMode="smartList"
+            />
+            <EditorialCard
+              title="Securite"
+              content={securiteText}
+              copyLabel="Copier"
+              displayMode="smartList"
+            />
           </div>
         </TabsContent>
 
         <TabsContent value="detail">
           <div className="grid gap-4">
-            <GlassCard>
-              <p className="text-xs uppercase tracking-widest text-slate-500">
-                Detail
-              </p>
-              {detailMd ? (
-                <MarkdownText text={detailMd} className="mt-3" />
-              ) : (
-                <p className="mt-3 text-sm text-slate-500">Contenu indisponible.</p>
-              )}
-            </GlassCard>
+            {detailSections.length ? (
+              <DetailSections sections={detailSections} />
+            ) : (
+              <GlassCard>
+                <p className="text-xs uppercase tracking-widest text-slate-500">
+                  Detail
+                </p>
+                <p className="mt-3 text-sm text-slate-500">
+                  Aucun detail disponible.
+                </p>
+              </GlassCard>
+            )}
             {sourcesText ? (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Sources de l'exercice
+                  Sources de l&apos;exercice
                 </p>
-                <MarkdownText text={sourcesText} className="mt-3" />
+                <div className="mt-3 max-w-prose whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
+                  {sourcesText}
+                </div>
               </GlassCard>
             ) : null}
           </div>
