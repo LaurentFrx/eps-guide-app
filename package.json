@@ -13,6 +13,8 @@
     "validate:assets": "tsx scripts/validate-assets.ts",
     "validate:images": "tsx scripts/validate-public-images.ts",
     "import:editorial": "tsx scripts/import-editorial.ts",
+    "icons:generate": "node ./tools/generate-icons.js",
+    "icons:verify": "node -e \"require('fs').accessSync('./public/icons/icon-192.png'); require('fs').accessSync('./public/icons/icon-512.png')\"",
     "start": "next start",
     "lint": "eslint",
     "check:security": "node tools/check-no-ha-refs.js",

@@ -78,3 +78,12 @@ npm run images:optimize
 
 Les dérivés sont placés par défaut dans `public/images/_responsive/` (ignoré par git).
 Le script utilise `sharp` et est idempotent — il saute les dérivés déjà présents.
+
+## Icons
+
+Regenerer les favicons + icones PWA + apple-touch-icon depuis
+`assets/branding/EPS-AppIcon-Master-1024.png` (fallback `_RGB`) :
+
+```bash
+npm run icons:generate
+```
