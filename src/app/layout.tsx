@@ -40,16 +40,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const buildStampOffsetClass =
+    "bottom-[calc(env(safe-area-inset-bottom)+96px)]";
+  const contentBottomPaddingClass =
+    "pb-[calc(env(safe-area-inset-bottom)+140px)]";
+
   return (
     <html lang="fr">
       <body className={`${spaceGrotesk.variable} ${workSans.variable}`}>
         <Providers>
-          <main className="px-5 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-6">
+          <main className={`px-5 pt-6 ${contentBottomPaddingClass}`}>
             <DataWarning className="mb-6" />
             {children}
           </main>
+          <div
+            className={`fixed inset-x-0 ${buildStampOffsetClass} z-40 flex justify-center px-4 pointer-events-none`}
+          >
+            <div className="pointer-events-auto">
+              <BuildStamp />
+            </div>
+          </div>
           <BottomNav />
-          <BuildStamp />
         </Providers>
       </body>
     </html>
