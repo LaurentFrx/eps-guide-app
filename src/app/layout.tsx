@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Work_Sans } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
-import BuildStamp from "@/components/build-stamp";
 import { DataWarning } from "@/components/DataWarning";
 import { Providers } from "@/components/Providers";
 import "./globals.css";
@@ -40,26 +39,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const buildStampOffsetClass =
-    "bottom-[calc(env(safe-area-inset-bottom)+96px)]";
-  const contentBottomPaddingClass =
-    "pb-[calc(env(safe-area-inset-bottom)+140px)]";
-
   return (
     <html lang="fr">
       <body className={`${spaceGrotesk.variable} ${workSans.variable}`}>
         <Providers>
-          <main className={`px-5 pt-6 ${contentBottomPaddingClass}`}>
+          <main className="px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+120px)]">
             <DataWarning className="mb-6" />
             {children}
           </main>
-          <div
-            className={`fixed inset-x-0 ${buildStampOffsetClass} z-40 flex justify-center px-4 pointer-events-none`}
-          >
-            <div className="pointer-events-auto">
-              <BuildStamp />
-            </div>
-          </div>
           <BottomNav />
         </Providers>
       </body>
