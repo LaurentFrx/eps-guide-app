@@ -221,11 +221,12 @@ async function main() {
     .join(",\n");
 
   if (missingEditorial.size) {
-    console.warn(
-      `Skipped exercises without editorial blocks: ${Array.from(missingEditorial).join(
-        ", "
-      )}`
-    );
+    const missingList = Array.from(missingEditorial).sort();
+    const detail =
+      process.env.VERBOSE === "1"
+        ? `: ${missingList.join(", ")}`
+        : ` (${missingList.length})`;
+    console.warn(`Ignored non-PDF codes without editorial blocks${detail}`);
   }
 
   const body = `${header}export const exercisesGenerated: Exercise[] = [\n${items}\n];\n`;
