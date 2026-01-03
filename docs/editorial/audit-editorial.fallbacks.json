@@ -1,0 +1,290 @@
+[
+  {
+    "code": "S1-04",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-06",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-10",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-11",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-12",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-13",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-14",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S2-15",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-04",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-05",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-06",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-07",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-08",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-09",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-10",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-11",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-12",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-13",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-14",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-15",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-16",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-17",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-18",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-19",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S3-20",
+    "fields": [
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-05",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-06",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-07",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-08",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-09",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-10",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-11",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-12",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-13",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-14",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S4-15",
+    "fields": [
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S5-02",
+    "fields": [
+      "dosage"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S5-07",
+    "fields": [
+      "consignes",
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  },
+  {
+    "code": "S5-08",
+    "fields": [
+      "consignes",
+      "dosage",
+      "securite"
+    ],
+    "reason": "label absent"
+  }
+]

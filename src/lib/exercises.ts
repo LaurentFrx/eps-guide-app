@@ -6,6 +6,7 @@ import { allExercises, type ExerciseWithSession } from "@/lib/exercise-data";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseStatus } from "@/lib/exerciseStatus";
 import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
+import { editorialByCode } from "@/lib/editorial.generated";
 
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
@@ -32,6 +33,12 @@ export type Exercise = {
   progression: { regression: string; progression: string };
   dosage: string;
   status?: ExerciseStatus;
+  materielMd?: string;
+  consignesMd?: string;
+  dosageMd?: string;
+  securiteMd?: string;
+  detailMd?: string;
+  fullMdRaw?: string;
 };
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -116,6 +123,7 @@ function toExercise(entry: PdfIndexItem): Exercise {
   const detail = detailByCode.get(normalized);
   const title = detail?.title ?? cleanPdfTitle(entry.title) ?? `Exercice ${normalized}`;
   const image = resolveExerciseImage(normalized);
+  const editorial = editorialByCode[normalized];
 
   const exercise: Exercise = {
     id: normalized,
@@ -137,6 +145,12 @@ function toExercise(entry: PdfIndexItem): Exercise {
       progression: detail?.progress ?? PLACEHOLDER_TEXT,
     },
     dosage: detail?.dosage ?? PLACEHOLDER_TEXT,
+    materielMd: editorial?.materielMd,
+    consignesMd: editorial?.consignesMd,
+    dosageMd: editorial?.dosageMd,
+    securiteMd: editorial?.securiteMd,
+    detailMd: editorial?.detailMd,
+    fullMdRaw: editorial?.fullMdRaw,
   };
 
   exercise.status = detail ? "ready" : "draft";

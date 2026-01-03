@@ -19,6 +19,12 @@ export type ExerciseRecord = {
   progress: string;
   dosage: string;
   image?: string;
+  materielMd?: string;
+  consignesMd?: string;
+  dosageMd?: string;
+  securiteMd?: string;
+  detailMd?: string;
+  fullMdRaw?: string;
 };
 
 type ExerciseInput = Partial<{
@@ -40,10 +46,19 @@ type ExerciseInput = Partial<{
   progress: unknown;
   dosage: unknown;
   image: unknown;
+  materielMd: unknown;
+  consignesMd: unknown;
+  dosageMd: unknown;
+  securiteMd: unknown;
+  detailMd: unknown;
+  fullMdRaw: unknown;
 }>;
 
 const toString = (value: unknown): string =>
   typeof value === "string" ? value.trim() : "";
+
+const toRawString = (value: unknown): string =>
+  typeof value === "string" ? value : "";
 
 const toStringArray = (value: unknown): string[] => {
   if (Array.isArray(value)) {
@@ -90,5 +105,11 @@ export function normalizeExerciseRecord(input: ExerciseInput): ExerciseRecord {
     progress: toString(input.progress),
     dosage: toString(input.dosage),
     image: toString(input.image) || undefined,
+    materielMd: toRawString(input.materielMd) || undefined,
+    consignesMd: toRawString(input.consignesMd) || undefined,
+    dosageMd: toRawString(input.dosageMd) || undefined,
+    securiteMd: toRawString(input.securiteMd) || undefined,
+    detailMd: toRawString(input.detailMd) || undefined,
+    fullMdRaw: toRawString(input.fullMdRaw) || undefined,
   };
 }
