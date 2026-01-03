@@ -16,7 +16,7 @@ export const BottomNav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-5 left-1/2 z-40 w-[min(420px,92vw)] -translate-x-1/2">
+    <nav className="fixed bottom-5 left-1/2 z-40 w-[min(420px,92vw)] -translate-x-1/2 pb-[env(safe-area-inset-bottom)]">
       <div className="flex items-center justify-between gap-2 rounded-full border border-white/70 bg-white/70 px-4 py-2 shadow-lg shadow-slate-200/70 backdrop-blur-xl">
         {navItems.map((item) => {
           const isActive =
