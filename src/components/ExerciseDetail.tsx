@@ -241,7 +241,7 @@ export const ExerciseDetail = ({
       </div>
 
       <Tabs defaultValue="terrain" className="space-y-4">
-        <TabsList>
+        <TabsList className="gap-2">
           <TabsTrigger value="terrain">Terrain</TabsTrigger>
           <TabsTrigger value="detail">Détail</TabsTrigger>
         </TabsList>
