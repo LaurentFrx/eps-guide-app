@@ -16,6 +16,7 @@
     "import:editorial": "tsx scripts/import-editorial.ts",
     "icons:generate": "node ./tools/generate-icons.js",
     "icons:verify": "node -e \"require('fs').accessSync('./public/icons/icon-192.png'); require('fs').accessSync('./public/icons/icon-512.png')\"",
+    "icons:web": "tsx scripts/generate-web-icons.ts",
     "start": "next start",
     "lint": "eslint",
     "check:security": "node tools/check-no-ha-refs.js",
