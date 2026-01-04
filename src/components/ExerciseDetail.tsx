@@ -243,18 +243,18 @@ export const ExerciseDetail = ({
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList>
           <TabsTrigger value="terrain">Terrain</TabsTrigger>
-          <TabsTrigger value="detail">Detail</TabsTrigger>
+          <TabsTrigger value="detail">Détail</TabsTrigger>
         </TabsList>
 
         <TabsContent value="terrain">
           <div className="grid gap-4">
             <EditorialCard
-              title="Materiel"
+              title="Matériel"
               content={materielText}
               copyLabel="Copier"
             />
             <EditorialCard
-              title="Consignes cles"
+              title="Consignes clés"
               content={consignesText}
               copyLabel="Copier consignes"
               displayMode="smartList"
@@ -266,7 +266,7 @@ export const ExerciseDetail = ({
               displayMode="smartList"
             />
             <EditorialCard
-              title="Securite"
+              title="Sécurité"
               content={securiteText}
               copyLabel="Copier"
               displayMode="smartList"
@@ -281,10 +281,10 @@ export const ExerciseDetail = ({
             ) : (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-slate-500">
-                  Detail
+                  Détail
                 </p>
                 <p className="mt-3 text-sm text-slate-500">
-                  Aucun detail disponible.
+                  Aucun détail disponible.
                 </p>
               </GlassCard>
             )}

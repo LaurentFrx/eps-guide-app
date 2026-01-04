@@ -44,7 +44,7 @@ export type Exercise = {
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const IMAGE_EXTS = [".webp", ".avif", ".jpg", ".jpeg", ".png", ".svg"];
 const FALLBACK_IMAGE = "/exercises/fallback.svg";
-const PLACEHOLDER_TEXT = "Contenu a completer";
+const PLACEHOLDER_TEXT = "Contenu à compléter";
 
 function resolvePublicImagePath(preferred: string) {
   const normalized = preferred.replace(/^\/+/, "");
@@ -70,43 +70,46 @@ function resolveExerciseImage(code: string): string {
 const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
   {
     id: "S1",
-    title: "Pr‚paration g‚n‚rale",
-    subtitle: "S1 - Mobilit‚, gainage et maŒtrise du mouvement",
+    title: "Préparation générale",
+    subtitle: "S1 - Mobilité, gainage et maîtrise du mouvement",
     accent: "var(--s1)",
     heroImage: "/exercises/S1/hero.jpg",
     reperePedagogiques: [
       "Posture active",
-      "Respiration maŒtris‚e",
+      "Respiration maîtrisée",
       "Alignement segmentaire",
     ],
   },
   {
     id: "S2",
-    title: "Force et explosivit‚",
-    subtitle: "S2 - Travail de pouss‚e, tirage et saut",
+    title: "Force et explosivité",
+    subtitle: "S2 - Travail de poussée, tirage et saut",
     accent: "var(--s2)",
     heroImage: "/exercises/S2/hero.jpg",
-    reperePedagogiques: ["ChaŒne musculaire du membre sup‚rieur", "Appui podal"],
+    reperePedagogiques: [
+      "Chaîne musculaire du membre supérieur",
+      "Appui podal",
+    ],
   },
   {
     id: "S3",
-    title: "Endurance et enchaŒnements",
+    title: "Endurance et enchaînements",
     subtitle: "S3 - Cardio, circuit et rythme",
     accent: "var(--s3)",
     heroImage: "/exercises/S3/hero.jpg",
-    reperePedagogiques: ["Gestion de l'effort", "Rythme et r‚cup‚ration"],
+    reperePedagogiques: ["Gestion de l'effort", "Rythme et récupération"],
   },
   {
     id: "S4",
-    title: "Coordination et agilit‚",
-    subtitle: "S4 - Change of direction, ‚quilibre",
+    title: "Coordination et agilité",
+    subtitle: "S4 - Change of direction, équilibre",
     accent: "var(--s4)",
     heroImage: "/exercises/S4/hero.jpg",
-    reperePedagogiques: ["Contr“le sensoriel", "Changement d'appui"],
+    reperePedagogiques: ["Contrôle sensoriel", "Changement d'appui"],
   },
   {
     id: "S5",
-    title: "Performance avanc‚e",
+    title: "Performance avancée",
     subtitle: "S5 - Puissance et situations complexes",
     accent: "var(--s5)",
     heroImage: "/exercises/S5/hero.jpg",
@@ -130,7 +133,7 @@ function toExercise(entry: PdfIndexItem): Exercise {
     sessionId: entry.series as Session["id"],
     title,
     subtitleEn: undefined,
-    level: detail?.level ?? "A definir",
+    level: detail?.level ?? "À définir",
     image,
     objectif: detail?.objective ?? PLACEHOLDER_TEXT,
     materiel: detail?.equipment ?? PLACEHOLDER_TEXT,

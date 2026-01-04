@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: "%s · Guide EPS",
   },
   description:
-    "Fiches exercices EPS, recherche rapide, favoris et acces hors ligne.",
+    "Fiches exercices EPS, recherche rapide, favoris et accès hors ligne.",
   icons: {
     icon: [
       { rel: "icon", url: "/favicon-32.png", type: "image/png", sizes: "32x32" },

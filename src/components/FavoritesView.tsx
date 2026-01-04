@@ -25,10 +25,10 @@ export const FavoritesView = () => {
           Favoris
         </p>
         <h1 className="font-display text-3xl font-semibold text-slate-900">
-          Vos exercices preferes
+          Vos exercices préférés
         </h1>
         <p className="text-sm text-slate-600">
-          Retrouvez vos fiches sauvegardees pour un acces rapide.
+          Retrouvez vos fiches sauvegardées pour un accès rapide.
         </p>
       </div>
 

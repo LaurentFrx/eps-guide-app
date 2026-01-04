@@ -1,7 +1,7 @@
 {
   "name": "Guide EPS",
   "short_name": "Guide EPS",
-  "description": "Fiches exercices EPS, recherche rapide, favoris et acces hors ligne.",
+  "description": "Fiches exercices EPS, recherche rapide, favoris et accès hors ligne.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
