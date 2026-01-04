@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { GlassCard } from "@/components/GlassCard";
-import type { Session } from "@/lib/exercise-data";
+import { normalizeLevelLabel, splitEquipment, type Session } from "@/lib/exercise-data";
 
 export const SessionView = ({ session }: { session: Session }) => {
   const [query, setQuery] = useState("");
@@ -17,27 +17,39 @@ export const SessionView = ({ session }: { session: Session }) => {
   const [equipmentFilter, setEquipmentFilter] = useState("Tous");
 
   const levels = useMemo(
-    () => Array.from(new Set(session.exercises.map((ex) => ex.level))).sort(),
+    () =>
+      Array.from(
+        new Set(session.exercises.map((ex) => normalizeLevelLabel(ex.level)))
+      ).sort(),
     [session.exercises]
   );
   const equipmentOptions = useMemo(
     () =>
-      Array.from(new Set(session.exercises.map((ex) => ex.equipment))).sort(),
+      Array.from(
+        new Set(session.exercises.flatMap((ex) => splitEquipment(ex.equipment)))
+      ).sort(),
     [session.exercises]
   );
 
   const filtered = useMemo(() => {
     return session.exercises.filter((exercise) => {
-      if (levelFilter !== "Tous" && exercise.level !== levelFilter) {
+      if (
+        levelFilter !== "Tous" &&
+        normalizeLevelLabel(exercise.level) !== levelFilter
+      ) {
         return false;
       }
-      if (equipmentFilter !== "Tous" && exercise.equipment !== equipmentFilter) {
-        return false;
+      if (equipmentFilter !== "Tous") {
+        const tokens = splitEquipment(exercise.equipment);
+        if (!tokens.includes(equipmentFilter)) {
+          return false;
+        }
       }
       if (!query) {
         return true;
       }
-      const haystack = `${exercise.title} ${exercise.code} ${exercise.muscles} ${exercise.equipment}`
+      const equipmentText = splitEquipment(exercise.equipment).join(" ");
+      const haystack = `${exercise.title} ${exercise.code} ${exercise.muscles} ${equipmentText}`
         .toLowerCase();
       return haystack.includes(query.toLowerCase());
     });

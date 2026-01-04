@@ -108,12 +108,61 @@ export const allExercises: ExerciseWithSession[] = sessions.flatMap((session) =>
   }))
 );
 
+const normalizeText = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
+
+export const normalizeLevelLabel = (value: string): string => {
+  const normalized = normalizeText(value);
+  if (!normalized) return value.trim();
+  if (normalized === "debutant") return "Débutant";
+  if (normalized === "intermediaire") return "Intermédiaire";
+  if (normalized === "avance") return "Avancé";
+  return value.trim();
+};
+
+export const normalizeEquipmentLabel = (value: string): string => {
+  const trimmed = value.trim();
+  const normalized = normalizeText(trimmed)
+    .replace(/[()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized || normalized === "aucun" || normalized === "sans materiel") {
+    return "Aucun";
+  }
+  if (
+    normalized === "medecine ball" ||
+    normalized === "medecine-ball" ||
+    normalized === "medicine ball"
+  ) {
+    return "Médecine-ball";
+  }
+  if (normalized === "tapis") {
+    return "Tapis";
+  }
+  if (normalized.startsWith("swiss ball")) {
+    return "Swiss Ball (gros ballon)";
+  }
+  return trimmed;
+};
+
+export const splitEquipment = (value: string): string[] => {
+  const tokens = value
+    .split(",")
+    .map((item) => normalizeEquipmentLabel(item))
+    .filter(Boolean);
+  return Array.from(new Set(tokens));
+};
+
 export const levels = Array.from(
-  new Set(allExercises.map((exercise) => exercise.level))
+  new Set(allExercises.map((exercise) => normalizeLevelLabel(exercise.level)))
 ).sort();
 
 export const equipmentOptions = Array.from(
-  new Set(allExercises.map((exercise) => exercise.equipment))
+  new Set(allExercises.flatMap((exercise) => splitEquipment(exercise.equipment)))
 ).sort();
 
 export const sessionOptions = sessions.map((session) => ({
@@ -129,12 +178,6 @@ export const getExercise = (code: string) => {
   return allExercises.find((exercise) => exercise.code === normalized) ?? null;
 };
 
-const normalizeText = (value: string) =>
-  value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
-
 export const filterExercises = (options: {
   query?: string;
   level?: string;
@@ -142,19 +185,26 @@ export const filterExercises = (options: {
   sessionNum?: number;
 }) => {
   const query = options.query ? normalizeText(options.query) : "";
-  const level = options.level && options.level !== "Tous" ? options.level : "";
+  const level =
+    options.level && options.level !== "Tous"
+      ? normalizeLevelLabel(options.level)
+      : "";
   const equipment =
     options.equipment && options.equipment !== "Tous"
-      ? options.equipment
+      ? normalizeEquipmentLabel(options.equipment)
       : "";
   const sessionNum = options.sessionNum ?? null;
 
   return allExercises.filter((exercise) => {
-    if (level && exercise.level !== level) {
+    const exerciseLevel = normalizeLevelLabel(exercise.level);
+    if (level && exerciseLevel !== level) {
       return false;
     }
-    if (equipment && exercise.equipment !== equipment) {
-      return false;
+    if (equipment) {
+      const tokens = splitEquipment(exercise.equipment);
+      if (!tokens.includes(equipment)) {
+        return false;
+      }
     }
     if (sessionNum && exercise.sessionNum !== sessionNum) {
       return false;
@@ -162,8 +212,9 @@ export const filterExercises = (options: {
     if (!query) {
       return true;
     }
+    const equipmentText = splitEquipment(exercise.equipment).join(" ");
     const haystack = normalizeText(
-      `${exercise.title} ${exercise.code} ${exercise.muscles} ${exercise.equipment}`
+      `${exercise.title} ${exercise.code} ${exercise.muscles} ${equipmentText}`
     );
     return haystack.includes(query);
   });
