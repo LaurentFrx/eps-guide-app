@@ -60,7 +60,7 @@ export function EditorialCard({
             </Button>
           ) : null}
           {!hasContent ? (
-            <Badge variant="secondary">Contenu a completer</Badge>
+            <Badge variant="secondary">Contenu à compléter</Badge>
           ) : null}
         </div>
       </div>

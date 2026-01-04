@@ -68,7 +68,7 @@ export function DetailSections({ sections }: DetailSectionsProps) {
         </div>
         <div className="flex items-center gap-2">
           <Button type="button" size="sm" variant="secondary" onClick={openAll}>
-            Tout deplier
+            Tout déplier
           </Button>
           <Button type="button" size="sm" variant="secondary" onClick={closeAll}>
             Tout replier

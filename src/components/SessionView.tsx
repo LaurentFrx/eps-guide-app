@@ -100,7 +100,7 @@ export const SessionView = ({ session }: { session: Session }) => {
           <Separator />
           <div className="space-y-2">
             <p className="text-xs uppercase tracking-widest text-slate-500">
-              Materiel
+              Matériel
             </p>
             <div className="flex flex-wrap gap-2">
               {["Tous", ...equipmentOptions].map((equipment) => (
@@ -134,7 +134,7 @@ export const SessionView = ({ session }: { session: Session }) => {
                 setQuery("");
               }}
             >
-              Reinitialiser
+              Réinitialiser
             </button>
           )}
         </div>

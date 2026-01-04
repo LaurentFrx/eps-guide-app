@@ -14,10 +14,10 @@ export default function HomePage() {
           Guide EPS
         </p>
         <h1 className="font-display text-3xl font-semibold text-slate-900">
-          Vos fiches d&apos;entrainement, partout.
+          Vos fiches d&apos;entraînement, partout.
         </h1>
         <p className="text-sm text-slate-600">
-          Recherchez, filtrez et sauvegardez vos exercices, meme hors ligne.
+          Recherchez, filtrez et sauvegardez vos exercices, même hors ligne.
         </p>
         <div className="flex flex-wrap items-center gap-2">
           <Badge className="border-0 bg-slate-100 text-slate-700">
