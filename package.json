@@ -18,7 +18,7 @@
     "validate:images": "tsx scripts/validate-public-images.ts",
     "import:editorial": "tsx scripts/import-editorial.ts",
     "icons:generate": "node ./tools/generate-icons.js",
-    "icons:verify": "node -e \"require('fs').accessSync('./public/icons/icon-192.png'); require('fs').accessSync('./public/icons/icon-512.png')\"",
+    "icons:verify": "node -e \"require('fs').accessSync('./public/icon-192.png'); require('fs').accessSync('./public/icon-512.png')\"",
     "icons:web": "tsx scripts/generate-web-icons.ts",
     "start": "next start",
     "lint": "eslint",
