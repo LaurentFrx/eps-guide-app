@@ -1,4 +1,4 @@
-import { getAllExercises } from "@/lib/exercises/index";
+import { PDF_INDEX } from "@/data/pdfIndex";
 import { getGuideData } from "@/lib/editorial";
 import GuideView from "./GuideView";
 
@@ -11,10 +11,9 @@ export default function GuidePage() {
     return acc;
   }, {});
 
-  for (const exercise of getAllExercises()) {
-    const sessionId = exercise.code.slice(0, 2).toUpperCase();
-    if (sessionId in counts) {
-      counts[sessionId] += 1;
+  for (const item of PDF_INDEX) {
+    if (item.series in counts) {
+      counts[item.series] += 1;
     }
   }
 
