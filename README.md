@@ -82,7 +82,9 @@ Le script utilise `sharp` et est idempotent — il saute les dérivés déjà pr
 ## Icons
 
 Regenerer les favicons + icones PWA + apple-touch-icon depuis
-`assets/branding/EPS-AppIcon-Master-1024.png` (fallback `_RGB`) :
+`assets/branding/EPS-AppIcon-Master-1024.png` (fallback `_RGB`).
+Si le master est absent, le generateur utilise `assets/branding/logo-eps.png`
+ou `assets/branding/icon-512.png` (qualite potentiellement inferieure).
 
 ```bash
 npm run icons:generate
