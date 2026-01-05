@@ -1,12 +1,5 @@
 [
   {
-    "code": "S1-04",
-    "fields": [
-      "securite"
-    ],
-    "reason": "label absent"
-  },
-  {
     "code": "S2-06",
     "fields": [
       "securite"
