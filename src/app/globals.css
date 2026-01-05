@@ -220,7 +220,7 @@
   background-image: url("/theme/eps-circuit.svg");
   background-repeat: repeat;
   background-size: 900px 900px;
-  opacity: 0.08;
+  opacity: 0.06;
   mix-blend-mode: screen;
   z-index: 0;
 }
@@ -268,7 +268,7 @@
   }
 
   .eps-app .ui-card::before {
-    opacity: 0.08;
+    opacity: 0.06;
   }
 }
 
