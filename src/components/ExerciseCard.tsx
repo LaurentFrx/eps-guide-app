@@ -12,8 +12,11 @@ import type { ExerciseWithSession } from "@/lib/exercise-data";
 
 const levelStyles: Record<string, string> = {
   Debutant: "bg-emerald-100 text-emerald-800",
+  "Débutant": "bg-emerald-100 text-emerald-800",
   Intermediaire: "bg-sky-100 text-sky-800",
+  "Intermédiaire": "bg-sky-100 text-sky-800",
   Avance: "bg-rose-100 text-rose-800",
+  "Avancé": "bg-rose-100 text-rose-800",
 };
 
 type ExerciseCardProps = {
