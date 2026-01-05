@@ -16,10 +16,16 @@ export type MasterEditorialEntry = {
 
 export type MasterEditorialByCode = Record<string, MasterEditorialEntry>;
 
+export type EditorialParseResult = {
+  entries: MasterEditorialByCode;
+  lines: string[];
+  codeLineMap: Map<string, number>;
+};
+
 const ROOT = process.cwd();
 const MASTER_PATH = path.join(ROOT, "docs", "editorial", "master.fr.md");
 const BLOCK_CODE_RE =
-  /^\s*(?:#+\s*)?(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gm;
+  /^\s*\d*\s*(?:#+\s*)?(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gm;
 
 const LABEL_MAP = new Map<string, keyof MasterEditorialEntry>([
   ["description", "description"],
@@ -101,14 +107,19 @@ const findLineIndex = (offsets: number[], index: number) => {
   return result;
 };
 
-const logCodeContext = (lines: string[], lineIndex: number, reason: string) => {
+const logCodeContext = (
+  lines: string[],
+  lineIndex: number,
+  reason: string,
+  fileLabel: string
+) => {
   const start = Math.max(0, lineIndex - 1);
   const end = Math.min(lines.length, lineIndex + 2);
   const snippet = lines
     .slice(start, end)
     .map((line, idx) => `${start + idx + 1}: ${line}`)
     .join("\n");
-  console.warn(`Master editorial parse warning (${reason})`);
+  console.warn(`${fileLabel}: parse warning (${reason})`);
   console.warn(snippet);
 };
 
@@ -151,8 +162,10 @@ const parseBlock = (block: string): MasterEditorialEntry => {
   return entry;
 };
 
-export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
-  const raw = await fs.readFile(MASTER_PATH, "utf8");
+export async function parseEditorialFile(
+  filePath: string
+): Promise<EditorialParseResult> {
+  const raw = await fs.readFile(filePath, "utf8");
   const lines = raw.split(/\r?\n/);
   const lineOffsets = buildLineOffsets(raw);
   const matches: Array<{ code: string; index: number }> = [];
@@ -161,11 +174,15 @@ export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
     matches.push({ code: match[1], index: match.index });
   }
 
-  if (!matches.length) return {};
+  if (!matches.length) {
+    return { entries: {}, lines, codeLineMap: new Map() };
+  }
 
   const blocks = new Map<string, string>();
   const duplicates: string[] = [];
   const invalidCodes: Array<{ code: string; lineIndex: number }> = [];
+  const codeLineMap = new Map<string, number>();
+  const fileLabel = path.basename(filePath);
 
   for (let i = 0; i < matches.length; i += 1) {
     const current = matches[i];
@@ -183,11 +200,12 @@ export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
       duplicates.push(code);
       continue;
     }
+    codeLineMap.set(code, findLineIndex(lineOffsets, current.index));
     blocks.set(code, raw.slice(start, end));
   }
 
   invalidCodes.forEach(({ code, lineIndex }) => {
-    logCodeContext(lines, lineIndex, `invalid code: ${code}`);
+    logCodeContext(lines, lineIndex, `invalid code: ${code}`, fileLabel);
   });
 
   if (duplicates.length) {
@@ -196,9 +214,9 @@ export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
         ?.index;
       if (matchIndex == null) return;
       const lineIndex = findLineIndex(lineOffsets, matchIndex);
-      logCodeContext(lines, lineIndex, `duplicate code: ${code}`);
+      logCodeContext(lines, lineIndex, `duplicate code: ${code}`, fileLabel);
     });
-    throw new Error(`Duplicate master editorial blocks: ${duplicates.join(", ")}`);
+    throw new Error(`Duplicate editorial blocks in ${fileLabel}: ${duplicates.join(", ")}`);
   }
 
   const output: MasterEditorialByCode = {};
@@ -209,5 +227,10 @@ export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
     }
   }
 
-  return output;
+  return { entries: output, lines, codeLineMap };
+}
+
+export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
+  const result = await parseEditorialFile(MASTER_PATH);
+  return result.entries;
 }
