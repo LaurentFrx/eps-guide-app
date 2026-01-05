@@ -70,16 +70,16 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
                   )}
                   {isDraft ? (
                     <span className="ui-chip absolute left-2 top-2 px-2 py-1 text-[10px] font-medium uppercase tracking-widest">
-                      Bientot
+                      Bientôt
                     </span>
                   ) : null}
                 </div>
                 <div className="p-3">
                   <h3 className="text-sm font-medium text-white">{ex.title}</h3>
                   <div className="mt-2 flex items-center justify-between">
-                    <span className="text-xs text-white/70">
-                      {ex.level ?? "Niveau a definir"}
-                    </span>
+                    {ex.level ? (
+                      <span className="text-xs text-white/70">{ex.level}</span>
+                    ) : null}
                     <span className="text-xs text-white/50">{ex.code}</span>
                   </div>
                 </div>

@@ -11,12 +11,12 @@ import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseWithSession } from "@/lib/exercise-data";
 
 const levelStyles: Record<string, string> = {
+  Débutant: "bg-emerald-400/20 text-emerald-100",
   Debutant: "bg-emerald-400/20 text-emerald-100",
-  "Débutant": "bg-emerald-400/20 text-emerald-100",
+  Intermédiaire: "bg-sky-400/20 text-sky-100",
   Intermediaire: "bg-sky-400/20 text-sky-100",
-  "Intermédiaire": "bg-sky-400/20 text-sky-100",
+  Avancé: "bg-rose-400/20 text-rose-100",
   Avance: "bg-rose-400/20 text-rose-100",
-  "Avancé": "bg-rose-400/20 text-rose-100",
 };
 
 type ExerciseCardProps = {
@@ -89,7 +89,7 @@ export const ExerciseCard = ({
           </div>
           {showSession ? (
             <p className="text-sm text-white/70">
-              Session {exercise.sessionNum} - {exercise.sessionTitle}
+              Session {exercise.sessionNum} — {exercise.sessionTitle}
             </p>
           ) : null}
           <div className="flex flex-wrap gap-2">
