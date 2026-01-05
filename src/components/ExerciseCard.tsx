@@ -11,12 +11,12 @@ import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseWithSession } from "@/lib/exercise-data";
 
 const levelStyles: Record<string, string> = {
-  Debutant: "bg-emerald-100 text-emerald-800",
-  "Débutant": "bg-emerald-100 text-emerald-800",
-  Intermediaire: "bg-sky-100 text-sky-800",
-  "Intermédiaire": "bg-sky-100 text-sky-800",
-  Avance: "bg-rose-100 text-rose-800",
-  "Avancé": "bg-rose-100 text-rose-800",
+  Debutant: "bg-emerald-400/20 text-emerald-100",
+  "Débutant": "bg-emerald-400/20 text-emerald-100",
+  Intermediaire: "bg-sky-400/20 text-sky-100",
+  "Intermédiaire": "bg-sky-400/20 text-sky-100",
+  Avance: "bg-rose-400/20 text-rose-100",
+  "Avancé": "bg-rose-400/20 text-rose-100",
 };
 
 type ExerciseCardProps = {
@@ -34,12 +34,12 @@ export const ExerciseCard = ({
   const isSvg = imageSrc.toLowerCase().endsWith(".svg");
 
   const levelClass = useMemo(
-    () => levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700",
+    () => levelStyles[exercise.level] ?? "ui-chip",
     [exercise.level]
   );
 
   return (
-    <div className="group relative overflow-hidden rounded-2xl border border-white/60 bg-white/70 shadow-sm backdrop-blur">
+    <div className="ui-card group relative overflow-hidden">
       <Link
         href={`/exercises/detail/${normalizeExerciseCode(exercise.code)}`}
         className="block"
@@ -54,15 +54,15 @@ export const ExerciseCard = ({
             unoptimized={isSvg}
             onError={() => setImageSrc("/images/placeholder.jpg")}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-slate-900/10 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </div>
         <div className="space-y-2 p-4">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-widest text-slate-500">
+              <p className="text-xs uppercase tracking-widest text-white/60">
                 {exercise.code}
               </p>
-              <h3 className="font-display text-lg font-semibold text-slate-900">
+              <h3 className="font-display text-lg font-semibold text-white">
                 {exercise.title}
               </h3>
             </div>
@@ -75,28 +75,28 @@ export const ExerciseCard = ({
                 event.stopPropagation();
                 toggleFavorite(exercise.code);
               }}
-              className="rounded-full border border-white/70 bg-white/80 p-2 shadow-sm transition hover:scale-105"
+              className="ui-chip rounded-full p-2 shadow-sm transition hover:scale-105"
             >
               <Star
                 className={cn(
                   "h-4 w-4",
                   favorite
-                    ? "fill-amber-400 text-amber-500"
-                    : "text-slate-400"
+                    ? "fill-amber-300 text-amber-200"
+                    : "text-white/70"
                 )}
               />
             </button>
           </div>
           {showSession ? (
-            <p className="text-sm text-slate-600">
+            <p className="text-sm text-white/70">
               Session {exercise.sessionNum} - {exercise.sessionTitle}
             </p>
           ) : null}
           <div className="flex flex-wrap gap-2">
-            <Badge className={cn("border-0", levelClass)}>
+            <Badge className={cn("ui-chip border-0", levelClass)}>
               {exercise.level}
             </Badge>
-            <Badge className="border-0 bg-slate-100 text-slate-700">
+            <Badge className="ui-chip border-0">
               {exercise.equipment}
             </Badge>
           </div>
@@ -105,3 +105,4 @@ export const ExerciseCard = ({
     </div>
   );
 };
+

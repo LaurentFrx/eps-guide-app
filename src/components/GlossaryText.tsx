@@ -72,7 +72,7 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
     .filter(Boolean);
 
   return (
-    <div className={cn("space-y-3 text-sm text-slate-700", className)}>
+    <div className={cn("space-y-3 text-sm text-white/75", className)}>
       {paragraphs.map((paragraph, index) => (
         <p key={`${paragraph.slice(0, 16)}-${index}`} className="leading-relaxed">
           {regex ? renderParagraph(paragraph, regex, lookup) : paragraph}
@@ -119,17 +119,17 @@ function renderParagraph(
           <PopoverTrigger asChild>
             <button
               type="button"
-              className="inline-flex items-center gap-1 border-b border-dotted border-slate-400 text-slate-900 transition hover:text-slate-600"
+              className="ui-link inline-flex items-center gap-1 border-b border-dotted border-white/40 transition"
             >
               {paragraph.slice(startOriginal, endOriginal)}
             </button>
           </PopoverTrigger>
           <PopoverContent
             align="start"
-            className="w-72 rounded-xl border border-slate-200 bg-white p-4 text-slate-700 shadow-lg"
+            className="ui-card w-72 p-4 text-white/75"
           >
-            <p className="text-sm font-semibold text-slate-900">{entry.title}</p>
-            <p className="mt-2 text-sm leading-relaxed text-slate-600">
+            <p className="text-sm font-semibold text-white">{entry.title}</p>
+            <p className="mt-2 text-sm leading-relaxed text-white/70">
               {entry.body}
             </p>
           </PopoverContent>

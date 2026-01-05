@@ -56,10 +56,10 @@ export function DetailSections({ sections }: DetailSectionsProps) {
               onClick={() => handleJump(section.key)}
               aria-current={resolvedActiveKey === section.key ? "true" : undefined}
               className={cn(
-                "h-7 shrink-0 rounded-full border px-3 text-xs font-medium transition",
+                "ui-chip h-7 shrink-0 px-3 text-xs font-medium transition",
                 resolvedActiveKey === section.key
-                  ? "border-slate-900 bg-slate-900 text-white"
-                  : "border-slate-200 bg-white/80 text-slate-600 hover:border-slate-300"
+                  ? "is-active"
+                  : "hover:text-white"
               )}
             >
               {section.title}
@@ -67,10 +67,10 @@ export function DetailSections({ sections }: DetailSectionsProps) {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Button type="button" size="sm" variant="secondary" onClick={openAll}>
+          <Button type="button" size="sm" variant="secondary" onClick={openAll} className="ui-chip">
             Tout déplier
           </Button>
-          <Button type="button" size="sm" variant="secondary" onClick={closeAll}>
+          <Button type="button" size="sm" variant="secondary" onClick={closeAll} className="ui-chip">
             Tout replier
           </Button>
         </div>
@@ -94,12 +94,12 @@ export function DetailSections({ sections }: DetailSectionsProps) {
                 aria-expanded={isOpen}
                 aria-controls={`detail-panel-${section.key}`}
               >
-                <p className="text-sm font-semibold text-slate-900">
+                <p className="text-sm font-semibold text-white">
                   {section.title}
                 </p>
                 <ChevronDown
                   className={cn(
-                    "h-4 w-4 text-slate-500 transition",
+                    "h-4 w-4 text-white/60 transition",
                     isOpen ? "rotate-180" : ""
                   )}
                 />
@@ -107,7 +107,7 @@ export function DetailSections({ sections }: DetailSectionsProps) {
               {isOpen ? (
                 <div
                   id={`detail-panel-${section.key}`}
-                  className="mt-3 max-w-prose space-y-3 text-sm leading-relaxed text-slate-700"
+                  className="mt-3 max-w-prose space-y-3 text-sm leading-relaxed text-white/75"
                 >
                   {blocks.map((block, index) =>
                     block.type === "paragraph" ? (

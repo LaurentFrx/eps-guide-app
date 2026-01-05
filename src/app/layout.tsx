@@ -58,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className={`${spaceGrotesk.variable} ${workSans.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${workSans.variable} eps-app`}>
         <Providers>
           <main className="px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+120px)]">
             <DataWarning className="mb-6" />

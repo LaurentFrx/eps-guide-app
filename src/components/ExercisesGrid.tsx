@@ -26,8 +26,17 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
   return (
     <div className="space-y-4">
       <div className="flex gap-2">
-        <input value={q} onChange={(ev) => setQ(ev.target.value)} placeholder="Rechercher un exercice" className="flex-1 rounded-md border px-3 py-2" />
-        <select value={levelFilter ?? ""} onChange={(ev) => setLevelFilter(ev.target.value || null)} className="rounded-md border px-3 py-2">
+        <input
+          value={q}
+          onChange={(ev) => setQ(ev.target.value)}
+          placeholder="Rechercher un exercice"
+          className="ui-input flex-1 px-3 py-2"
+        />
+        <select
+          value={levelFilter ?? ""}
+          onChange={(ev) => setLevelFilter(ev.target.value || null)}
+          className="ui-input px-3 py-2"
+        >
           <option value="">Tous niveaux</option>
           {levels.map((l) => (
             <option key={l} value={l}>
@@ -54,24 +63,24 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
                       unoptimized={ex.image.toLowerCase().endsWith(".svg")}
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-slate-100 text-slate-400">
+                    <div className="flex h-full w-full items-center justify-center bg-black/30 text-white/60">
                       <ImageOff className="h-5 w-5" aria-hidden="true" />
                       <span className="sr-only">Missing image</span>
                     </div>
                   )}
                   {isDraft ? (
-                    <span className="absolute left-2 top-2 rounded-full bg-slate-900/80 px-2 py-1 text-[10px] font-medium uppercase tracking-widest text-white">
+                    <span className="ui-chip absolute left-2 top-2 px-2 py-1 text-[10px] font-medium uppercase tracking-widest">
                       Bientot
                     </span>
                   ) : null}
                 </div>
                 <div className="p-3">
-                  <h3 className="text-sm font-medium">{ex.title}</h3>
+                  <h3 className="text-sm font-medium text-white">{ex.title}</h3>
                   <div className="mt-2 flex items-center justify-between">
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-white/70">
                       {ex.level ?? "Niveau a definir"}
                     </span>
-                    <span className="text-xs text-slate-400">{ex.code}</span>
+                    <span className="text-xs text-white/50">{ex.code}</span>
                   </div>
                 </div>
               </>
@@ -81,7 +90,7 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
               return (
                 <div
                   key={ex.code}
-                  className="block rounded-2xl border border-dashed border-slate-200 bg-white/70 shadow-sm overflow-hidden opacity-80"
+                  className="ui-card block overflow-hidden border border-dashed border-white/20 opacity-80"
                   aria-disabled="true"
                 >
                   {Card}
@@ -95,8 +104,8 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
                 href={ex.href}
                 className={
                   isDraft
-                    ? "block rounded-2xl border bg-white/70 shadow-sm overflow-hidden opacity-80"
-                    : "block rounded-2xl border bg-white shadow-sm overflow-hidden"
+                    ? "ui-card block overflow-hidden opacity-80"
+                    : "ui-card block overflow-hidden"
                 }
               >
                 {Card}

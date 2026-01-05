@@ -33,8 +33,8 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
   if (showEmpty) {
     return (
       <GlassCard className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-slate-500">Guide</p>
-        <p className="text-base text-slate-700">
+        <p className="text-xs uppercase tracking-widest text-white/60">Guide</p>
+        <p className="text-base text-white/75">
           Aucune donnée éditoriale importée — lancez <code>npm run import:editorial</code>.
         </p>
       </GlassCard>
@@ -44,15 +44,15 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
   return (
     <div className="space-y-8 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-slate-500">Guide</p>
-        <h1 className="font-display text-3xl font-semibold text-slate-900">
+        <p className="text-xs uppercase tracking-widest text-white/60">Guide</p>
+        <h1 className="font-display text-3xl font-semibold text-white">
           Guide EPS
         </h1>
       </div>
 
       {guide.presentation ? (
         <GlassCard className="space-y-2">
-          <p className="text-xs uppercase tracking-widest text-slate-500">
+          <p className="text-xs uppercase tracking-widest text-white/60">
             Présentation
           </p>
           <GlossaryText text={guide.presentation} />
@@ -60,25 +60,25 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
       ) : null}
 
       <div className="space-y-4">
-        <h2 className="text-lg font-semibold text-slate-900">Sessions</h2>
+        <h2 className="text-lg font-semibold text-white">Sessions</h2>
         <div className="grid gap-4">
           {guide.sessions.map((session) => (
             <GlassCard key={session.id} className="space-y-3">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge className="border-0 bg-slate-100 text-slate-700">
+                <Badge className="ui-chip border-0">
                   {session.id}
                 </Badge>
-                <Badge className="border-0 bg-white/70 text-slate-700">
+                <Badge className="ui-chip border-0">
                   {counts[session.id] ?? 0} exercices
                 </Badge>
                 {session.title ? (
-                  <p className="text-base font-semibold text-slate-900">
+                  <p className="text-base font-semibold text-white">
                     {session.title}
                   </p>
                 ) : null}
               </div>
               {session.theme ? (
-                <p className="text-sm text-slate-600">{session.theme}</p>
+                <p className="text-sm text-white/70">{session.theme}</p>
               ) : null}
               {session.body ? <GlossaryText text={session.body} /> : null}
             </GlassCard>
@@ -88,7 +88,7 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
 
       {guide.conclusion ? (
         <GlassCard className="space-y-2">
-          <p className="text-xs uppercase tracking-widest text-slate-500">
+          <p className="text-xs uppercase tracking-widest text-white/60">
             Conclusion
           </p>
           <GlossaryText text={guide.conclusion} />
@@ -97,13 +97,13 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
 
       {guide.sources.length ? (
         <GlassCard className="space-y-2">
-          <p className="text-xs uppercase tracking-widest text-slate-500">
+          <p className="text-xs uppercase tracking-widest text-white/60">
             Sources
           </p>
-          <ul className="space-y-2 text-sm text-slate-700">
+          <ul className="space-y-2 text-sm text-white/75">
             {guide.sources.map((source) => (
               <li key={source} className="flex items-start gap-2">
-                <span className="mt-2 h-2 w-2 rounded-full bg-slate-400" />
+                <span className="mt-2 h-2 w-2 rounded-full bg-emerald-300/70" />
                 <GlossaryText text={source} className="space-y-1" />
               </li>
             ))}

@@ -16,11 +16,11 @@ export const DataWarning = async ({ className }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "flex items-start gap-3 rounded-2xl border border-amber-200/70 bg-amber-50/80 px-4 py-3 text-sm text-amber-900 shadow-sm",
+        "ui-card flex items-start gap-3 border-amber-300/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-100",
         className
       )}
     >
-      <Info className="mt-0.5 h-4 w-4 text-amber-600" />
+      <Info className="mt-0.5 h-4 w-4 text-amber-200" />
       <span>{mockWarning}</span>
     </div>
   );
