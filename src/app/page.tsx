@@ -14,9 +14,6 @@ export default function HomePage() {
         <header className="eps-home__header space-y-3">
           <div className="eps-home__brand flex items-center gap-3">
             <h1 className="sr-only">Guide EPS</h1>
-            <p className="text-xs uppercase tracking-[0.3em] text-white/70">
-              GUIDE DE MUSCULATION
-            </p>
             <Image
               src="/branding/logo-eps.png"
               alt="EPS"
@@ -26,6 +23,9 @@ export default function HomePage() {
               sizes="(max-width: 640px) 220px, 320px"
               className="eps-home__logo"
             />
+            <p className="font-display text-3xl font-semibold uppercase tracking-[0.12em] text-white/90">
+              GUIDE DE MUSCULATION
+            </p>
           </div>
         </header>
         <p className="text-sm text-white/70">
