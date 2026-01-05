@@ -3,6 +3,7 @@ import { Space_Grotesk, Work_Sans } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
 import { DataWarning } from "@/components/DataWarning";
 import { Providers } from "@/components/Providers";
+import { withAssetVersion } from "@/lib/assetVersion";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -20,18 +21,34 @@ const workSans = Work_Sans({
 export const metadata: Metadata = {
   title: {
     default: "Guide EPS",
-    template: "%s · Guide EPS",
+    template: "%s - Guide EPS",
   },
   description:
     "Fiches exercices EPS, recherche rapide, favoris et accès hors ligne.",
   icons: {
     icon: [
-      { rel: "icon", url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
-      { rel: "icon", url: "/favicon-16.png", type: "image/png", sizes: "16x16" },
+      {
+        rel: "icon",
+        url: withAssetVersion("/favicon-32.png"),
+        type: "image/png",
+        sizes: "32x32",
+      },
+      {
+        rel: "icon",
+        url: withAssetVersion("/favicon-16.png"),
+        type: "image/png",
+        sizes: "16x16",
+      },
     ],
-    apple: "/apple-touch-icon.png",
+    apple: [
+      {
+        url: withAssetVersion("/apple-touch-icon.png"),
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
   },
-  manifest: "/site.webmanifest",
+  manifest: withAssetVersion("/manifest.webmanifest"),
 };
 
 export default function RootLayout({
@@ -53,3 +70,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+
