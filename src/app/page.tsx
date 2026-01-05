@@ -29,19 +29,19 @@ export default function HomePage() {
           Recherchez, filtrez et sauvegardez vos exercices, même hors ligne.
         </p>
         <div className="eps-home__chips flex flex-wrap items-center gap-2">
-          <Badge variant="outline" className="eps-chip">
+          <Badge variant="outline" className="ui-chip">
             {sessions.length} sessions
           </Badge>
-          <Badge variant="outline" data-active="true" className="eps-chip">
+          <Badge variant="outline" data-active="true" className="ui-chip">
             {exercises.length} exercices
           </Badge>
-          <Button asChild variant="outline" size="sm" className="eps-chip">
+          <Button asChild variant="outline" size="sm" className="ui-chip">
             <Link href="/docs">Docs</Link>
           </Button>
         </div>
       </div>
 
-      <GlassCard className="eps-search space-y-3">
+      <GlassCard className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-white/60">
           Recherche rapide
         </p>
@@ -51,10 +51,10 @@ export default function HomePage() {
             <Input
               name="q"
               placeholder="Planche, squat, S2-03..."
-              className="eps-search__input pl-9"
+              className="pl-9"
             />
           </div>
-          <Button type="submit" className="eps-btn-primary shrink-0">
+          <Button type="submit" className="ui-btn-primary shrink-0">
             Chercher
           </Button>
         </form>
@@ -70,7 +70,7 @@ export default function HomePage() {
         <div className="grid gap-4">
           {sessions.map((session) => (
             <Link key={session.id} href={`/exercises/${session.id}`} className="block">
-              <GlassCard className="eps-card transition hover:-translate-y-0.5 hover:shadow-lg">
+              <GlassCard className="transition hover:-translate-y-0.5 hover:shadow-lg">
                 <div className="flex items-start justify-between">
                   <div>
                     <p className="text-xs uppercase tracking-widest text-white/60">
@@ -84,7 +84,7 @@ export default function HomePage() {
                   <ArrowUpRight className="h-5 w-5 text-white/70" />
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <Badge variant="outline" className="eps-chip">
+                  <Badge variant="outline" className="ui-chip">
                     {session.exerciseCount} exercices
                   </Badge>
                 </div>

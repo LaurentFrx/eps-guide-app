@@ -30,24 +30,24 @@ export default async function DocsPage() {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-slate-500">Documents</p>
-        <h1 className="font-display text-3xl font-semibold text-slate-900">Fiches EPS</h1>
-        <p className="text-sm text-slate-600">Téléchargez les fiches EPS pour consultation hors ligne ou impression.</p>
+        <p className="text-xs uppercase tracking-widest text-white/60">Documents</p>
+        <h1 className="font-display text-3xl font-semibold text-white">Fiches EPS</h1>
+        <p className="text-sm text-white/70">Téléchargez les fiches EPS pour consultation hors ligne ou impression.</p>
       </div>
 
       {missingDocs.length > 0 ? (
-        <GlassCard className="space-y-2 border-amber-200/70 bg-amber-50/70">
-          <p className="text-sm font-medium text-amber-900">DOCX manquants sur GitHub Releases.</p>
-          <p className="text-xs text-amber-900/80">Fichiers concernés: {missingDocs.map((m) => m.title).join(", ")}.</p>
+        <GlassCard className="space-y-2 border-amber-300/40 bg-amber-500/10">
+          <p className="text-sm font-medium text-amber-100">DOCX manquants sur GitHub Releases.</p>
+          <p className="text-xs text-amber-200/90">Fichiers concernés: {missingDocs.map((m) => m.title).join(", ")}.</p>
           {availableNames.length > 0 ? (
-            <p className="text-xs text-amber-900/80">Assets trouvés dans la Release: {availableNames.join(', ')}</p>
+            <p className="text-xs text-amber-200/90">Assets trouvés dans la Release: {availableNames.join(', ')}</p>
           ) : null}
         </GlassCard>
       ) : null}
 
       <GlassCard className="space-y-2">
-        <p className="text-sm text-slate-700">Les fichiers Word sont hébergés dans GitHub Releases pour éviter la limite 100 MB sur Git. Les liens pointent vers la Release la plus récente.</p>
-        <p className="text-xs text-slate-500">Si le téléchargement échoue, vérifier que la Release contient les fichiers indiqués.</p>
+        <p className="text-sm text-white/75">Les fichiers Word sont hébergés dans GitHub Releases pour éviter la limite 100 MB sur Git. Les liens pointent vers la Release la plus récente.</p>
+        <p className="text-xs text-white/60">Si le téléchargement échoue, vérifier que la Release contient les fichiers indiqués.</p>
       </GlassCard>
 
       <div className="grid gap-3">

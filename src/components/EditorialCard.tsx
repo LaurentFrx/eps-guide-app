@@ -46,7 +46,7 @@ export function EditorialCard({
   return (
     <GlassCard className={cn("space-y-3", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-xs uppercase tracking-widest text-slate-500">{title}</p>
+        <p className="text-xs uppercase tracking-widest text-white/60">{title}</p>
         <div className="flex items-center gap-2">
           {copyLabel ? (
             <Button
@@ -55,17 +55,18 @@ export function EditorialCard({
               variant="secondary"
               disabled={!hasContent}
               onClick={handleCopy}
+              className="ui-chip"
             >
               {copied ? "Copie" : copyLabel}
             </Button>
           ) : null}
           {!hasContent ? (
-            <Badge variant="secondary">Contenu à compléter</Badge>
+            <Badge className="ui-chip border-0">Contenu à compléter</Badge>
           ) : null}
         </div>
       </div>
       {hasContent ? (
-        <div className="max-w-prose space-y-3 text-sm leading-relaxed text-slate-700">
+        <div className="max-w-prose space-y-3 text-sm leading-relaxed text-white/75">
           {blocks.map((block, index) => {
             if (block.type === "paragraph") {
               return (
@@ -95,7 +96,7 @@ export function EditorialCard({
           })}
         </div>
       ) : (
-        <p className="text-sm text-slate-500">Aucun contenu.</p>
+        <p className="text-sm text-white/60">Aucun contenu.</p>
       )}
     </GlassCard>
   );

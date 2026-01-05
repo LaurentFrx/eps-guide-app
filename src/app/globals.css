@@ -151,9 +151,107 @@
     min-height: 100vh;
   }
 
-  .font-display {
+.font-display {
     font-family: var(--font-display);
   }
+}
+
+/* =========================
+   EPS APP THEME (GLOBAL)
+   ========================= */
+.eps-app {
+  color: rgba(255, 255, 255, 0.92);
+  background:
+    radial-gradient(900px circle at 12% 8%, rgba(100, 158, 205, 0.38), transparent 58%),
+    radial-gradient(900px circle at 92% 0%, rgba(176, 216, 132, 0.18), transparent 55%),
+    linear-gradient(180deg, #041159 0%, #053884 46%, #041159 110%);
+  min-height: 100dvh;
+}
+
+.eps-app h1,
+.eps-app h2,
+.eps-app h3 {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.eps-app p,
+.eps-app li {
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.eps-app .ui-surface,
+.eps-app .ui-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(100, 158, 205, 0.2);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+}
+
+.eps-app .ui-chip {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(100, 158, 205, 0.22);
+  color: rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+}
+
+.eps-app .ui-chip.is-active,
+.eps-app .ui-chip[data-active="true"],
+.eps-app .ui-chip[data-state="active"] {
+  border-color: rgba(176, 216, 132, 0.8);
+  box-shadow: 0 0 0 3px rgba(176, 216, 132, 0.16);
+}
+
+.eps-app .ui-input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(100, 158, 205, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+  border-radius: 14px;
+}
+
+.eps-app .ui-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.eps-app .ui-input:focus {
+  outline: none;
+  border-color: rgba(176, 216, 132, 0.6);
+  box-shadow: 0 0 0 4px rgba(100, 158, 205, 0.2);
+}
+
+.eps-app .ui-btn-primary {
+  background: linear-gradient(135deg, #1056a3 0%, #276aaf 60%, #649ecd 120%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+}
+
+.eps-app .ui-btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.eps-app .ui-link {
+  color: rgba(185, 218, 241, 0.92);
+}
+
+.eps-app .ui-link:hover {
+  color: rgba(176, 216, 132, 0.95);
+}
+
+.eps-app .ui-bottomnav {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(100, 158, 205, 0.22);
+  backdrop-filter: blur(14px);
+}
+
+.eps-app .ui-navitem {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.eps-app .ui-navitem.is-active,
+.eps-app .ui-navitem[data-active="true"] {
+  color: rgba(176, 216, 132, 0.95);
 }
 
 /* =========================

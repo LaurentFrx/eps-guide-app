@@ -20,10 +20,10 @@ export const BottomNav = () => {
     <div className="fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto w-full max-w-lg px-4 pointer-events-none">
         <div className="flex justify-center pb-2">
-          <BuildStamp className="text-[11px] text-slate-500/80" />
+          <BuildStamp className="text-[11px] text-white/60" />
         </div>
         <nav className="pointer-events-auto">
-          <div className="flex items-center justify-between gap-2 rounded-full border border-white/70 bg-white/70 px-4 py-2 shadow-lg shadow-slate-200/70 backdrop-blur-xl">
+          <div className="ui-surface ui-bottomnav flex items-center justify-between gap-2 rounded-full px-4 py-2 shadow-lg">
             {navItems.map((item) => {
               const isActive =
                 item.href === "/"
@@ -37,19 +37,13 @@ export const BottomNav = () => {
                   key={item.href}
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
+                  data-active={isActive ? "true" : "false"}
                   className={cn(
-                    "flex flex-1 flex-col items-center gap-1 rounded-2xl px-3 py-2 text-xs font-medium transition",
-                    isActive
-                      ? "text-slate-900"
-                      : "text-slate-500 hover:text-slate-700"
+                    "ui-navitem flex flex-1 flex-col items-center gap-1 rounded-2xl px-3 py-2 text-xs font-medium transition",
+                    isActive ? "is-active" : "hover:text-white"
                   )}
                 >
-                  <Icon
-                    className={cn(
-                      "h-5 w-5",
-                      isActive ? "text-slate-900" : "text-slate-400"
-                    )}
-                  />
+                  <Icon className="h-5 w-5" />
                   {item.label}
                 </Link>
               );

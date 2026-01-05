@@ -40,18 +40,18 @@ export default function ReleaseCard({
     <GlassCard className="space-y-2">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm uppercase tracking-widest text-slate-500">{title}</p>
-          <p className="text-base text-slate-900">{description}</p>
+          <p className="text-sm uppercase tracking-widest text-white/60">{title}</p>
+          <p className="text-base text-white">{description}</p>
         </div>
-        {assetSizeBytes ? <p className="text-xs text-slate-500">{formatSize(assetSizeBytes)}</p> : null}
+        {assetSizeBytes ? <p className="text-xs text-white/60">{formatSize(assetSizeBytes)}</p> : null}
       </div>
 
       <div className="flex gap-2">
-        <Button asChild variant="outline" size="sm">
+        <Button asChild variant="outline" size="sm" className="ui-chip">
           <a href={releaseUrl ?? "#"} target="_blank" rel="noreferrer">Voir la release</a>
         </Button>
 
-        <Button asChild size="sm" disabled={!available}>
+        <Button asChild size="sm" className="ui-btn-primary" disabled={!available}>
           <a href={downloadUrl ?? "#"} download={available} target={available ? "_blank" : undefined} rel="noreferrer">
             Télécharger ({assetName})
           </a>
@@ -59,7 +59,7 @@ export default function ReleaseCard({
       </div>
 
       {message ? (
-        <p className="text-xs text-amber-900/80">{message}</p>
+        <p className="text-xs text-amber-200/90">{message}</p>
       ) : null}
     </GlassCard>
   );

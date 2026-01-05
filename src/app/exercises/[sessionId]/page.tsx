@@ -25,7 +25,7 @@ export default async function SessionPage(props: unknown) {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="rounded-2xl overflow-hidden">
+      <div className="ui-card overflow-hidden">
         <div className="relative h-56 w-full">
           <Image
             src={session.heroImage}
@@ -37,10 +37,10 @@ export default async function SessionPage(props: unknown) {
         </div>
         <div className="p-4">
           <h1 className="text-2xl font-semibold">{session.title}</h1>
-          <p className="text-sm text-slate-600">{session.subtitle}</p>
+          <p className="text-sm text-white/70">{session.subtitle}</p>
           <div className="mt-3 flex gap-2 flex-wrap">
             {session.reperePedagogiques.map((r) => (
-              <span key={r} className="rounded-full bg-slate-100 px-3 py-1 text-xs">{r}</span>
+              <span key={r} className="rounded-full ui-chip px-3 py-1 text-xs">{r}</span>
             ))}
           </div>
         </div>

@@ -20,12 +20,12 @@ import {
 import type { ExerciseRecord } from "@/lib/exercises/schema";
 
 const levelStyles: Record<string, string> = {
-  Debutant: "bg-emerald-100 text-emerald-800",
-  "Débutant": "bg-emerald-100 text-emerald-800",
-  Intermediaire: "bg-sky-100 text-sky-800",
-  "Intermédiaire": "bg-sky-100 text-sky-800",
-  Avance: "bg-rose-100 text-rose-800",
-  "Avancé": "bg-rose-100 text-rose-800",
+  Debutant: "bg-emerald-400/20 text-emerald-100",
+  "Débutant": "bg-emerald-400/20 text-emerald-100",
+  Intermediaire: "bg-sky-400/20 text-sky-100",
+  "Intermédiaire": "bg-sky-400/20 text-sky-100",
+  Avance: "bg-rose-400/20 text-rose-100",
+  "Avancé": "bg-rose-400/20 text-rose-100",
 };
 
 const DETAIL_LABEL_SPECS: LabelSpec[] = [
@@ -97,7 +97,7 @@ export const ExerciseDetail = ({
   const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image ?? "");
   const favorite = isFavorite(exercise.code);
   const isSvg = heroIsSvg ?? imageSrc.toLowerCase().endsWith(".svg");
-  const levelClass = levelStyles[exercise.level] ?? "bg-slate-100 text-slate-700";
+  const levelClass = levelStyles[exercise.level] ?? "ui-chip";
 
   const sessionId = exercise.code.split("-")[0] ?? "";
   const sessionLabel = sessionId ? `Session ${sessionId.replace("S", "")}` : "";
@@ -148,7 +148,7 @@ export const ExerciseDetail = ({
     <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
-          <Button asChild variant="secondary" size="sm" className="gap-2">
+          <Button asChild variant="secondary" size="sm" className="ui-surface gap-2 p-1">
             <Link href={sessionId ? `/exercises/${sessionId}` : "/exercises"}>
               <ChevronLeft className="h-4 w-4" />
               Retour
@@ -177,7 +177,7 @@ export const ExerciseDetail = ({
               />
             )
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-slate-200 text-slate-500">
+            <div className="flex h-full w-full items-center justify-center bg-black/30 text-white/60">
               Image indisponible
             </div>
           )}
@@ -196,7 +196,7 @@ export const ExerciseDetail = ({
               aria-label={favorite ? "Retirer des favoris" : "Ajouter aux favoris"}
               aria-pressed={favorite}
               onClick={() => toggleFavorite(exercise.code)}
-              className="rounded-full border border-white/30 bg-white/20 p-3 backdrop-blur"
+              className="ui-chip rounded-full p-3 backdrop-blur"
             >
               <Star
                 className={cn(
@@ -208,15 +208,15 @@ export const ExerciseDetail = ({
           </div>
           <div className="flex flex-wrap gap-2">
             {sessionLabel ? (
-              <Badge className="border-0 bg-white/20 text-white">
+              <Badge className="ui-chip border-0">
                 {sessionLabel}
               </Badge>
             ) : null}
-            <Badge className={cn("border-0", levelClass)}>
+            <Badge className={cn("ui-chip border-0", levelClass)}>
               {exercise.level}
             </Badge>
             {exercise.equipment ? (
-              <Badge className="border-0 bg-white/20 text-white">
+              <Badge className="ui-chip border-0">
                 {exercise.equipment}
               </Badge>
             ) : null}
@@ -229,7 +229,7 @@ export const ExerciseDetail = ({
           {muscleChips.map((muscle) => (
             <span
               key={muscle}
-              className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+              className="ui-chip px-3 py-1 text-xs font-medium"
             >
               {muscle}
             </span>
@@ -238,15 +238,15 @@ export const ExerciseDetail = ({
       ) : null}
 
       <div className="flex flex-wrap gap-2">
-        <Button asChild size="sm" variant="secondary">
+        <Button asChild size="sm" variant="secondary" className="ui-btn-primary">
           <Link href="/guide">Voir le guide</Link>
         </Button>
       </div>
 
       <Tabs defaultValue="terrain" className="space-y-4">
-        <TabsList className="gap-2">
-          <TabsTrigger value="terrain">Terrain</TabsTrigger>
-          <TabsTrigger value="detail">Détail</TabsTrigger>
+        <TabsList className="ui-surface gap-2 p-1">
+          <TabsTrigger className="ui-chip" value="terrain">Terrain</TabsTrigger>
+          <TabsTrigger className="ui-chip" value="detail">Détail</TabsTrigger>
         </TabsList>
 
         <TabsContent value="terrain">
@@ -283,20 +283,20 @@ export const ExerciseDetail = ({
               <DetailSections sections={detailSections} />
             ) : (
               <GlassCard>
-                <p className="text-xs uppercase tracking-widest text-slate-500">
+                <p className="text-xs uppercase tracking-widest text-white/60">
                   Détail
                 </p>
-                <p className="mt-3 text-sm text-slate-500">
+                <p className="mt-3 text-sm text-white/60">
                   Aucun détail disponible.
                 </p>
               </GlassCard>
             )}
             {sourcesText ? (
               <GlassCard>
-                <p className="text-xs uppercase tracking-widest text-slate-500">
+                <p className="text-xs uppercase tracking-widest text-white/60">
                   Sources de l&apos;exercice
                 </p>
-                <div className="mt-3 max-w-prose whitespace-pre-wrap text-sm leading-relaxed text-slate-700">
+                <div className="mt-3 max-w-prose whitespace-pre-wrap text-sm leading-relaxed text-white/75">
                   {sourcesText}
                 </div>
               </GlassCard>
