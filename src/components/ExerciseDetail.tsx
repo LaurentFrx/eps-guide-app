@@ -155,7 +155,12 @@ export const ExerciseDetail = ({
     <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
-          <Button asChild variant="secondary" size="sm" className="ui-surface gap-2 p-1">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="ui-chip gap-2 border border-white/30 bg-white/15 text-white/95 shadow-sm hover:bg-white/25"
+          >
             <Link href={sessionId ? `/exercises/${sessionId}` : "/exercises"}>
               <ChevronLeft className="h-4 w-4" />
               Retour
@@ -245,12 +250,6 @@ export const ExerciseDetail = ({
           ))}
         </div>
       ) : null}
-
-      <div className="flex flex-wrap gap-2">
-        <Button asChild size="sm" variant="secondary" className="ui-btn-primary">
-          <Link href="/guide">Voir le guide</Link>
-        </Button>
-      </div>
 
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList className="ui-surface gap-2 p-1">
