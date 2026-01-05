@@ -18,7 +18,8 @@ export type MasterEditorialByCode = Record<string, MasterEditorialEntry>;
 
 const ROOT = process.cwd();
 const MASTER_PATH = path.join(ROOT, "docs", "editorial", "master.fr.md");
-const BLOCK_CODE_RE = /^(?:#+\s*)?(S[1-5]-\d{2})\b/gm;
+const BLOCK_CODE_RE =
+  /^\s*(?:#+\s*)?(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gm;
 
 const LABEL_MAP = new Map<string, keyof MasterEditorialEntry>([
   ["description", "description"],
@@ -73,6 +74,44 @@ const labelLookup = new Map(
   Array.from(LABEL_MAP.entries()).map(([label, key]) => [normalizeLabel(label), key])
 );
 
+const normalizeCodeToken = (value: string) =>
+  value.replace(/[\u2010\u2011\u2012\u2013\u2014]/g, "-");
+
+const buildLineOffsets = (value: string) => {
+  const offsets = [0];
+  for (let i = 0; i < value.length; i += 1) {
+    if (value[i] === "\n") offsets.push(i + 1);
+  }
+  return offsets;
+};
+
+const findLineIndex = (offsets: number[], index: number) => {
+  let low = 0;
+  let high = offsets.length - 1;
+  let result = 0;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (offsets[mid] <= index) {
+      result = mid;
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return result;
+};
+
+const logCodeContext = (lines: string[], lineIndex: number, reason: string) => {
+  const start = Math.max(0, lineIndex - 1);
+  const end = Math.min(lines.length, lineIndex + 2);
+  const snippet = lines
+    .slice(start, end)
+    .map((line, idx) => `${start + idx + 1}: ${line}`)
+    .join("\n");
+  console.warn(`Master editorial parse warning (${reason})`);
+  console.warn(snippet);
+};
+
 const parseBlock = (block: string): MasterEditorialEntry => {
   const lines = block.split(/\r?\n/);
   const entry: MasterEditorialEntry = {};
@@ -114,6 +153,8 @@ const parseBlock = (block: string): MasterEditorialEntry => {
 
 export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
   const raw = await fs.readFile(MASTER_PATH, "utf8");
+  const lines = raw.split(/\r?\n/);
+  const lineOffsets = buildLineOffsets(raw);
   const matches: Array<{ code: string; index: number }> = [];
   let match: RegExpExecArray | null;
   while ((match = BLOCK_CODE_RE.exec(raw)) !== null) {
@@ -124,14 +165,20 @@ export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
 
   const blocks = new Map<string, string>();
   const duplicates: string[] = [];
+  const invalidCodes: Array<{ code: string; lineIndex: number }> = [];
 
   for (let i = 0; i < matches.length; i += 1) {
     const current = matches[i];
     const next = matches[i + 1];
     const start = current.index;
     const end = next ? next.index : raw.length;
-    const code = normalizeExerciseCode(current.code);
-    if (!isValidExerciseCode(code)) continue;
+    const rawCode = normalizeCodeToken(current.code);
+    const code = normalizeExerciseCode(rawCode);
+    if (!isValidExerciseCode(code)) {
+      const lineIndex = findLineIndex(lineOffsets, current.index);
+      invalidCodes.push({ code: rawCode, lineIndex });
+      continue;
+    }
     if (blocks.has(code)) {
       duplicates.push(code);
       continue;
@@ -139,7 +186,18 @@ export async function loadMasterEditorial(): Promise<MasterEditorialByCode> {
     blocks.set(code, raw.slice(start, end));
   }
 
+  invalidCodes.forEach(({ code, lineIndex }) => {
+    logCodeContext(lines, lineIndex, `invalid code: ${code}`);
+  });
+
   if (duplicates.length) {
+    duplicates.forEach((code) => {
+      const matchIndex = matches.find((entry) => normalizeCodeToken(entry.code) === code)
+        ?.index;
+      if (matchIndex == null) return;
+      const lineIndex = findLineIndex(lineOffsets, matchIndex);
+      logCodeContext(lines, lineIndex, `duplicate code: ${code}`);
+    });
     throw new Error(`Duplicate master editorial blocks: ${duplicates.join(", ")}`);
   }
 
