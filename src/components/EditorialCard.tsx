@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/GlassCard";
 import { cn } from "@/lib/utils";
@@ -57,11 +56,8 @@ export function EditorialCard({
               onClick={handleCopy}
               className="ui-chip"
             >
-              {copied ? "Copie" : copyLabel}
+              {copied ? "Copié" : copyLabel}
             </Button>
-          ) : null}
-          {!hasContent ? (
-            <Badge className="ui-chip border-0">Contenu à compléter</Badge>
           ) : null}
         </div>
       </div>

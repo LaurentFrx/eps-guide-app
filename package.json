@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && next dev --webpack",
-    "build": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && npm run check:exercises:text && npm run check:mojibake && npm run validate:assets && npm run validate:images && next build --webpack",
+    "build": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && npm run check:editorial && npm run check:exercises:text && npm run check:mojibake && npm run validate:assets && npm run validate:images && next build --webpack",
     "audit:exercises": "tsx scripts/audit-exercises.ts",
     "audit:crossrefs": "tsx scripts/audit-crossrefs.ts",
     "gen:editorial": "tsx scripts/gen-editorial.ts",
@@ -12,6 +12,7 @@
     "gen:heroes": "tsx scripts/gen-heroes.ts",
     "gen:images": "tsx scripts/gen-images.ts",
     "check:exercises": "tsx scripts/check-exercises.ts",
+    "check:editorial": "tsx scripts/check-editorial.ts",
     "check:exercises:text": "tsx scripts/validate-exercises-text.ts",
     "check:mojibake": "tsx scripts/check-mojibake.ts",
     "validate:assets": "tsx scripts/validate-assets.ts",

@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { GlassCard } from "@/components/GlassCard";
+import { MarkdownText } from "@/components/MarkdownText";
 import { normalizeLevelLabel, splitEquipment, type Session } from "@/lib/exercise-data";
 
 export const SessionView = ({ session }: { session: Session }) => {
@@ -16,13 +17,13 @@ export const SessionView = ({ session }: { session: Session }) => {
   const [levelFilter, setLevelFilter] = useState("Tous");
   const [equipmentFilter, setEquipmentFilter] = useState("Tous");
 
-  const levels = useMemo(
-    () =>
-      Array.from(
-        new Set(session.exercises.map((ex) => normalizeLevelLabel(ex.level)))
-      ).sort(),
-    [session.exercises]
-  );
+  const levels = useMemo(() => {
+    const set = new Set(
+      session.exercises.map((ex) => normalizeLevelLabel(ex.level))
+    );
+    const order = ["Débutant", "Intermédiaire", "Avancé"];
+    return order.filter((level) => set.has(level));
+  }, [session.exercises]);
   const equipmentOptions = useMemo(
     () =>
       Array.from(
@@ -78,7 +79,25 @@ export const SessionView = ({ session }: { session: Session }) => {
             {session.exercises.length} exercices
           </Badge>
         </div>
+        {session.chips.length ? (
+          <div className="flex flex-wrap gap-2">
+            {session.chips.map((chip) => (
+              <Badge key={chip} className="ui-chip border-0">
+                {chip}
+              </Badge>
+            ))}
+          </div>
+        ) : null}
       </div>
+
+      {session.introMd ? (
+        <GlassCard className="space-y-2">
+          <p className="text-xs uppercase tracking-widest text-white/60">
+            À propos de la session
+          </p>
+          <MarkdownText text={session.introMd} className="max-w-prose" />
+        </GlassCard>
+      ) : null}
 
       <GlassCard className="space-y-4">
         <div className="flex items-center gap-2 text-sm font-medium text-white/75">

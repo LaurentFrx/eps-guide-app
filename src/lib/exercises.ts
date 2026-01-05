@@ -7,6 +7,7 @@ import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseStatus } from "@/lib/exerciseStatus";
 import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
 import { editorialByCode } from "@/lib/editorial.generated";
+import { SESSIONS_EDITORIAL, SESSION_IDS } from "@/lib/editorial/sessions";
 
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
@@ -15,7 +16,8 @@ export type Session = {
   exerciseCount: number;
   accent: string; // CSS color token or hex
   heroImage: string; // public path
-  reperePedagogiques: string[];
+  chips: string[];
+  introMd: string;
 };
 
 export type Exercise = {
@@ -44,7 +46,7 @@ export type Exercise = {
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const IMAGE_EXTS = [".webp", ".avif", ".jpg", ".jpeg", ".png", ".svg"];
 const FALLBACK_IMAGE = "/exercises/fallback.svg";
-const PLACEHOLDER_TEXT = "Contenu à compléter";
+const EMPTY_TEXT = "";
 
 function resolvePublicImagePath(preferred: string) {
   const normalized = preferred.replace(/^\/+/, "");
@@ -67,55 +69,20 @@ function resolveExerciseImage(code: string): string {
   return getExerciseHeroSrcOrFallback(code, FALLBACK_IMAGE);
 }
 
-const sessionsBase: Array<Omit<Session, "exerciseCount">> = [
-  {
-    id: "S1",
-    title: "Préparation générale",
-    subtitle: "S1 - Mobilité, gainage et maîtrise du mouvement",
-    accent: "var(--s1)",
-    heroImage: "/exercises/S1/hero.jpg",
-    reperePedagogiques: [
-      "Posture active",
-      "Respiration maîtrisée",
-      "Alignement segmentaire",
-    ],
-  },
-  {
-    id: "S2",
-    title: "Force et explosivité",
-    subtitle: "S2 - Travail de poussée, tirage et saut",
-    accent: "var(--s2)",
-    heroImage: "/exercises/S2/hero.jpg",
-    reperePedagogiques: [
-      "Chaîne musculaire du membre supérieur",
-      "Appui podal",
-    ],
-  },
-  {
-    id: "S3",
-    title: "Endurance et enchaînements",
-    subtitle: "S3 - Cardio, circuit et rythme",
-    accent: "var(--s3)",
-    heroImage: "/exercises/S3/hero.jpg",
-    reperePedagogiques: ["Gestion de l'effort", "Rythme et récupération"],
-  },
-  {
-    id: "S4",
-    title: "Coordination et agilité",
-    subtitle: "S4 - Change of direction, équilibre",
-    accent: "var(--s4)",
-    heroImage: "/exercises/S4/hero.jpg",
-    reperePedagogiques: ["Contrôle sensoriel", "Changement d'appui"],
-  },
-  {
-    id: "S5",
-    title: "Performance avancée",
-    subtitle: "S5 - Puissance et situations complexes",
-    accent: "var(--s5)",
-    heroImage: "/exercises/S5/hero.jpg",
-    reperePedagogiques: ["Analyse technique", "Automatisation"],
-  },
-];
+const sessionsBase: Array<Omit<Session, "exerciseCount">> = SESSION_IDS.map(
+  (id) => {
+    const editorial = SESSIONS_EDITORIAL[id];
+    return {
+      id,
+      title: editorial.title,
+      subtitle: editorial.subtitle,
+      chips: editorial.chips,
+      introMd: editorial.introMd,
+      accent: `var(--${id.toLowerCase()})`,
+      heroImage: `/exercises/${id}/hero.jpg`,
+    };
+  }
+);
 
 const detailByCode = new Map<string, ExerciseWithSession>(
   allExercises.map((exercise) => [normalizeExerciseCode(exercise.code), exercise])
@@ -133,21 +100,21 @@ function toExercise(entry: PdfIndexItem): Exercise {
     sessionId: entry.series as Session["id"],
     title,
     subtitleEn: undefined,
-    level: detail?.level ?? "À définir",
+    level: detail?.level ?? "",
     image,
-    objectif: detail?.objective ?? PLACEHOLDER_TEXT,
-    materiel: detail?.equipment ?? PLACEHOLDER_TEXT,
+    objectif: detail?.objective ?? EMPTY_TEXT,
+    materiel: detail?.equipment ?? EMPTY_TEXT,
     anatomie: {
-      muscles: detail?.muscles ?? PLACEHOLDER_TEXT,
-      fonction: detail?.anatomy ?? PLACEHOLDER_TEXT,
+      muscles: detail?.muscles ?? EMPTY_TEXT,
+      fonction: detail?.anatomy ?? EMPTY_TEXT,
     },
     techniquePoints: detail?.key_points?.length ? detail.key_points : [],
     securitePoints: detail?.safety?.length ? detail.safety : [],
     progression: {
-      regression: detail?.regress ?? PLACEHOLDER_TEXT,
-      progression: detail?.progress ?? PLACEHOLDER_TEXT,
+      regression: detail?.regress ?? EMPTY_TEXT,
+      progression: detail?.progress ?? EMPTY_TEXT,
     },
-    dosage: detail?.dosage ?? PLACEHOLDER_TEXT,
+    dosage: detail?.dosage ?? EMPTY_TEXT,
     materielMd: editorial?.materielMd,
     consignesMd: editorial?.consignesMd,
     dosageMd: editorial?.dosageMd,

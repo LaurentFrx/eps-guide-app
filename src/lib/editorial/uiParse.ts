@@ -17,7 +17,15 @@ export type DisplayBlock =
 const BULLET_RE = /(^|\n)\s*[-\u2022]\s+/g;
 const SENTENCE_RE = /[.!?;]\s+/g;
 
-const PLACEHOLDER_TEXT = "contenu a completer";
+const PLACEHOLDER_TOKENS = new Set([
+  "contenu a completer",
+  "omission",
+  "similaire",
+  "identique",
+  "identiques",
+  "suite des exercices",
+  "le",
+]);
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -71,8 +79,10 @@ const normalizeForSearch = (value: string) => {
   return { normalized, startMap, endMap };
 };
 
-export const isPlaceholderText = (value?: string) =>
-  Boolean(value) && normalizeForCompare(value ?? "") === PLACEHOLDER_TEXT;
+export const isPlaceholderText = (value?: string) => {
+  if (!value) return false;
+  return PLACEHOLDER_TOKENS.has(normalizeForCompare(value));
+};
 
 export const toDisplayBlocks = (
   text: string,

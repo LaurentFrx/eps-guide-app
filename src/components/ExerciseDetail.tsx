@@ -20,12 +20,12 @@ import {
 import type { ExerciseRecord } from "@/lib/exercises/schema";
 
 const levelStyles: Record<string, string> = {
+  Débutant: "bg-emerald-400/20 text-emerald-100",
   Debutant: "bg-emerald-400/20 text-emerald-100",
-  "Débutant": "bg-emerald-400/20 text-emerald-100",
+  Intermédiaire: "bg-sky-400/20 text-sky-100",
   Intermediaire: "bg-sky-400/20 text-sky-100",
-  "Intermédiaire": "bg-sky-400/20 text-sky-100",
+  Avancé: "bg-rose-400/20 text-rose-100",
   Avance: "bg-rose-400/20 text-rose-100",
-  "Avancé": "bg-rose-400/20 text-rose-100",
 };
 
 const DETAIL_LABEL_SPECS: LabelSpec[] = [
@@ -125,6 +125,9 @@ export const ExerciseDetail = ({
     return "";
   };
 
+  const isMaterialEmpty = (value?: string) =>
+    !value || !value.trim() || value.trim().toLowerCase() === "aucun";
+
   const consignesText =
     resolveText(
       exercise.consignesMd,
@@ -136,8 +139,12 @@ export const ExerciseDetail = ({
       exercise.securiteMd,
       safetyItems.length ? safetyItems.join("\n") : ""
     ) || "Aucun";
-  const materielText =
-    resolveText(exercise.materielMd, exercise.equipment) || "Aucun";
+  const materielText = (() => {
+    const fromEditorial = resolveText(exercise.materielMd);
+    if (fromEditorial && !isMaterialEmpty(fromEditorial)) return fromEditorial;
+    if (!isMaterialEmpty(exercise.equipment)) return exercise.equipment;
+    return "Aucun";
+  })();
   const detailSource = resolveText(exercise.detailMd, exercise.fullMdRaw);
   const detailSections = useMemo(
     () => splitByInlineLabels(detailSource, DETAIL_LABEL_SPECS),
@@ -212,9 +219,11 @@ export const ExerciseDetail = ({
                 {sessionLabel}
               </Badge>
             ) : null}
-            <Badge className={cn("ui-chip border-0", levelClass)}>
-              {exercise.level}
-            </Badge>
+            {exercise.level ? (
+              <Badge className={cn("ui-chip border-0", levelClass)}>
+                {exercise.level}
+              </Badge>
+            ) : null}
             {exercise.equipment ? (
               <Badge className="ui-chip border-0">
                 {exercise.equipment}
