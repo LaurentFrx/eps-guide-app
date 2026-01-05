@@ -21,8 +21,11 @@ import type { ExerciseRecord } from "@/lib/exercises/schema";
 
 const levelStyles: Record<string, string> = {
   Debutant: "bg-emerald-100 text-emerald-800",
+  "Débutant": "bg-emerald-100 text-emerald-800",
   Intermediaire: "bg-sky-100 text-sky-800",
+  "Intermédiaire": "bg-sky-100 text-sky-800",
   Avance: "bg-rose-100 text-rose-800",
+  "Avancé": "bg-rose-100 text-rose-800",
 };
 
 const DETAIL_LABEL_SPECS: LabelSpec[] = [
@@ -38,13 +41,13 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
   },
   {
     key: "justif",
-    title: "Justifications biomecaniques",
-    labels: ["Justifications biomecaniques", "Justifications"],
+    title: "Justifications biomécaniques",
+    labels: ["Justifications biomécaniques", "Justifications"],
   },
   {
     key: "benefices",
-    title: "Benefices averes",
-    labels: ["Benefices averes", "Benefices"],
+    title: "Bénéfices avérés",
+    labels: ["Bénéfices avérés", "Benefices"],
   },
   {
     key: "contreind",
@@ -58,9 +61,9 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
   },
   {
     key: "progReg",
-    title: "Progressions / regressions",
+    title: "Progressions / régressions",
     labels: [
-      "Progressions / regressions",
+      "Progressions / régressions",
       "Progressions/Regressions",
       "Progression",
       "Regression",
@@ -69,13 +72,13 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
   },
   {
     key: "consignes",
-    title: "Consignes pedagogiques",
-    labels: ["Consignes pedagogiques", "Consignes"],
+    title: "Consignes pédagogiques",
+    labels: ["Consignes pédagogiques", "Consignes"],
   },
   {
     key: "dosage",
-    title: "Dosage recommande",
-    labels: ["Dosage recommande", "Dosage"],
+    title: "Dosage recommandé",
+    labels: ["Dosage recommandé", "Dosage"],
   },
 ];
 
@@ -304,6 +307,7 @@ export const ExerciseDetail = ({
     </div>
   );
 };
+
 
 
 

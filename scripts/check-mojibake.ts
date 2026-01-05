@@ -19,14 +19,17 @@ const TEXT_EXTENSIONS = new Set([
 ]);
 
 const PATTERNS: Array<{ label: string; re: RegExp }> = [
-  { label: "U+201A (‚)", re: /\u201A/ },
-  { label: "OE in word (maŒ)", re: /[a-z]\u0152/i },
-  { label: "Replacement char (�)", re: /\uFFFD/ },
-  { label: "UTF-8 mojibake (â€”)", re: /â€”/ },
-  { label: "UTF-8 mojibake (â€“)", re: /â€“/ },
-  { label: "UTF-8 mojibake (â€™)", re: /â€™/ },
-  { label: "UTF-8 mojibake (â€œ)", re: /â€œ/ },
-  { label: "UTF-8 mojibake (â€)", re: /â€/ },
+  { label: "U+201A (‚)", re: /‚/ },
+  { label: "U+201E („)", re: /„/ },
+  { label: "U+0160 (Š)", re: /Š/ },
+  { label: "U+017D (Ž)", re: /Ž/ },
+  { label: "OE in word (maŒ)", re: /[a-z]Œ/i },
+  { label: "Replacement char (�)", re: /�/ },
+  { label: "Mojibake (â€™)", re: /â€™/ },
+  { label: "Mojibake (â€œ/â€�)", re: /â€œ|â€�/ },
+  { label: "Mojibake (â€“/â€”)", re: /â€“|â€”/ },
+  { label: "Mojibake (â€¦)", re: /â€¦/ },
+  { label: "Mojibake (Â )", re: /Â\s/ },
 ];
 
 const shouldScan = (filePath: string) => {
