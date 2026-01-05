@@ -354,6 +354,12 @@ async function main() {
 
   const masterEditorial = await loadMasterEditorial();
   const masterCodes = new Set(Object.keys(masterEditorial));
+  const sortedMasterCodes = Array.from(masterCodes).sort((a, b) => {
+    const sa = Number(a.slice(1, 2));
+    const sb = Number(b.slice(1, 2));
+    if (sa !== sb) return sa - sb;
+    return Number(a.slice(3)) - Number(b.slice(3));
+  });
   if (!masterCodes.size) {
     console.warn("No master editorial blocks found in master.fr.md.");
   } else if (masterCodes.size < expectedCodes.size) {
@@ -364,7 +370,15 @@ async function main() {
       );
     }
   }
-  console.log(`Parsed master editorial codes: ${masterCodes.size}`);
+  if (sortedMasterCodes.length) {
+    console.log(
+      `Parsed master editorial codes (${sortedMasterCodes.length}): ${sortedMasterCodes.join(
+        ", "
+      )}`
+    );
+  } else {
+    console.log("Parsed master editorial codes (0)");
+  }
 
   for (const code of expectedList) {
     const block = blocks.get(code);
