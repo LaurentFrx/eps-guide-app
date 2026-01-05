@@ -144,12 +144,123 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    background-image: var(--bg-gradient);
-    background-color: rgb(var(--bg));
+    color: rgb(var(--text));
+    background:
+      radial-gradient(1200px circle at 10% 0%, rgba(var(--ring) / 0.22), transparent 60%),
+      linear-gradient(180deg, rgb(var(--bg)), rgb(var(--surface)) 55%, rgb(var(--bg)) 120%);
     min-height: 100vh;
   }
 
   .font-display {
     font-family: var(--font-display);
   }
+}
+
+/* =========================
+   EPS HOME PREMIUM THEME
+   (Home only: .eps-home)
+   ========================= */
+.eps-home {
+  color: rgba(255, 255, 255, 0.92);
+  background:
+    radial-gradient(900px circle at 12% 8%, rgba(100, 158, 205, 0.38), transparent 58%),
+    radial-gradient(900px circle at 92% 0%, rgba(176, 216, 132, 0.18), transparent 55%),
+    linear-gradient(180deg, #041159 0%, #053884 46%, #041159 110%);
+  min-height: 100dvh;
+}
+
+.eps-home__header {
+  padding-top: 14px;
+  padding-bottom: 10px;
+}
+
+.eps-home__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eps-home__logo {
+  height: 44px;
+  width: auto;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.32));
+}
+
+.eps-home__chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.eps-chip {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(100, 158, 205, 0.22);
+  color: rgba(255, 255, 255, 0.86);
+  border-radius: 999px;
+}
+
+.eps-chip.is-active,
+.eps-chip[data-active="true"] {
+  border-color: rgba(176, 216, 132, 0.8);
+  box-shadow: 0 0 0 3px rgba(176, 216, 132, 0.16);
+}
+
+.eps-search {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(100, 158, 205, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 18px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.eps-search__input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(100, 158, 205, 0.22);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.eps-search__input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.eps-search__input:focus {
+  outline: none;
+  border-color: rgba(176, 216, 132, 0.6);
+  box-shadow: 0 0 0 4px rgba(100, 158, 205, 0.2);
+}
+
+.eps-btn-primary {
+  background: linear-gradient(135deg, #1056a3 0%, #276aaf 60%, #649ecd 120%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+}
+
+.eps-btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+.eps-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(100, 158, 205, 0.2);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+}
+
+.eps-card h3,
+.eps-card h2 {
+  color: rgba(255, 255, 255, 0.94);
+}
+
+.eps-card p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.eps-home a {
+  color: rgba(185, 218, 241, 0.9);
+}
+
+.eps-home a:hover {
+  color: rgba(176, 216, 132, 0.95);
 }
