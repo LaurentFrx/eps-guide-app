@@ -2,7 +2,10 @@
 import fs from "fs/promises";
 import path from "path";
 import { normalizeExerciseCode, isValidExerciseCode } from "../src/lib/exerciseCode";
-import { loadMasterEditorial } from "./parse-master-editorial";
+import {
+  parseEditorialFile,
+  type EditorialParseResult,
+} from "./parse-master-editorial";
 
 type EditorialEntry = {
   materielMd: string;
@@ -42,6 +45,7 @@ type LabelKey =
   | "anatomie";
 
 const ROOT = process.cwd();
+const MASTER_PATH = path.join(ROOT, "docs", "editorial", "master.fr.md");
 const INPUT_PATHS = [
   path.join(ROOT, "audit-editorial.report.md"),
   path.join(ROOT, "docs", "editorial", "audit-editorial.report.md"),
@@ -54,9 +58,11 @@ const FALLBACK_REPORT_PATH = path.join(
   "audit-editorial.fallbacks.json"
 );
 
-const BLOCK_CODE_RE = /^(?:#+\s*)?(S[1-5]-\d{2})\b/gm;
-const CODE_TOKEN_RE = /\bS[1-5]-\d{2}\b/g;
-const RANGE_RE = /\b(S[1-5]-\d{2})\s*(?:a|à|–|-|to)\s*(S[1-5]-\d{2})\b/gi;
+const BLOCK_CODE_RE =
+  /^\s*\d*\s*(?:#+\s*)?(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gm;
+const CODE_TOKEN_RE = /\bS[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2}\b/g;
+const RANGE_RE =
+  /\b(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\s*(?:a|\u00E0|-|to)\s*(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gi;
 const SESSION_RE = /^Session\s+([1-5])\b[^\n]*\((\d+)\s+exercices?\)/gim;
 const GLOBAL_SUFFIX_RE = /(?:^|\n)(Conclusion|Sources)\s*:/g;
 const LABEL_PATTERNS: Array<{ key: LabelKey; label: string }> = [
@@ -83,6 +89,35 @@ const LABEL_PATTERN_REGEX = new RegExp(
     .join("|")})\\b\\s*:`,
   "gi"
 );
+
+const normalizeCodeToken = (value: string) =>
+  value.replace(/[\u2010\u2011\u2012\u2013\u2014]/g, "-");
+
+const sortCodes = (codes: string[]) =>
+  codes.slice().sort((a, b) => {
+    const sa = Number(a.slice(1, 2));
+    const sb = Number(b.slice(1, 2));
+    if (sa !== sb) return sa - sb;
+    return Number(a.slice(3)) - Number(b.slice(3));
+  });
+
+const logParseContext = (
+  parseResult: EditorialParseResult,
+  code: string,
+  reason: string,
+  label: string
+) => {
+  const lineIndex = parseResult.codeLineMap.get(code);
+  if (lineIndex == null) return;
+  const start = Math.max(0, lineIndex - 1);
+  const end = Math.min(parseResult.lines.length, lineIndex + 2);
+  const snippet = parseResult.lines
+    .slice(start, end)
+    .map((line, idx) => `${start + idx + 1}: ${line}`)
+    .join("\n");
+  console.warn(`${label}: ${reason} (${code})`);
+  console.warn(snippet);
+};
 
 function normalizeLabelToken(value: string): string {
   return value.replace(/\s+/g, " ").trim().toLowerCase();
@@ -260,7 +295,7 @@ async function main() {
     const start = current.index;
     const end = next ? next.index : raw.length;
     const block = raw.slice(start, end);
-    const normalized = normalizeExerciseCode(current.code);
+    const normalized = normalizeExerciseCode(normalizeCodeToken(current.code));
     if (!isValidExerciseCode(normalized)) {
       continue;
     }
@@ -285,15 +320,15 @@ async function main() {
 
     const codes = new Set<string>();
     for (const code of codeMatches) {
-      const normalized = normalizeExerciseCode(code);
+      const normalized = normalizeExerciseCode(normalizeCodeToken(code));
       if (isValidExerciseCode(normalized)) {
         codes.add(normalized);
       }
     }
 
     for (const range of rangeMatches) {
-      const start = normalizeExerciseCode(range[1]);
-      const end = normalizeExerciseCode(range[2]);
+      const start = normalizeExerciseCode(normalizeCodeToken(range[1]));
+      const end = normalizeExerciseCode(normalizeCodeToken(range[2]));
       if (!isValidExerciseCode(start) || !isValidExerciseCode(end)) continue;
       const session = start.slice(0, 2);
       if (session !== end.slice(0, 2)) continue;
@@ -330,6 +365,14 @@ async function main() {
     (code) => !expectedCodes.has(code)
   );
   if (extraCodes.length) {
+    extraCodes.forEach((code) => {
+      logParseContext(
+        reportParse,
+        code,
+        "code not in expected list",
+        path.basename(inputPath)
+      );
+    });
     throw new Error(`Unexpected codes in editorial source: ${extraCodes.join(", ")}`);
   }
 
@@ -342,6 +385,8 @@ async function main() {
 
   const editorialByCode: EditorialByCode = {};
   const masterExtraByCode: Record<string, MasterExtraEntry> = {};
+  const fallbackEntriesBefore: Array<{ code: string; fields: string[]; reason: string }> =
+    [];
   const fallbackEntries: Array<{ code: string; fields: string[]; reason: string }> =
     [];
 
@@ -352,14 +397,15 @@ async function main() {
     return Number(a.slice(3)) - Number(b.slice(3));
   });
 
-  const masterEditorial = await loadMasterEditorial();
+  const masterParse = await parseEditorialFile(MASTER_PATH);
+  const masterEditorial = masterParse.entries;
   const masterCodes = new Set(Object.keys(masterEditorial));
-  const sortedMasterCodes = Array.from(masterCodes).sort((a, b) => {
-    const sa = Number(a.slice(1, 2));
-    const sb = Number(b.slice(1, 2));
-    if (sa !== sb) return sa - sb;
-    return Number(a.slice(3)) - Number(b.slice(3));
-  });
+  const sortedMasterCodes = sortCodes(Array.from(masterCodes));
+
+  const reportParse = await parseEditorialFile(inputPath);
+  const reportEditorial = reportParse.entries;
+  const reportCodes = new Set(Object.keys(reportEditorial));
+  const sortedReportCodes = sortCodes(Array.from(reportCodes));
   if (!masterCodes.size) {
     console.warn("No master editorial blocks found in master.fr.md.");
   } else if (masterCodes.size < expectedCodes.size) {
@@ -378,6 +424,28 @@ async function main() {
     );
   } else {
     console.log("Parsed master editorial codes (0)");
+  }
+  if (sortedReportCodes.length) {
+    console.log(
+      `Parsed report editorial codes (${sortedReportCodes.length}): ${sortedReportCodes.join(
+        ", "
+      )}`
+    );
+  } else {
+    console.log("Parsed report editorial codes (0)");
+  }
+  const extraMasterCodes = sortedMasterCodes.filter(
+    (code) => !expectedCodes.has(code)
+  );
+  if (extraMasterCodes.length) {
+    extraMasterCodes.forEach((code) => {
+      logParseContext(
+        masterParse,
+        code,
+        "code not in expected list",
+        path.basename(MASTER_PATH)
+      );
+    });
   }
 
   for (const code of expectedList) {
@@ -398,6 +466,33 @@ async function main() {
       sections.get("securite")?.content ??
       sections.get("contre")?.content ??
       "Aucun";
+
+    const fallbackFieldsBefore: string[] = [];
+    if (!consignes) fallbackFieldsBefore.push("consignes");
+    if (!dosage) fallbackFieldsBefore.push("dosage");
+    if (securite === "Aucun") fallbackFieldsBefore.push("securite");
+    if (fallbackFieldsBefore.length) {
+      fallbackEntriesBefore.push({
+        code,
+        fields: fallbackFieldsBefore,
+        reason: "label absent",
+      });
+    }
+
+    const reportEntry = reportEditorial[code];
+    if (!consignes && reportEntry?.consignes) {
+      consignes = reportEntry.consignes;
+    }
+    if (!dosage && reportEntry?.dosage) {
+      dosage = reportEntry.dosage;
+    }
+    if (securite === "Aucun" && reportEntry?.contreIndications) {
+      const reportSecurite = reportEntry.contreIndications;
+      if (reportSecurite.trim()) {
+        securite = reportSecurite;
+      }
+    }
+
     const masterEntry = masterEditorial[code];
     if (masterEntry?.consignes) {
       consignes = masterEntry.consignes;
@@ -473,6 +568,11 @@ async function main() {
       reason: entry.reason,
     }));
 
+  console.log(
+    `Editorial fallbacks before overrides: ${fallbackEntriesBefore.length}`
+  );
+  console.log(`Editorial fallbacks after overrides: ${fallbackOutput.length}`);
+
   await fs.mkdir(path.dirname(FALLBACK_REPORT_PATH), { recursive: true });
   await fs.writeFile(
     FALLBACK_REPORT_PATH,
@@ -532,3 +632,5 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+
+
