@@ -313,10 +313,7 @@
    ========================= */
 .eps-home {
   color: rgba(255, 255, 255, 0.92);
-  background:
-    radial-gradient(900px circle at 12% 8%, rgba(100, 158, 205, 0.38), transparent 58%),
-    radial-gradient(900px circle at 92% 0%, rgba(176, 216, 132, 0.18), transparent 55%),
-    linear-gradient(180deg, #041159 0%, #053884 46%, #041159 110%);
+  background: transparent;
   min-height: 100dvh;
 }
 
