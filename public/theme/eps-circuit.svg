@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#649ECD" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#B0D884" stop-opacity="0.35"/>
+    </linearGradient>
+
+    <pattern id="p" width="200" height="200" patternUnits="userSpaceOnUse">
+      <!-- faint grid -->
+      <path d="M0 0H200M0 50H200M0 100H200M0 150H200M0 200H200M0 0V200M50 0V200M100 0V200M150 0V200M200 0V200"
+            fill="none" stroke="#649ECD" stroke-opacity="0.10" stroke-width="1"/>
+
+      <!-- circuit traces -->
+      <path d="M20 40H110V90H170" fill="none" stroke="url(#g)" stroke-opacity="0.55" stroke-width="2" stroke-linecap="round"/>
+      <path d="M30 160H90V130H140V60H190" fill="none" stroke="url(#g)" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round"/>
+      <path d="M10 110H70V70H120" fill="none" stroke="url(#g)" stroke-opacity="0.40" stroke-width="2" stroke-linecap="round"/>
+      <path d="M120 190V150H160V120" fill="none" stroke="url(#g)" stroke-opacity="0.40" stroke-width="2" stroke-linecap="round"/>
+
+      <!-- nodes -->
+      <g fill="#B9DAF1" fill-opacity="0.55">
+        <circle cx="20" cy="40" r="3"/>
+        <circle cx="110" cy="40" r="3"/>
+        <circle cx="110" cy="90" r="3"/>
+        <circle cx="170" cy="90" r="3"/>
+        <circle cx="30" cy="160" r="3"/>
+        <circle cx="90" cy="160" r="3"/>
+        <circle cx="90" cy="130" r="3"/>
+        <circle cx="140" cy="130" r="3"/>
+        <circle cx="140" cy="60" r="3"/>
+        <circle cx="190" cy="60" r="3"/>
+        <circle cx="10" cy="110" r="3"/>
+        <circle cx="70" cy="110" r="3"/>
+        <circle cx="70" cy="70" r="3"/>
+        <circle cx="120" cy="70" r="3"/>
+        <circle cx="120" cy="190" r="3"/>
+        <circle cx="120" cy="150" r="3"/>
+        <circle cx="160" cy="150" r="3"/>
+        <circle cx="160" cy="120" r="3"/>
+      </g>
+    </pattern>
+  </defs>
+
+  <rect width="600" height="600" fill="url(#p)"/>
+</svg>
