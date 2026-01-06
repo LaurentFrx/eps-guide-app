@@ -3,11 +3,17 @@ import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseRecord } from "@/lib/exercises/schema";
 import { isKvConfigured } from "@/lib/admin/env";
 
+export type OverrideRecord = Partial<ExerciseRecord> & { updatedAt?: string };
+export type OverrideSummary = { code: string; updatedAt?: string };
+
 const overrideKey = (code: string) =>
+  `admin:exercise:${normalizeExerciseCode(code)}`;
+const legacyOverrideKey = (code: string) =>
   `exercise:override:${normalizeExerciseCode(code)}`;
 const customKey = (code: string) =>
   `exercise:custom:${normalizeExerciseCode(code)}`;
 const customIndexKey = "exercise:custom:index";
+const overrideIndexKey = "admin:exercise:index";
 
 const ensureConfigured = () => isKvConfigured();
 
@@ -30,6 +36,20 @@ export async function setCustomIndex(codes: string[]) {
     new Set(codes.map((code) => normalizeExerciseCode(code)))
   ).sort();
   await kv.set(customIndexKey, normalized);
+}
+
+export async function listOverrideCodes(): Promise<string[]> {
+  if (!ensureConfigured()) return [];
+  const value = await kv.get(overrideIndexKey);
+  return normalizeIndex(value);
+}
+
+export async function setOverrideIndex(codes: string[]) {
+  if (!ensureConfigured()) return;
+  const normalized = Array.from(
+    new Set(codes.map((code) => normalizeExerciseCode(code)))
+  ).sort();
+  await kv.set(overrideIndexKey, normalized);
 }
 
 export async function getCustomExercise(
@@ -62,23 +82,53 @@ export async function deleteCustomExercise(code: string) {
 
 export async function getOverride(
   code: string
-): Promise<Partial<ExerciseRecord> | null> {
+): Promise<OverrideRecord | null> {
   if (!ensureConfigured()) return null;
-  const record = await kv.get<Partial<ExerciseRecord>>(overrideKey(code));
-  return record ?? null;
+  const record = await kv.get<OverrideRecord>(overrideKey(code));
+  if (record) return record;
+  const legacy = await kv.get<OverrideRecord>(legacyOverrideKey(code));
+  return legacy ?? null;
 }
 
 export async function setOverride(
   code: string,
-  override: Partial<ExerciseRecord>
+  override: OverrideRecord
 ) {
   if (!ensureConfigured()) return;
-  await kv.set(overrideKey(code), override);
+  const normalized = normalizeExerciseCode(code);
+  const record = {
+    ...override,
+    updatedAt: override.updatedAt ?? new Date().toISOString(),
+  };
+  await kv.set(overrideKey(normalized), record);
+  await kv.set(legacyOverrideKey(normalized), record);
+  const index = await listOverrideCodes();
+  if (!index.includes(normalized)) {
+    index.push(normalized);
+    await setOverrideIndex(index);
+  }
 }
 
 export async function deleteOverride(code: string) {
   if (!ensureConfigured()) return false;
-  await kv.del(overrideKey(code));
+  const normalized = normalizeExerciseCode(code);
+  await kv.del(overrideKey(normalized));
+  await kv.del(legacyOverrideKey(normalized));
+  const index = await listOverrideCodes();
+  await setOverrideIndex(index.filter((item) => item !== normalized));
   return true;
+}
+
+export async function listOverrideSummaries(): Promise<OverrideSummary[]> {
+  if (!ensureConfigured()) return [];
+  const codes = await listOverrideCodes();
+  const summaries: OverrideSummary[] = [];
+  for (const code of codes) {
+    const record = await getOverride(code);
+    if (record) {
+      summaries.push({ code, updatedAt: record.updatedAt });
+    }
+  }
+  return summaries;
 }
 

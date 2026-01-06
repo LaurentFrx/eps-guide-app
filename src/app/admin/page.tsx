@@ -2,6 +2,7 @@ import { isAdminConfigured } from "@/lib/admin/env";
 import { getMergedExerciseRecords } from "@/lib/exercises/merged";
 import AdminDashboard from "./AdminDashboard";
 import { GlassCard } from "@/components/GlassCard";
+import { listOverrideSummaries } from "@/lib/admin/store";
 
 export default async function AdminPage() {
   if (!isAdminConfigured()) {
@@ -23,6 +24,11 @@ export default async function AdminPage() {
   }
 
   const exercises = await getMergedExerciseRecords();
-  return <AdminDashboard exercises={exercises} />;
+  const overrides = await listOverrideSummaries();
+  const overrideMeta = Object.fromEntries(
+    overrides.map((override) => [override.code, override])
+  );
+
+  return <AdminDashboard exercises={exercises} overrides={overrideMeta} />;
 }
 

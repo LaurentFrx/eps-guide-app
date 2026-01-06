@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import ExerciseForm from "../ExerciseForm";
+import OverrideEditor from "../OverrideEditor";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
 import { getMergedExerciseRecord } from "@/lib/exercises/merged";
-import { getCustomExercise } from "@/lib/admin/store";
+import { getCustomExercise, getOverride } from "@/lib/admin/store";
 import { isAdminConfigured } from "@/lib/admin/env";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -41,12 +42,28 @@ export default async function EditExercisePage({ params }: PageProps) {
     notFound();
   }
 
+  if (custom) {
+    return (
+      <ExerciseForm
+        initial={exercise}
+        mode="edit"
+        source={custom ? "custom" : "base"}
+      />
+    );
+  }
+
+  const override = await getOverride(normalized);
+
   return (
-    <ExerciseForm
-      initial={exercise}
-      mode="edit"
-      source={custom ? "custom" : "base"}
+    <OverrideEditor
+      code={exercise.code}
+      title={exercise.title}
+      initial={{
+        consignesMd: exercise.consignesMd ?? "",
+        dosageMd: exercise.dosageMd ?? "",
+        securiteMd: exercise.securiteMd ?? "",
+      }}
+      updatedAt={override?.updatedAt ?? null}
     />
   );
 }
-
