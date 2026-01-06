@@ -1,6 +1,6 @@
 import ExerciseForm from "../ExerciseForm";
 import { normalizeExerciseRecord } from "@/lib/exercises/schema";
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 import { GlassCard } from "@/components/GlassCard";
 
 export default function NewExercisePage() {
@@ -25,3 +25,4 @@ export default function NewExercisePage() {
   const empty = normalizeExerciseRecord({});
   return <ExerciseForm initial={empty} mode="new" />;
 }
+

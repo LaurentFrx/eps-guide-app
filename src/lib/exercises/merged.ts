@@ -9,7 +9,7 @@ import {
   getOverride,
   listCustomCodes,
 } from "@/lib/admin/store";
-import { isKvConfigured } from "@/lib/admin/config";
+import { isKvConfigured } from "@/lib/admin/env";
 import { SESSIONS_EDITORIAL, SESSION_IDS, type SessionId } from "@/lib/editorial/sessions";
 import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
 import type {
@@ -178,3 +178,4 @@ export const getMergedSession = async (sessionId: SessionId): Promise<Session | 
     exercises: sessionExercises,
   };
 };
+

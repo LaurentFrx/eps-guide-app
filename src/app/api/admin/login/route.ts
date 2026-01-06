@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import {
   ADMIN_PASSWORD_HASH,
   isAdminConfigured,
-} from "@/lib/admin/config";
+} from "@/lib/admin/env";
 import { getAdminCookieName, signToken, verifyPassword } from "@/lib/admin/auth";
 
 export async function POST(request: NextRequest) {
@@ -45,3 +45,4 @@ export async function POST(request: NextRequest) {
   });
   return response;
 }
+

@@ -1,7 +1,7 @@
 import { kv } from "@vercel/kv";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
 import type { ExerciseRecord } from "@/lib/exercises/schema";
-import { isKvConfigured } from "@/lib/admin/config";
+import { isKvConfigured } from "@/lib/admin/env";
 
 const overrideKey = (code: string) =>
   `exercise:override:${normalizeExerciseCode(code)}`;
@@ -81,3 +81,4 @@ export async function deleteOverride(code: string) {
   await kv.del(overrideKey(code));
   return true;
 }
+

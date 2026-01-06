@@ -1,5 +1,5 @@
 import AdminLoginForm from "./AdminLoginForm";
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 import { GlassCard } from "@/components/GlassCard";
 
 export default function AdminLoginPage() {
@@ -27,3 +27,4 @@ export default function AdminLoginPage() {
     </div>
   );
 }
+

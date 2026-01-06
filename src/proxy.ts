@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 import { getAdminCookieName, verifyToken } from "@/lib/admin/auth";
 
 export async function proxy(request: NextRequest) {
@@ -57,3 +57,4 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: ["/exercises/:path*", "/admin/:path*", "/api/admin/:path*"],
 };
+

@@ -3,7 +3,7 @@ import {
   ADMIN_COOKIE_NAME,
   ADMIN_JWT_SECRET,
   ADMIN_TOKEN_TTL,
-} from "@/lib/admin/config";
+} from "@/lib/admin/env";
 
 const encoder = new TextEncoder();
 
@@ -37,3 +37,4 @@ export async function verifyToken(token: string) {
     return false;
   }
 }
+

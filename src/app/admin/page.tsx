@@ -1,4 +1,4 @@
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 import { getMergedExerciseRecords } from "@/lib/exercises/merged";
 import AdminDashboard from "./AdminDashboard";
 import { GlassCard } from "@/components/GlassCard";
@@ -25,3 +25,4 @@ export default async function AdminPage() {
   const exercises = await getMergedExerciseRecords();
   return <AdminDashboard exercises={exercises} />;
 }
+

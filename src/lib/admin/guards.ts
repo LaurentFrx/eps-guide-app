@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 import { getAdminCookieName, verifyToken } from "@/lib/admin/auth";
 
 export async function requireAdmin(
@@ -26,3 +26,4 @@ export async function requireAdmin(
 
   return null;
 }
+

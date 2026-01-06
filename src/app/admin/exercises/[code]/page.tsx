@@ -3,7 +3,7 @@ import ExerciseForm from "../ExerciseForm";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
 import { getMergedExerciseRecord } from "@/lib/exercises/merged";
 import { getCustomExercise } from "@/lib/admin/store";
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 import { GlassCard } from "@/components/GlassCard";
 
 type PageProps = {
@@ -49,3 +49,4 @@ export default async function EditExercisePage({ params }: PageProps) {
     />
   );
 }
+

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { GlassCard } from "@/components/GlassCard";
 import { Button } from "@/components/ui/button";
-import { isAdminConfigured } from "@/lib/admin/config";
+import { isAdminConfigured } from "@/lib/admin/env";
 
 export default function SettingsPage() {
   const adminEnabled = isAdminConfigured();
@@ -42,6 +42,7 @@ export default function SettingsPage() {
     </div>
   );
 }
+
 
 
 
