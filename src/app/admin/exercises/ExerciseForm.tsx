@@ -8,11 +8,14 @@ import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/GlassCard";
 import { cn } from "@/lib/utils";
 import { normalizeExerciseRecord, type ExerciseRecord } from "@/lib/exercises/schema";
+import { hasCrossReference } from "@/lib/admin/editorialRules";
 
 type ExerciseFormProps = {
   initial: ExerciseRecord;
   mode: "new" | "edit";
   source?: "base" | "custom";
+  hasOverride?: boolean;
+  overrideUpdatedAt?: string | null;
 };
 
 const splitLines = (value: string) =>
@@ -23,7 +26,13 @@ const splitLines = (value: string) =>
 
 const joinLines = (values: string[]) => values.join("\n");
 
-export default function ExerciseForm({ initial, mode, source }: ExerciseFormProps) {
+export default function ExerciseForm({
+  initial,
+  mode,
+  source,
+  hasOverride,
+  overrideUpdatedAt,
+}: ExerciseFormProps) {
   const [title, setTitle] = useState(initial.title);
   const [code, setCode] = useState(initial.code);
   const [level, setLevel] = useState(initial.level);
@@ -51,6 +60,9 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [showPreview, setShowPreview] = useState(false);
+
+  const canResetOverride = source === "base" && hasOverride;
+  const canDeleteCustom = mode === "edit" && source === "custom";
 
   const payload = useMemo(
     () => ({
@@ -116,6 +128,37 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
     setError("");
     setSaving(true);
 
+    const hasAnyContent = [
+      consignesMd,
+      dosageMd,
+      securiteMd,
+      keyPoints,
+      safety,
+      objective,
+      muscles,
+      equipment,
+      dosage,
+      regress,
+      progress,
+      cues,
+    ].some((value) => value.trim().length > 0);
+
+    if (!hasAnyContent) {
+      setError("Ajoutez au moins un contenu avant d'enregistrer.");
+      setSaving(false);
+      return;
+    }
+
+    if (
+      hasCrossReference(consignesMd) ||
+      hasCrossReference(dosageMd) ||
+      hasCrossReference(securiteMd)
+    ) {
+      setError("Les renvois “idem exercice” sont interdits.");
+      setSaving(false);
+      return;
+    }
+
     const endpoint =
       mode === "new" ? "/api/admin/exercises" : `/api/admin/exercises/${code}`;
     const method = mode === "new" ? "POST" : "PUT";
@@ -128,7 +171,7 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
 
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      setError(data.error ?? "Impossible d’enregistrer.");
+      setError(data.error ?? "Impossible d'enregistrer.");
       setSaving(false);
       return;
     }
@@ -144,7 +187,7 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
   };
 
   const handleDelete = async () => {
-    if (source !== "custom") return;
+    if (!canDeleteCustom) return;
     if (!window.confirm("Supprimer cette fiche personnalisée ?")) return;
     const response = await fetch(`/api/admin/exercises/${code}`, {
       method: "DELETE",
@@ -152,6 +195,20 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
     if (response.ok) {
       window.location.href = "/admin";
     }
+  };
+
+  const handleResetOverride = async () => {
+    if (!canResetOverride) return;
+    if (!window.confirm("Réinitialiser l’override ?")) return;
+    const response = await fetch(`/api/admin/exercises/${code}`, {
+      method: "DELETE",
+    });
+    if (response.ok) {
+      window.location.href = "/admin";
+      return;
+    }
+    const data = await response.json().catch(() => ({}));
+    setError(data.error ?? "Impossible de réinitialiser.");
   };
 
   return (
@@ -163,10 +220,17 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
               {mode === "new" ? "Nouvelle fiche" : "Édition"}
             </p>
             <h1 className="font-display text-2xl font-semibold text-white">
-              {mode === "new" ? "Créer un exercice" : `${code} · ${title || "Sans titre"}`}
+              {mode === "new"
+                ? "Créer un exercice"
+                : `${code} · ${title || "Sans titre"}`}
             </h1>
+            {overrideUpdatedAt ? (
+              <p className="text-sm text-white/70">
+                Dernière modif : {overrideUpdatedAt}
+              </p>
+            ) : null}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="ghost"
               size="sm"
@@ -174,8 +238,19 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
               onClick={() => setShowPreview((prev) => !prev)}
             >
               {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              {showPreview ? "Masquer l’aperçu" : "Prévisualiser"}
+              {showPreview ? "Masquer l'aperçu" : "Prévisualiser"}
             </Button>
+            {mode === "edit" ? (
+              <Button asChild variant="ghost" className="ui-chip">
+                <Link
+                  href={`/exercises/detail/${code}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Aperçu public
+                </Link>
+              </Button>
+            ) : null}
             <Button
               className="ui-btn-primary"
               onClick={handleSave}
@@ -184,14 +259,19 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
               <Save className="h-4 w-4" />
               {saving ? "Enregistrement..." : "Enregistrer"}
             </Button>
-            {mode === "edit" && source === "custom" ? (
+            {canDeleteCustom ? (
               <Button variant="ghost" className="ui-chip" onClick={handleDelete}>
                 <Trash2 className="h-4 w-4" />
                 Supprimer
               </Button>
             ) : null}
+            {canResetOverride ? (
+              <Button variant="ghost" className="ui-chip" onClick={handleResetOverride}>
+                Réinitialiser override
+              </Button>
+            ) : null}
             <Button asChild variant="ghost" className="ui-chip">
-              <Link href="/admin">Annuler</Link>
+              <Link href="/admin">Retour à la liste</Link>
             </Button>
           </div>
         </div>
@@ -302,7 +382,7 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
             />
           </label>
           <label className="text-xs uppercase tracking-widest text-white/60">
-            Dosage
+            Dosage (texte court)
             <textarea
               value={dosage}
               onChange={(event) => setDosage(event.target.value)}
@@ -315,7 +395,7 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
         <GlassCard className="space-y-3">
           <h2 className="text-sm font-semibold text-white/80">Compléments</h2>
           <label className="text-xs uppercase tracking-widest text-white/60">
-            Biomecanique
+            Biomécanique
             <textarea
               value={biomechanics}
               onChange={(event) => setBiomechanics(event.target.value)}
@@ -362,7 +442,7 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
         </GlassCard>
 
         <GlassCard className="space-y-3">
-          <h2 className="text-sm font-semibold text-white/80">Editorial (Markdown)</h2>
+          <h2 className="text-sm font-semibold text-white/80">Éditorial (Markdown)</h2>
           <label className="text-xs uppercase tracking-widest text-white/60">
             Matériel (md)
             <textarea
@@ -418,7 +498,7 @@ export default function ExerciseForm({ initial, mode, source }: ExerciseFormProp
             />
           </label>
           <label className="text-xs uppercase tracking-widest text-white/60">
-            Cues (1 par ligne)
+            Erreurs fréquentes (1 par ligne)
             <textarea
               value={cues}
               onChange={(event) => setCues(event.target.value)}

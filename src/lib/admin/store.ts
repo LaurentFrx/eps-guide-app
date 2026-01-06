@@ -132,3 +132,17 @@ export async function listOverrideSummaries(): Promise<OverrideSummary[]> {
   return summaries;
 }
 
+export async function getOverrideSummariesForCodes(
+  codes: string[]
+): Promise<OverrideSummary[]> {
+  if (!ensureConfigured()) return [];
+  const summaries: OverrideSummary[] = [];
+  for (const code of codes) {
+    const record = await getOverride(code);
+    if (record) {
+      summaries.push({ code, updatedAt: record.updatedAt });
+    }
+  }
+  return summaries;
+}
+

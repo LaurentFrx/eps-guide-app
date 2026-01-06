@@ -3,7 +3,8 @@ import type { NextRequest } from "next/server";
 import { kv } from "@vercel/kv";
 import { requireAdmin } from "@/lib/admin/guards";
 import { isAdminConfigured } from "@/lib/admin/env";
-import { listOverrideSummaries } from "@/lib/admin/store";
+import { getOverrideSummariesForCodes } from "@/lib/admin/store";
+import { PDF_INDEX } from "@/data/pdfIndex";
 
 export async function GET(request: NextRequest) {
   const auth = await requireAdmin(request);
@@ -17,7 +18,8 @@ export async function GET(request: NextRequest) {
     kvOk = false;
   }
 
-  const overrides = await listOverrideSummaries();
+  const codes = PDF_INDEX.map((item) => item.code);
+  const overrides = await getOverrideSummariesForCodes(codes);
   const overridesCount = overrides.length;
   const lastModified = overrides
     .map((item) => item.updatedAt)

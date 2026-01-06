@@ -59,7 +59,7 @@ export async function POST(request: NextRequest, context: RouteContext) {
   const custom = await getCustomExercise(normalized);
   if (custom) {
     return NextResponse.json(
-      { error: "Les overrides ne s’appliquent pas aux fiches personnalisées." },
+      { error: "Les overrides ne s'appliquent pas aux fiches personnalisées." },
       { status: 400 }
     );
   }
@@ -145,7 +145,38 @@ export async function PUT(request: NextRequest, context: RouteContext) {
     );
   }
 
-  await setOverride(normalized, override);
+  const hasAnyContent = Object.values(override).some((value) => {
+    if (typeof value === "string") return value.trim().length > 0;
+    if (Array.isArray(value)) return value.some((item) => item.trim().length > 0);
+    return false;
+  });
+
+  if (!hasAnyContent) {
+    return NextResponse.json(
+      { error: "Ajoutez au moins un contenu avant d’enregistrer." },
+      { status: 400 }
+    );
+  }
+
+  const crossRefFields = [
+    override.consignesMd,
+    override.dosageMd,
+    override.securiteMd,
+  ]
+    .filter((value): value is string => typeof value === "string")
+    .filter((value) => hasCrossReference(value));
+
+  if (crossRefFields.length) {
+    return NextResponse.json(
+      { error: "Les renvois “idem exercice” sont interdits." },
+      { status: 400 }
+    );
+  }
+
+  await setOverride(normalized, {
+    ...override,
+    updatedAt: new Date().toISOString(),
+  });
   revalidateTag("exercises", "default");
   return NextResponse.json({ override });
 }
