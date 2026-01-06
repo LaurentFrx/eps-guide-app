@@ -26,6 +26,8 @@ jobs:
         run: npm ci
       - name: Security check
         run: npm run check:security
+      - name: Tsconfig types check
+        run: npm run check:tsconfig
 
   build:
     needs: security
