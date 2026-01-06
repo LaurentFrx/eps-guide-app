@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { GlassCard } from "@/components/GlassCard";
-import { Button } from "@/components/ui/button";
 import { isAdminConfigured } from "@/lib/admin/env";
 
 export default function SettingsPage() {
@@ -21,24 +20,27 @@ export default function SettingsPage() {
         </p>
       </GlassCard>
 
-      <GlassCard className="flex flex-wrap items-center justify-between gap-2">
-        <Link href={adminHref} className="space-y-1">
-          <p className="text-sm font-medium text-white">Admin</p>
-          <p className="text-xs text-white/60">
-            {adminEnabled
-              ? "Mode admin activé."
-              : "Admin non configuré (KV + secrets requis)."}
-          </p>
+      <GlassCard className="p-0">
+        <Link
+          href={adminHref}
+          className="flex w-full cursor-pointer items-center justify-between gap-3 p-4 transition hover:bg-white/5 active:bg-white/10"
+          aria-label="Ouvrir les paramètres Admin"
+        >
+          <div className="min-w-0 space-y-1">
+            <p className="text-sm font-medium text-white">Admin</p>
+            <p className="text-xs text-white/60">
+              {adminEnabled
+                ? "Mode admin activé."
+                : "Admin non configuré (KV + secrets requis)."}
+            </p>
+          </div>
+          <span
+            className="ui-chip"
+            data-active={adminEnabled ? "true" : "false"}
+          >
+            {adminEnabled ? "Ouvrir" : "Admin non configuré"}
+          </span>
         </Link>
-        {adminEnabled ? (
-          <Button asChild className="ui-btn-primary">
-            <Link href={adminHref}>Ouvrir</Link>
-          </Button>
-        ) : (
-          <Button asChild className="ui-chip">
-            <Link href={adminHref}>Admin non configuré</Link>
-          </Button>
-        )}
       </GlassCard>
     </div>
   );
