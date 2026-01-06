@@ -12,10 +12,10 @@ export default function NewExercisePage() {
             Admin
           </p>
           <h1 className="font-display text-2xl font-semibold text-white">
-            Admin non configur&apos;
+            Admin non configuré
           </h1>
           <p className="text-sm text-white/70">
-            Configurez les variables d&apos;environnement KV + admin pour activer le mode.
+            Configurez les variables d’environnement KV + admin pour activer le mode.
           </p>
         </GlassCard>
       </div>

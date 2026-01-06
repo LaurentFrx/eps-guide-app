@@ -11,7 +11,7 @@ const navItems = [
   { href: "/search", label: "Recherche", icon: Search },
   { href: "/guide", label: "Guide", icon: BookOpen },
   { href: "/favorites", label: "Favoris", icon: Star },
-  { href: "/settings", label: "Reglages", icon: Settings },
+  { href: "/settings", label: "Réglages", icon: Settings },
 ];
 
 export const BottomNav = () => {

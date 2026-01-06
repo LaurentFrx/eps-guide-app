@@ -302,7 +302,7 @@ export const ExerciseDetail = ({
             {sourcesText ? (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-white/60">
-                  Sources de l&apos;exercice
+                  Sources de l’exercice
                 </p>
                 <div className="mt-3 max-w-prose whitespace-pre-wrap text-sm leading-relaxed text-white/75">
                   {sourcesText}
