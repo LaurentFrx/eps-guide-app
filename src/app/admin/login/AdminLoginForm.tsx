@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/GlassCard";
@@ -11,7 +10,6 @@ type AdminLoginFormProps = {
 };
 
 export default function AdminLoginForm({ nextHref }: AdminLoginFormProps) {
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [password, setPassword] = useState("");
@@ -37,9 +35,10 @@ export default function AdminLoginForm({ nextHref }: AdminLoginFormProps) {
     setError("");
     setLoading(true);
 
-    const raw = (inputRef.current?.value ?? password ?? "").trim();
-    if (!raw) {
-      setError("Mot de passe requis");
+    const pw =
+      (password ?? "").trim() || (inputRef.current?.value ?? "").trim();
+    if (!pw) {
+      setError("mot de passe requis");
       setLoading(false);
       return;
     }
@@ -48,16 +47,17 @@ export default function AdminLoginForm({ nextHref }: AdminLoginFormProps) {
       const response = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: raw }),
+        body: JSON.stringify({ password: pw }),
+        credentials: "same-origin",
       });
 
-      if (!response.ok) {
-        const payload = await response.json().catch(() => ({}));
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok || payload?.ok !== true) {
         setError(payload.error ?? "Connexion impossible");
         return;
       }
 
-      router.replace(nextHref);
+      window.location.assign(nextHref);
     } catch {
       setError("Connexion impossible");
     } finally {
