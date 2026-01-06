@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/GlassCard";
 
-export default function AdminLoginForm() {
+type AdminLoginFormProps = {
+  nextHref: string;
+};
+
+export default function AdminLoginForm({ nextHref }: AdminLoginFormProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/admin";
 
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -33,7 +35,7 @@ export default function AdminLoginForm() {
       return;
     }
 
-    router.replace(next);
+    router.replace(nextHref);
   };
 
   return (

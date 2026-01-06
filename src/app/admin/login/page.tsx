@@ -1,4 +1,5 @@
-import AdminLoginForm from "./AdminLoginForm";
+import { Suspense } from "react";
+import LoginClient from "./LoginClient";
 import { isAdminConfigured } from "@/lib/admin/env";
 import { GlassCard } from "@/components/GlassCard";
 
@@ -23,7 +24,9 @@ export default function AdminLoginPage() {
 
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
-      <AdminLoginForm />
+      <Suspense fallback={null}>
+        <LoginClient />
+      </Suspense>
     </div>
   );
 }
