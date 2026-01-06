@@ -1,10 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { sessions } from "@/lib/exercises";
+import { getMergedSessions } from "@/lib/exercises/merged";
 
 export const revalidate = 60;
 
-export default function ExercicesPage() {
+export default async function ExercicesPage() {
+  const sessions = await getMergedSessions();
+
   return (
     <div className="space-y-6 p-6">
       <header className="space-y-2">

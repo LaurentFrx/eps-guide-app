@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Home, Search, Star } from "lucide-react";
+import { BookOpen, Home, Search, Settings, Star } from "lucide-react";
 import BuildStamp from "@/components/build-stamp";
 import { cn } from "@/lib/utils";
 
@@ -11,6 +11,7 @@ const navItems = [
   { href: "/search", label: "Recherche", icon: Search },
   { href: "/guide", label: "Guide", icon: BookOpen },
   { href: "/favorites", label: "Favoris", icon: Star },
+  { href: "/settings", label: "Reglages", icon: Settings },
 ];
 
 export const BottomNav = () => {

@@ -8,28 +8,97 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { GlassCard } from "@/components/GlassCard";
-import {
-  equipmentOptions,
-  filterExercises,
-  levels,
-  sessionOptions,
-} from "@/lib/exercise-data";
+import { splitEquipment, type ExerciseWithSession } from "@/lib/exercise-data";
 
-export const SearchView = ({ initialQuery }: { initialQuery?: string }) => {
+const LEVEL_ORDER = ["Debutant", "Intermediaire", "Avance"];
+
+const normalizeLevel = (value: string) => {
+  const normalized = normalizeText(value);
+  if (normalized === "debutant") return "Debutant";
+  if (normalized === "intermediaire") return "Intermediaire";
+  if (normalized === "avance") return "Avance";
+  return value.trim();
+};
+
+const normalizeText = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
+
+export const SearchView = ({
+  initialQuery,
+  exercises,
+}: {
+  initialQuery?: string;
+  exercises: ExerciseWithSession[];
+}) => {
   const [query, setQuery] = useState(initialQuery ?? "");
   const [levelFilter, setLevelFilter] = useState("Tous");
   const [equipmentFilter, setEquipmentFilter] = useState("Tous");
   const [sessionFilter, setSessionFilter] = useState<number | null>(null);
 
+  const levels = useMemo(() => {
+    const set = new Set(exercises.map((exercise) => normalizeLevel(exercise.level)));
+    const ordered = LEVEL_ORDER.filter((level) => set.has(level));
+    const rest = Array.from(set).filter((level) => !ordered.includes(level));
+    return [...ordered, ...rest];
+  }, [exercises]);
+
+  const equipmentOptions = useMemo(() => {
+    const set = new Set<string>();
+    exercises.forEach((exercise) => {
+      splitEquipment(exercise.equipment).forEach((token) => set.add(token));
+    });
+    return Array.from(set).sort();
+  }, [exercises]);
+
+  const sessionOptions = useMemo(() => {
+    const map = new Map<number, string>();
+    exercises.forEach((exercise) => {
+      if (map.has(exercise.sessionNum)) return;
+      map.set(exercise.sessionNum, exercise.sessionTitle);
+    });
+    return Array.from(map.entries())
+      .sort(([a], [b]) => a - b)
+      .map(([num, title]) => ({ num, title }));
+  }, [exercises]);
+
   const results = useMemo(
-    () =>
-      filterExercises({
-        query,
-        level: levelFilter,
-        equipment: equipmentFilter,
-        sessionNum: sessionFilter ?? undefined,
-      }),
-    [equipmentFilter, levelFilter, query, sessionFilter]
+    () => {
+      const needle = query ? normalizeText(query) : "";
+      const normalizedLevel =
+        levelFilter !== "Tous" ? normalizeLevel(levelFilter) : "";
+      const normalizedEquipment =
+        equipmentFilter !== "Tous" ? equipmentFilter : "";
+
+      return exercises.filter((exercise) => {
+        if (
+          normalizedLevel &&
+          normalizeLevel(exercise.level) !== normalizedLevel
+        ) {
+          return false;
+        }
+        if (normalizedEquipment) {
+          const tokens = splitEquipment(exercise.equipment);
+          if (!tokens.includes(normalizedEquipment)) {
+            return false;
+          }
+        }
+        if (sessionFilter && exercise.sessionNum !== sessionFilter) {
+          return false;
+        }
+        if (!needle) {
+          return true;
+        }
+        const equipmentText = splitEquipment(exercise.equipment).join(" ");
+        const haystack = normalizeText(
+          `${exercise.title} ${exercise.code} ${exercise.muscles} ${equipmentText}`
+        );
+        return haystack.includes(needle);
+      });
+    },
+    [equipmentFilter, exercises, levelFilter, query, sessionFilter]
   );
 
   const hasFilters =

@@ -89,3 +89,27 @@ ou `assets/branding/icon-512.png` (qualite potentiellement inferieure).
 ```bash
 npm run icons:generate
 ```
+
+## Admin mode (KV)
+
+Prerequis:
+- Vercel KV active
+
+Variables d'environnement a definir (Production + Preview):
+- `ADMIN_PASSWORD_HASH`
+- `ADMIN_JWT_SECRET`
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+- `KV_REST_API_READ_ONLY_TOKEN`
+
+Commandes de generation:
+
+```bash
+node -e "const bcrypt=require('bcryptjs'); bcrypt.hash('your_password', 12).then(console.log)"
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+Notes securite:
+- Le mot de passe n'est jamais en clair.
+- Le cookie admin est httpOnly.
+- Sans KV configure, les endpoints admin renvoient 503 et l'UI indique "non configure".

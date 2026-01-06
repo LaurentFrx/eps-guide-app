@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { SessionView } from "@/components/SessionView";
-import { getSession } from "@/lib/exercise-data";
+import { getMergedSession } from "@/lib/exercises/merged";
+import type { SessionId } from "@/lib/editorial/sessions";
 
 export default async function SessionPage({
   params,
@@ -9,7 +10,8 @@ export default async function SessionPage({
 }) {
   const { num } = await params;
   const numValue = Number(num);
-  const session = Number.isNaN(numValue) ? null : getSession(numValue);
+  const sessionId = Number.isNaN(numValue) ? null : (`S${numValue}` as SessionId);
+  const session = sessionId ? await getMergedSession(sessionId) : null;
 
   if (!session) {
     notFound();

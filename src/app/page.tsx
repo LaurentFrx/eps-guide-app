@@ -5,9 +5,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GlassCard } from "@/components/GlassCard";
-import { sessions, exercises } from "@/lib/exercises";
+import { getMergedExercises, getMergedSessions } from "@/lib/exercises/merged";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [sessions, exercises] = await Promise.all([
+    getMergedSessions(),
+    getMergedExercises(),
+  ]);
+
   return (
     <div className="eps-home space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
