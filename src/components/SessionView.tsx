@@ -59,14 +59,9 @@ export const SessionView = ({ session }: { session: Session }) => {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
-        <Button
-          asChild
-          variant="ghost"
-          size="sm"
-          className="ui-chip gap-2 border border-white/30 bg-white/15 text-white/95 shadow-sm hover:bg-white/25"
-        >
+        <Button asChild variant="ghost" className="ui-link px-0">
           <Link href="/">
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="mr-2 h-4 w-4" />
             Retour
           </Link>
         </Button>

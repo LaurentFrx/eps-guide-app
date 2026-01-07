@@ -6,20 +6,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { GlassCard } from "@/components/GlassCard";
-import type { ExerciseWithSession } from "@/lib/exercise-data";
+import { allExercises } from "@/lib/exercise-data";
 import { useFavorites } from "@/lib/favorites";
 
-export const FavoritesView = ({
-  exercises,
-}: {
-  exercises: ExerciseWithSession[];
-}) => {
+export const FavoritesView = () => {
   const { favorites, clearFavorites } = useFavorites();
 
   const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
-  const visibleExercises = useMemo(
-    () => exercises.filter((exercise) => favoriteSet.has(exercise.code)),
-    [exercises, favoriteSet]
+  const exercises = useMemo(
+    () => allExercises.filter((exercise) => favoriteSet.has(exercise.code)),
+    [favoriteSet]
   );
 
   return (
@@ -38,16 +34,16 @@ export const FavoritesView = ({
 
       <div className="flex items-center justify-between text-sm text-white/70">
         <Badge className="ui-chip border-0">
-          {visibleExercises.length} exercices
+          {exercises.length} exercices
         </Badge>
-        {visibleExercises.length > 0 ? (
+        {exercises.length > 0 ? (
           <Button variant="secondary" size="sm" onClick={clearFavorites} className="ui-chip">
             Vider
           </Button>
         ) : null}
       </div>
 
-      {visibleExercises.length === 0 ? (
+      {exercises.length === 0 ? (
         <GlassCard className="flex flex-col items-center gap-3 text-center">
           <HeartOff className="h-6 w-6 text-white/60" />
           <div>
@@ -61,7 +57,7 @@ export const FavoritesView = ({
         </GlassCard>
       ) : (
         <div className="grid gap-4">
-          {visibleExercises.map((exercise) => (
+          {exercises.map((exercise) => (
             <ExerciseCard key={exercise.code} exercise={exercise} showSession />
           ))}
         </div>

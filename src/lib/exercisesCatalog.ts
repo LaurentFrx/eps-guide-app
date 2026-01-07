@@ -1,7 +1,7 @@
+import { getExercise } from "@/lib/exercise-data";
 import { cleanPdfTitle, getPdfItem, getPdfSeries, pdfHasCode } from "@/data/pdfIndex";
 import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
 import { getExerciseHeroSrc } from "@/lib/exerciseAssets";
-import { getMergedExerciseRecord, getMergedExerciseRecords } from "@/lib/exercises/merged";
 
 export type ExerciseCatalogStatus = "ready" | "draft" | "ghost";
 
@@ -27,19 +27,19 @@ function resolveExerciseImage(code: string): string | null {
   return value;
 }
 
-export async function getExerciseStatus(code: string): Promise<ExerciseCatalogStatus> {
+export function getExerciseStatus(code: string): ExerciseCatalogStatus {
   const normalized = normalizeExerciseCode(code);
   if (!isValidExerciseCode(normalized) || !pdfHasCode(normalized)) return "ghost";
-  return (await getMergedExerciseRecord(normalized)) ? "ready" : "draft";
+  return getExercise(normalized) ? "ready" : "draft";
 }
 
-export async function getCatalogItem(code: string): Promise<SeriesCard | null> {
+export function getCatalogItem(code: string): SeriesCard | null {
   const normalized = normalizeExerciseCode(code);
   if (!isValidExerciseCode(normalized) || !pdfHasCode(normalized)) return null;
 
   const pdfItem = getPdfItem(normalized);
-  const detail = await getMergedExerciseRecord(normalized);
-  const status: ExerciseCatalogStatus = detail ? "ready" : "draft";
+  const detail = getExercise(normalized);
+  const status = detail ? "ready" : "draft";
   const title = detail?.title ?? (pdfItem ? cleanPdfTitle(pdfItem.title) : "");
   const image = resolveExerciseImage(normalized);
   const series = pdfItem?.series ?? normalized.split("-")[0];
@@ -55,15 +55,12 @@ export async function getCatalogItem(code: string): Promise<SeriesCard | null> {
   };
 }
 
-export async function getSeriesCards(series: string): Promise<SeriesCard[]> {
+export function getSeriesCards(series: string): SeriesCard[] {
   const items = getPdfSeries(series);
-  const mergedRecords = await getMergedExerciseRecords();
-  const recordMap = new Map(mergedRecords.map((record) => [record.code, record]));
-
-  const cards = items.map((item) => {
+  return items.map((item) => {
     const code = normalizeExerciseCode(item.code);
-    const detail = recordMap.get(code);
-    const status: ExerciseCatalogStatus = detail ? "ready" : "draft";
+    const detail = getExercise(code);
+    const status = detail ? "ready" : "draft";
     const title = detail?.title ?? cleanPdfTitle(item.title);
     const image = resolveExerciseImage(code);
 
@@ -77,18 +74,4 @@ export async function getSeriesCards(series: string): Promise<SeriesCard[]> {
       series: item.series,
     };
   });
-
-  const extraCustom = mergedRecords
-    .filter((record) => record.code.startsWith(series) && !pdfHasCode(record.code))
-    .map((record) => ({
-      code: record.code,
-      title: record.title || record.code,
-      level: record.level,
-      status: "ready" as const,
-      href: `/exercises/detail/${record.code}`,
-      image: resolveExerciseImage(record.code),
-      series,
-    }));
-
-  return [...cards, ...extraCustom];
 }

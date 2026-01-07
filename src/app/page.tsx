@@ -5,14 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GlassCard } from "@/components/GlassCard";
-import { getMergedExercises, getMergedSessions } from "@/lib/exercises/merged";
+import { sessions, exercises } from "@/lib/exercises";
 
-export default async function HomePage() {
-  const [sessions, exercises] = await Promise.all([
-    getMergedSessions(),
-    getMergedExercises(),
-  ]);
-
+export default function HomePage() {
   return (
     <div className="eps-home space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
@@ -28,9 +23,6 @@ export default async function HomePage() {
               sizes="(max-width: 640px) 220px, 320px"
               className="eps-home__logo"
             />
-            <p className="font-display text-3xl font-semibold uppercase tracking-[0.12em] text-white/90">
-              GUIDE DE MUSCULATION
-            </p>
           </div>
         </header>
         <p className="text-sm text-white/70">

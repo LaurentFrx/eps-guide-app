@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/GlassCard";
-import { CopyIconButton } from "@/components/CopyIconButton";
 import { cn } from "@/lib/utils";
 import { isPlaceholderText, toDisplayBlocks } from "@/lib/editorial/uiParse";
 
@@ -14,6 +14,8 @@ type EditorialCardProps = {
   className?: string;
 };
 
+const COPY_RESET_MS = 1800;
+
 export function EditorialCard({
   title,
   content,
@@ -21,27 +23,41 @@ export function EditorialCard({
   displayMode = "paragraph",
   className,
 }: EditorialCardProps) {
+  const [copied, setCopied] = useState(false);
   const hasContent =
     Boolean(content.trim()) && !isPlaceholderText(content);
   const blocks = useMemo(
     () => (hasContent ? toDisplayBlocks(content, displayMode) : []),
     [content, displayMode, hasContent]
   );
-  const showCopy = Boolean(copyLabel);
+
+  const handleCopy = async () => {
+    if (!hasContent) return;
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), COPY_RESET_MS);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <GlassCard className={cn("space-y-3", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs uppercase tracking-widest text-white/60">{title}</p>
         <div className="flex items-center gap-2">
-          {showCopy ? (
-            <CopyIconButton
-              text={content}
-              label="Copier"
-              copiedLabel="Copié !"
-              ariaLabel={copyLabel ?? "Copier"}
+          {copyLabel ? (
+            <Button
+              type="button"
+              size="sm"
+              variant="secondary"
               disabled={!hasContent}
-            />
+              onClick={handleCopy}
+              className="ui-chip"
+            >
+              {copied ? "Copié" : copyLabel}
+            </Button>
           ) : null}
         </div>
       </div>

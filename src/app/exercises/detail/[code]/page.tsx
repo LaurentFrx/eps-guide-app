@@ -1,6 +1,6 @@
 import { notFound, permanentRedirect } from "next/navigation";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
-import { getMergedExerciseRecord } from "@/lib/exercises/merged";
+import { getExerciseByCode } from "@/lib/exercises/index";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
 import { getHeroSrc } from "@/lib/exerciseAssets";
 
@@ -19,7 +19,7 @@ export default async function ExercisePage({
     permanentRedirect(`/exercises/detail/${normalized}`);
   }
 
-  const exercise = await getMergedExerciseRecord(normalized);
+  const exercise = getExerciseByCode(normalized);
   if (!exercise) {
     notFound();
   }
