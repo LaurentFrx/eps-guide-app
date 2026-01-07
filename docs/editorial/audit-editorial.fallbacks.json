@@ -9,6 +9,8 @@
   {
     "code": "S2-10",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -16,6 +18,8 @@
   {
     "code": "S2-11",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -23,6 +27,8 @@
   {
     "code": "S2-12",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -30,6 +36,8 @@
   {
     "code": "S2-13",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -37,6 +45,8 @@
   {
     "code": "S2-14",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -44,6 +54,8 @@
   {
     "code": "S2-15",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"

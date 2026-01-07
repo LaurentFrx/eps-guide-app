@@ -41,6 +41,16 @@ Si les DOCX sont absents, un dataset de demonstration est genere et un bandeau d
 npm run dev
 ```
 
+## Rapport editorial (audit)
+
+Genere un rapport de couverture de l'editorial:
+
+```bash
+npm run report:editorial:audit
+```
+
+Sortie attendue: `reports/audit-editorial-coverage.md`.
+
 ## Build + test offline
 
 ```bash

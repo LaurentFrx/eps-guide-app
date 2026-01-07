@@ -1,11 +1,21 @@
 #!/usr/bin/env node
 import fs from "fs/promises";
 import path from "path";
-import { normalizeExerciseCode, isValidExerciseCode } from "../src/lib/exerciseCode";
+import { normalizeExerciseCode } from "../src/lib/exerciseCode";
 import {
   parseEditorialFile,
   type EditorialParseResult,
 } from "./parse-master-editorial";
+import {
+  parseAuditEditorialReport,
+  type AuditEditorialEntry,
+} from "./parse-audit-editorial-report";
+import {
+  normalizeTypography,
+  normalizeForCompare,
+  splitParagraphs,
+  stripReferralPhrases,
+} from "./editorial-utils";
 
 type EditorialEntry = {
   materielMd: string;
@@ -14,6 +24,7 @@ type EditorialEntry = {
   securiteMd: string;
   detailMd: string;
   fullMdRaw: string;
+  complementsMd: string;
 };
 
 type EditorialByCode = Record<string, EditorialEntry>;
@@ -29,21 +40,6 @@ type MasterExtraEntry = {
   dosage?: string;
 };
 
-type LabelKey =
-  | "materiel"
-  | "consignes"
-  | "dosage"
-  | "securite"
-  | "contre"
-  | "description"
-  | "objectifs"
-  | "justifications"
-  | "benefices"
-  | "progression"
-  | "regression"
-  | "muscles"
-  | "anatomie";
-
 const ROOT = process.cwd();
 const MASTER_PATH = path.join(ROOT, "docs", "editorial", "master.fr.md");
 const INPUT_PATHS = [
@@ -58,40 +54,7 @@ const FALLBACK_REPORT_PATH = path.join(
   "audit-editorial.fallbacks.json"
 );
 
-const BLOCK_CODE_RE =
-  /^\s*\d*\s*(?:#+\s*)?(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gm;
-const CODE_TOKEN_RE = /\bS[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2}\b/g;
-const RANGE_RE =
-  /\b(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\s*(?:a|\u00E0|-|to)\s*(S[1-5][-\u2010\u2011\u2012\u2013\u2014]\d{2})\b/gi;
 const SESSION_RE = /^Session\s+([1-5])\b[^\n]*\((\d+)\s+exercices?\)/gim;
-const GLOBAL_SUFFIX_RE = /(?:^|\n)(Conclusion|Sources)\s*:/g;
-const LABEL_PATTERNS: Array<{ key: LabelKey; label: string }> = [
-  { key: "materiel", label: "materiel" },
-  { key: "materiel", label: "materiels" },
-  { key: "consignes", label: "consignes" },
-  { key: "consignes", label: "consignes cles" },
-  { key: "consignes", label: "consignes pedagogiques" },
-  { key: "dosage", label: "dosage recommande" },
-  { key: "dosage", label: "dosage" },
-  { key: "securite", label: "securite" },
-  { key: "contre", label: "contre indications" },
-  { key: "contre", label: "contre indications et adaptations" },
-];
-
-const LABEL_PATTERN_LOOKUP = new Map(
-  LABEL_PATTERNS.map((entry) => [entry.label, entry.key])
-);
-
-const LABEL_PATTERN_REGEX = new RegExp(
-  `\\b(${LABEL_PATTERNS.map((entry) => entry.label)
-    .sort((a, b) => b.length - a.length)
-    .map((label) => label.replace(/\s+/g, "\\s+"))
-    .join("|")})\\b\\s*:`,
-  "gi"
-);
-
-const normalizeCodeToken = (value: string) =>
-  value.replace(/[\u2010\u2011\u2012\u2013\u2014]/g, "-");
 
 const sortCodes = (codes: string[]) =>
   codes.slice().sort((a, b) => {
@@ -119,90 +82,72 @@ const logParseContext = (
   console.warn(snippet);
 };
 
-function normalizeLabelToken(value: string): string {
-  return value.replace(/\s+/g, " ").trim().toLowerCase();
-}
+const logAuditContext = (
+  lines: string[],
+  codeLineMap: Map<string, number>,
+  code: string,
+  reason: string,
+  label: string
+) => {
+  const lineIndex = codeLineMap.get(code);
+  if (lineIndex == null) return;
+  const start = Math.max(0, lineIndex - 1);
+  const end = Math.min(lines.length, lineIndex + 2);
+  const snippet = lines
+    .slice(start, end)
+    .map((line, idx) => `${start + idx + 1}: ${line}`)
+    .join("\n");
+  console.warn(`${label}: ${reason} (${code})`);
+  console.warn(snippet);
+};
 
-function normalizeForLabelSearch(value: string) {
-  let normalized = "";
-  const startMap: number[] = [];
-  const endMap: number[] = [];
-  let index = 0;
+const sanitizeEditorialText = (value: string) =>
+  normalizeTypography(stripReferralPhrases(value));
 
-  for (const char of value) {
-    const start = index;
-    const length = char.length;
-    index += length;
+const toComparable = (value: string) =>
+  normalizeForCompare(sanitizeEditorialText(value));
 
-    let out = char
-      .replace(/[œŒ]/g, "oe")
-      .replace(/[æÆ]/g, "ae")
-      .normalize("NFKD")
-      .replace(/\p{M}/gu, "")
-      .toLowerCase();
-    out = out.replace(/[^a-z0-9:\s]/g, " ");
+const replaceSegmentContent = (
+  segment: string,
+  originalContent: string,
+  content: string
+) => {
+  if (!segment || !originalContent) return content;
+  const prefix = segment.slice(0, segment.length - originalContent.length);
+  return `${prefix}${content}`;
+};
 
-    if (!out) continue;
-    for (const outChar of out) {
-      normalized += outChar;
-      startMap.push(start);
-      endMap.push(start + length);
+const buildUnmappedText = (
+  block: string,
+  sections: AuditEditorialEntry["sections"]
+) => {
+  if (!sections.length) return block;
+  const ranges = sections
+    .map(({ start, end }) => ({ start, end }))
+    .sort((a, b) => a.start - b.start);
+  const merged: Array<{ start: number; end: number }> = [];
+  for (const range of ranges) {
+    const last = merged[merged.length - 1];
+    if (!last || range.start > last.end) {
+      merged.push({ ...range });
+    } else if (range.end > last.end) {
+      last.end = range.end;
     }
   }
 
-  return { normalized, startMap, endMap };
-}
-
-function sliceForFields(block: string): string {
-  let cutIndex = block.length;
-  let match: RegExpExecArray | null;
-  while ((match = GLOBAL_SUFFIX_RE.exec(block)) !== null) {
-    if (match.index < cutIndex) {
-      cutIndex = match.index;
+  const parts: string[] = [];
+  let cursor = 0;
+  for (const range of merged) {
+    if (cursor < range.start) {
+      parts.push(block.slice(cursor, range.start));
     }
+    cursor = Math.max(cursor, range.end);
   }
-  return block.slice(0, cutIndex);
-}
-
-function parseSections(block: string) {
-  const matches: Array<{
-    key: LabelKey;
-    labelStart: number;
-    contentStart: number;
-    labelStartNorm: number;
-  }> = [];
-
-  const { normalized, startMap, endMap } = normalizeForLabelSearch(block);
-  let match: RegExpExecArray | null;
-  while ((match = LABEL_PATTERN_REGEX.exec(normalized)) !== null) {
-    const labelRaw = normalizeLabelToken(match[1]);
-    const key = LABEL_PATTERN_LOOKUP.get(labelRaw);
-    if (!key) continue;
-    const labelStartNorm = match.index;
-    const contentStartNorm = match.index + match[0].length;
-    const labelStart = startMap[labelStartNorm];
-    const contentStart = endMap[contentStartNorm - 1];
-    if (labelStart == null || contentStart == null) continue;
-    matches.push({ key, labelStart, contentStart, labelStartNorm });
+  if (cursor < block.length) {
+    parts.push(block.slice(cursor));
   }
-
-  const sections = new Map<LabelKey, { content: string; segment: string }>();
-
-  matches.sort((a, b) => a.labelStartNorm - b.labelStartNorm);
-
-  for (let i = 0; i < matches.length; i += 1) {
-    const current = matches[i];
-    const next = matches[i + 1];
-    const end = next ? next.labelStart : block.length;
-    const content = block.slice(current.contentStart, end);
-    const segment = block.slice(current.labelStart, end);
-    if (!sections.has(current.key)) {
-      sections.set(current.key, { content, segment });
-    }
-  }
-
-  return sections;
-}
+  return parts.join("\n");
+};
 
 function extractImplicitSection(
   block: string,
@@ -225,14 +170,6 @@ function extractImplicitSection(
   return block.slice(start, end);
 }
 
-function scoreSummaryLine(line: string): number {
-  let score = line.length;
-  if (/\bconsignes\b/i.test(line)) score += 1000;
-  if (/\bdosage\b/i.test(line)) score += 1000;
-  if (/\bsecurite\b/i.test(line)) score += 250;
-  if (/\bcontre\b/i.test(line)) score += 250;
-  return score;
-}
 
 async function main() {
   const inputPath = await (async () => {
@@ -247,7 +184,8 @@ async function main() {
     throw new Error("audit-editorial.report.md not found in expected locations.");
   })();
 
-  const raw = await fs.readFile(inputPath, "utf8");
+  const auditParse = await parseAuditEditorialReport(inputPath);
+  const raw = auditParse.raw;
 
   const expectedCodes = new Set<string>();
   const sessionCounts = new Map<string, number>();
@@ -275,99 +213,19 @@ async function main() {
     throw new Error(`Expected 70 codes from session headers, got ${expectedCodes.size}.`);
   }
 
-  const matches: Array<{ code: string; index: number }> = [];
-  let match: RegExpExecArray | null;
-  while ((match = BLOCK_CODE_RE.exec(raw)) !== null) {
-    matches.push({ code: match[1], index: match.index });
-  }
+  const auditEntries = auditParse.entries;
+  const blocks = new Map<string, AuditEditorialEntry>(
+    Object.entries(auditEntries).map(([code, entry]) => [code, entry])
+  );
 
-  if (!matches.length) {
-    throw new Error("No exercise codes found in audit-editorial.report.md.");
-  }
-
-  const blocks = new Map<string, string>();
-  const blockSources = new Map<string, "explicit" | "summary">();
-  const duplicates: string[] = [];
-
-  for (let i = 0; i < matches.length; i += 1) {
-    const current = matches[i];
-    const next = matches[i + 1];
-    const start = current.index;
-    const end = next ? next.index : raw.length;
-    const block = raw.slice(start, end);
-    const normalized = normalizeExerciseCode(normalizeCodeToken(current.code));
-    if (!isValidExerciseCode(normalized)) {
-      continue;
-    }
-    if (blocks.has(normalized)) {
-      duplicates.push(normalized);
-      continue;
-    }
-    blocks.set(normalized, block);
-    blockSources.set(normalized, "explicit");
-  }
-
-  if (duplicates.length) {
-    throw new Error(`Duplicate editorial blocks found: ${duplicates.join(", ")}`);
-  }
-
-  const lines = raw.split("\n");
-  for (const line of lines) {
-    const rangeMatches = Array.from(line.matchAll(RANGE_RE));
-    const codeMatches = line.match(CODE_TOKEN_RE) ?? [];
-
-    if (codeMatches.length < 2 && rangeMatches.length === 0) continue;
-
-    const codes = new Set<string>();
-    for (const code of codeMatches) {
-      const normalized = normalizeExerciseCode(normalizeCodeToken(code));
-      if (isValidExerciseCode(normalized)) {
-        codes.add(normalized);
-      }
-    }
-
-    for (const range of rangeMatches) {
-      const start = normalizeExerciseCode(normalizeCodeToken(range[1]));
-      const end = normalizeExerciseCode(normalizeCodeToken(range[2]));
-      if (!isValidExerciseCode(start) || !isValidExerciseCode(end)) continue;
-      const session = start.slice(0, 2);
-      if (session !== end.slice(0, 2)) continue;
-      const startNum = Number(start.slice(3));
-      const endNum = Number(end.slice(3));
-      if (!Number.isFinite(startNum) || !Number.isFinite(endNum)) continue;
-      const min = Math.min(startNum, endNum);
-      const max = Math.max(startNum, endNum);
-      for (let i = min; i <= max; i += 1) {
-        codes.add(normalizeExerciseCode(`${session}-${String(i).padStart(2, "0")}`));
-      }
-    }
-
-    for (const code of codes) {
-      const existing = blocks.get(code);
-      const existingSource = blockSources.get(code);
-      if (!existing) {
-        blocks.set(code, line);
-        blockSources.set(code, "summary");
-        continue;
-      }
-      if (existingSource === "explicit") continue;
-
-      const existingScore = scoreSummaryLine(existing);
-      const newScore = scoreSummaryLine(line);
-      if (newScore > existingScore) {
-        blocks.set(code, line);
-        blockSources.set(code, "summary");
-      }
-    }
-  }
-
-  const extraCodes = Array.from(blocks.keys()).filter(
+  const extraCodes = Object.keys(auditEntries).filter(
     (code) => !expectedCodes.has(code)
   );
   if (extraCodes.length) {
     extraCodes.forEach((code) => {
-      logParseContext(
-        reportParse,
+      logAuditContext(
+        auditParse.lines,
+        auditParse.codeLineMap,
         code,
         "code not in expected list",
         path.basename(inputPath)
@@ -397,15 +255,39 @@ async function main() {
     return Number(a.slice(3)) - Number(b.slice(3));
   });
 
+  const detailOrder: Array<{
+    key: string;
+    label: string;
+    masterKey?: keyof MasterExtraEntry;
+    aliases?: string[];
+  }> = [
+    { key: "description", label: "Description anatomique", masterKey: "description" },
+    { key: "anatomie", label: "Anatomie" },
+    { key: "muscles", label: "Muscles", masterKey: "muscles" },
+    { key: "objectifs", label: "Objectifs fonctionnels", masterKey: "objectifs" },
+    { key: "justifications", label: "Justifications biomécaniques", masterKey: "justifications" },
+    { key: "benefices", label: "Bénéfices avérés", masterKey: "benefices" },
+    {
+      key: "contre",
+      label: "Contre-indications et adaptations",
+      masterKey: "contreIndications",
+      aliases: ["securite"],
+    },
+    {
+      key: "progression",
+      label: "Progressions / régressions",
+      masterKey: "progression",
+      aliases: ["regression"],
+    },
+    { key: "consignes", label: "Consignes pédagogiques", masterKey: "consignes" },
+    { key: "dosage", label: "Dosage recommandé", masterKey: "dosage" },
+  ];
+
   const masterParse = await parseEditorialFile(MASTER_PATH);
   const masterEditorial = masterParse.entries;
   const masterCodes = new Set(Object.keys(masterEditorial));
   const sortedMasterCodes = sortCodes(Array.from(masterCodes));
-
-  const reportParse = await parseEditorialFile(inputPath);
-  const reportEditorial = reportParse.entries;
-  const reportCodes = new Set(Object.keys(reportEditorial));
-  const sortedReportCodes = sortCodes(Array.from(reportCodes));
+  const sortedAuditCodes = sortCodes(Object.keys(auditEntries));
   if (!masterCodes.size) {
     console.warn("No master editorial blocks found in master.fr.md.");
   } else if (masterCodes.size < expectedCodes.size) {
@@ -425,14 +307,14 @@ async function main() {
   } else {
     console.log("Parsed master editorial codes (0)");
   }
-  if (sortedReportCodes.length) {
+  if (sortedAuditCodes.length) {
     console.log(
-      `Parsed report editorial codes (${sortedReportCodes.length}): ${sortedReportCodes.join(
+      `Parsed audit editorial codes (${sortedAuditCodes.length}): ${sortedAuditCodes.join(
         ", "
       )}`
     );
   } else {
-    console.log("Parsed report editorial codes (0)");
+    console.log("Parsed audit editorial codes (0)");
   }
   const extraMasterCodes = sortedMasterCodes.filter(
     (code) => !expectedCodes.has(code)
@@ -449,23 +331,46 @@ async function main() {
   }
 
   for (const code of expectedList) {
-    const block = blocks.get(code);
-    if (!block) continue;
-    const blockForFields = sliceForFields(block);
-    const sections = parseSections(blockForFields);
-    const materiel = sections.get("materiel")?.content ?? "Aucun";
+    const entry = blocks.get(code);
+    if (!entry) continue;
+
+    const sectionsByKey = new Map<string, AuditEditorialEntry["sections"][0][]>();
+    entry.sections.forEach((section) => {
+      const existing = sectionsByKey.get(section.key);
+      if (existing) {
+        existing.push(section);
+      } else {
+        sectionsByKey.set(section.key, [section]);
+      }
+    });
+
+    const getSection = (keys: string[]) =>
+      keys.map((key) => sectionsByKey.get(key)?.[0]).find(Boolean);
+
+    const getSections = (keys: string[]) => {
+      const keySet = new Set(keys);
+      return entry.sections.filter((section) => keySet.has(section.key));
+    };
+
+    const materielSection = getSection(["materiel"]);
+    const consignesSection = getSection(["consignes"]);
+    const dosageSection = getSection(["dosage"]);
+    const securiteSection = getSection(["securite", "contre"]);
+
+    const materiel = materielSection?.content ?? "Aucun";
     let consignes =
-      sections.get("consignes")?.content ??
-      extractImplicitSection(blockForFields, /\bconsignes\b/i, /\bdosage\b/i) ??
+      consignesSection?.content ??
+      extractImplicitSection(
+        entry.blockForFields,
+        /\bconsignes\b/i,
+        /\bdosage\b/i
+      ) ??
       "";
     let dosage =
-      sections.get("dosage")?.content ??
-      extractImplicitSection(blockForFields, /\bdosage\b/i) ??
+      dosageSection?.content ??
+      extractImplicitSection(entry.blockForFields, /\bdosage\b/i) ??
       "";
-    let securite =
-      sections.get("securite")?.content ??
-      sections.get("contre")?.content ??
-      "Aucun";
+    let securite = securiteSection?.content ?? "Aucun";
 
     const fallbackFieldsBefore: string[] = [];
     if (!consignes) fallbackFieldsBefore.push("consignes");
@@ -477,20 +382,6 @@ async function main() {
         fields: fallbackFieldsBefore,
         reason: "label absent",
       });
-    }
-
-    const reportEntry = reportEditorial[code];
-    if (!consignes && reportEntry?.consignes) {
-      consignes = reportEntry.consignes;
-    }
-    if (!dosage && reportEntry?.dosage) {
-      dosage = reportEntry.dosage;
-    }
-    if (securite === "Aucun" && reportEntry?.contreIndications) {
-      const reportSecurite = reportEntry.contreIndications;
-      if (reportSecurite.trim()) {
-        securite = reportSecurite;
-      }
     }
 
     const masterEntry = masterEditorial[code];
@@ -526,11 +417,11 @@ async function main() {
 
     const fallbackFields: string[] = [];
     if (!consignes) {
-      consignes = blockForFields;
+      consignes = entry.blockForFields;
       fallbackFields.push("consignes");
     }
     if (!dosage) {
-      dosage = blockForFields;
+      dosage = entry.blockForFields;
       fallbackFields.push("dosage");
     }
     if (securite === "Aucun") {
@@ -544,13 +435,65 @@ async function main() {
       });
     }
 
+    const detailSegments: string[] = [];
+    for (const section of detailOrder) {
+      const auditSections = getSections([
+        section.key,
+        ...(section.aliases ?? []),
+      ]);
+      if (auditSections.length) {
+        for (const auditSection of auditSections) {
+          if (!auditSection.content.trim()) continue;
+          detailSegments.push(
+            replaceSegmentContent(
+              auditSection.segment,
+              auditSection.content,
+              auditSection.content
+            )
+          );
+        }
+        continue;
+      }
+
+      const masterContent =
+        section.masterKey && masterEntry?.[section.masterKey]
+          ? masterEntry[section.masterKey] ?? ""
+          : "";
+      if (!masterContent.trim()) continue;
+      detailSegments.push(`${section.label} : ${masterContent}`);
+    }
+
+    const detailMd = sanitizeEditorialText(detailSegments.join("\n\n"));
+
+    const usedText = [materiel, consignes, dosage, securite, detailMd]
+      .filter(Boolean)
+      .join("\n\n");
+    const usedSet = new Set(
+      splitParagraphs(usedText).map((part) => toComparable(part))
+    );
+
+    const unmappedText = buildUnmappedText(entry.block, entry.sections);
+    const complementPieces = splitParagraphs(unmappedText);
+    const complementSet = new Set<string>();
+    const complements = complementPieces
+      .filter((piece) => {
+        const key = toComparable(piece);
+        if (!key) return false;
+        if (usedSet.has(key)) return false;
+        if (complementSet.has(key)) return false;
+        complementSet.add(key);
+        return true;
+      })
+      .join("\n\n");
+
     editorialByCode[code] = {
-      materielMd: materiel,
-      consignesMd: consignes,
-      dosageMd: dosage,
-      securiteMd: securite,
-      detailMd: blockForFields,
-      fullMdRaw: block,
+      materielMd: sanitizeEditorialText(materiel),
+      consignesMd: sanitizeEditorialText(consignes),
+      dosageMd: sanitizeEditorialText(dosage),
+      securiteMd: sanitizeEditorialText(securite),
+      detailMd,
+      fullMdRaw: sanitizeEditorialText(entry.block),
+      complementsMd: sanitizeEditorialText(complements),
     };
   }
 
@@ -604,6 +547,7 @@ async function main() {
     `  securiteMd: string;\n` +
     `  detailMd: string;\n` +
     `  fullMdRaw: string;\n` +
+    `  complementsMd: string;\n` +
     `}>;\n\n` +
     `export const editorialByCode: EditorialByCode = ${serialized};\n\n` +
     `export type MasterEditorialByCode = Record<string, {\n` +

@@ -15,6 +15,7 @@ node_modules/
 # Generated data
 src/lib/exercises.generated.ts
 scripts/out/
+reports/
 
 # Serwist generated files
 public/sw*

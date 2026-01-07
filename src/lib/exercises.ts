@@ -41,6 +41,7 @@ export type Exercise = {
   securiteMd?: string;
   detailMd?: string;
   fullMdRaw?: string;
+  complementsMd?: string;
 };
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -121,6 +122,7 @@ function toExercise(entry: PdfIndexItem): Exercise {
     securiteMd: editorial?.securiteMd,
     detailMd: editorial?.detailMd,
     fullMdRaw: editorial?.fullMdRaw,
+    complementsMd: editorial?.complementsMd,
   };
 
   exercise.status = detail ? "ready" : "draft";
