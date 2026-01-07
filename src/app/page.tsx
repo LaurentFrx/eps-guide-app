@@ -5,9 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GlassCard } from "@/components/GlassCard";
-import { sessions, exercises } from "@/lib/exercises";
+import { sessions } from "@/lib/exercises";
+import { getExerciseStats } from "@/lib/stats";
 
 export default function HomePage() {
+  const stats = getExerciseStats();
   return (
     <div className="eps-home space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
@@ -31,10 +33,10 @@ export default function HomePage() {
         </p>
         <div className="eps-home__chips flex flex-wrap items-center gap-2">
           <Badge variant="outline" className="ui-chip">
-            {sessions.length} sessions
+            {stats.sessionsCount} sessions
           </Badge>
           <Badge variant="outline" data-active="true" className="ui-chip">
-            {exercises.length} exercices
+            {stats.totalExercises} exercices
           </Badge>
           <Button asChild variant="outline" size="sm" className="ui-chip">
             <Link href="/docs">Docs</Link>
@@ -86,7 +88,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <Badge variant="outline" className="ui-chip">
-                    {session.exerciseCount} exercices
+                    {stats.bySeries[session.id] ?? session.exerciseCount} exercices
                   </Badge>
                 </div>
               </GlassCard>
