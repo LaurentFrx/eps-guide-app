@@ -8,6 +8,7 @@ import type { ExerciseStatus } from "@/lib/exerciseStatus";
 import { getExerciseHeroSrcOrFallback } from "@/lib/exerciseAssets";
 import { editorialByCode } from "@/lib/editorial.generated";
 import { SESSIONS_EDITORIAL, SESSION_IDS } from "@/lib/editorial/sessions";
+import { getExerciseStats } from "@/lib/stats";
 
 export type Session = {
   id: "S1" | "S2" | "S3" | "S4" | "S5";
@@ -142,13 +143,15 @@ for (const exercise of exercises) {
   }
 }
 
+const stats = getExerciseStats();
+
 export const sessions: Session[] = sessionsBase.map((s) => ({
   ...s,
   heroImage:
     s.heroImage && s.heroImage.trim().length
       ? resolvePublicImagePath(s.heroImage)
       : (heroFallbackBySession[s.id]?.image ?? FALLBACK_IMAGE),
-  exerciseCount: exercises.filter((e) => e.sessionId === s.id).length,
+  exerciseCount: stats.bySeries[s.id] ?? exercises.filter((e) => e.sessionId === s.id).length,
 }));
 
 export default exercises;
