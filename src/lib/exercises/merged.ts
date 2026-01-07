@@ -83,10 +83,8 @@ const listMergedRecordsInternal = async (): Promise<MergedExerciseRecord[]> => {
         return null;
       }
       const override = await getOverride(normalized);
-      const { updatedAt, ...overrideFields } = override ?? {};
-      void updatedAt;
       const merged = override
-        ? normalizeExerciseRecord({ ...record, ...overrideFields, code: normalized })
+        ? normalizeExerciseRecord({ ...record, ...override, code: normalized })
         : record;
       return {
         ...merged,

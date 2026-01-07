@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/GlassCard";
@@ -10,59 +11,31 @@ type AdminLoginFormProps = {
 };
 
 export default function AdminLoginForm({ nextHref }: AdminLoginFormProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (password) {
-      return;
-    }
-    const timeoutId = window.setTimeout(() => {
-      const value = inputRef.current?.value ?? "";
-      if (value) {
-        setPassword(value);
-      }
-    }, 50);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [password]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
     setLoading(true);
 
-    const pw =
-      (password ?? "").trim() || (inputRef.current?.value ?? "").trim();
-    if (!pw) {
-      setError("mot de passe requis");
+    const response = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      setError(payload.error ?? "Connexion impossible");
       setLoading(false);
       return;
     }
 
-    try {
-      const response = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: pw }),
-        credentials: "same-origin",
-      });
-
-      const payload = await response.json().catch(() => ({}));
-      if (!response.ok || payload?.ok !== true) {
-        setError(payload.error ?? "Connexion impossible");
-        return;
-      }
-
-      window.location.assign(nextHref);
-    } catch {
-      setError("Connexion impossible");
-    } finally {
-      setLoading(false);
-    }
+    router.replace(nextHref);
   };
 
   return (
@@ -81,10 +54,6 @@ export default function AdminLoginForm({ nextHref }: AdminLoginFormProps) {
           value={password}
           placeholder="Mot de passe"
           onChange={(event) => setPassword(event.target.value)}
-          name="password"
-          autoComplete="current-password"
-          autoFocus
-          ref={inputRef}
         />
         {error ? (
           <p className="text-sm text-red-200">{error}</p>

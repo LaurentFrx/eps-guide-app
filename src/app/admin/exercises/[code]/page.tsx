@@ -2,11 +2,9 @@ import { notFound } from "next/navigation";
 import ExerciseForm from "../ExerciseForm";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
 import { getMergedExerciseRecord } from "@/lib/exercises/merged";
-import { getCustomExercise, getOverride } from "@/lib/admin/store";
+import { getCustomExercise } from "@/lib/admin/store";
 import { isAdminConfigured } from "@/lib/admin/env";
 import { GlassCard } from "@/components/GlassCard";
-import { getPdfItem } from "@/data/pdfIndex";
-import { normalizeExerciseRecord } from "@/lib/exercises/schema";
 
 type PageProps = {
   params: Promise<{ code: string }>;
@@ -38,45 +36,17 @@ export default async function EditExercisePage({ params }: PageProps) {
   }
 
   const custom = await getCustomExercise(normalized);
-  const exercise =
-    custom ??
-    (await getMergedExerciseRecord(normalized)) ??
-    normalizeExerciseRecord({
-      code: normalized,
-      title: getPdfItem(normalized)?.title ?? normalized,
-      level: "",
-      equipment: "",
-      muscles: "",
-      objective: "",
-      anatomy: "",
-      biomechanics: "",
-      benefits: "",
-      contraindications: "",
-      safety: [],
-      key_points: [],
-      cues: [],
-      sources: [],
-      regress: "",
-      progress: "",
-      dosage: "",
-      image: "",
-      materielMd: "",
-      consignesMd: "",
-      dosageMd: "",
-      securiteMd: "",
-      detailMd: "",
-      fullMdRaw: "",
-    });
-
-  const override = await getOverride(normalized);
+  const exercise = custom ?? (await getMergedExerciseRecord(normalized));
+  if (!exercise) {
+    notFound();
+  }
 
   return (
     <ExerciseForm
       initial={exercise}
       mode="edit"
       source={custom ? "custom" : "base"}
-      hasOverride={Boolean(override)}
-      overrideUpdatedAt={override?.updatedAt ?? null}
     />
   );
 }
+

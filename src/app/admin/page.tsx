@@ -1,10 +1,7 @@
 import { isAdminConfigured } from "@/lib/admin/env";
-import { getMergedExerciseRecord } from "@/lib/exercises/merged";
+import { getMergedExerciseRecords } from "@/lib/exercises/merged";
 import AdminDashboard from "./AdminDashboard";
 import { GlassCard } from "@/components/GlassCard";
-import { getOverrideSummariesForCodes } from "@/lib/admin/store";
-import { PDF_INDEX, getPdfItem } from "@/data/pdfIndex";
-import { getEditorialSources } from "@/lib/editorial/sourceMap";
 
 export default async function AdminPage() {
   if (!isAdminConfigured()) {
@@ -25,31 +22,7 @@ export default async function AdminPage() {
     );
   }
 
-  const codes = PDF_INDEX.map((item) => item.code);
-  const [sources, overrides, records] = await Promise.all([
-    getEditorialSources(),
-    getOverrideSummariesForCodes(codes),
-    Promise.all(codes.map((code) => getMergedExerciseRecord(code))),
-  ]);
-
-  const overrideMap = new Map(
-    overrides.map((override) => [override.code, override])
-  );
-
-  const exercises = codes.map((code, index) => {
-    const record = records[index];
-    const pdfItem = getPdfItem(code);
-    return {
-      code,
-      title: record?.title || pdfItem?.title || code,
-      level: record?.level ?? "",
-      source: sources.get(code) ?? "Fallback",
-      hasOverride: overrideMap.has(code),
-      updatedAt: overrideMap.get(code)?.updatedAt ?? null,
-      series: pdfItem?.series ?? code.split("-")[0] ?? "",
-    };
-  });
-
+  const exercises = await getMergedExerciseRecords();
   return <AdminDashboard exercises={exercises} />;
 }
 
