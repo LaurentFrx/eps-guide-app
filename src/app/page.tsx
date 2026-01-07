@@ -12,17 +12,18 @@ export default function HomePage() {
     <div className="eps-home space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
         <header className="eps-home__header space-y-3">
-          <div className="eps-home__brand flex items-center gap-3">
+          <div className="eps-home__brand">
             <h1 className="sr-only">Guide EPS</h1>
             <Image
               src="/branding/logo-eps.png"
               alt="EPS"
-              width={320}
-              height={128}
+              width={360}
+              height={144}
               priority
-              sizes="(max-width: 640px) 220px, 320px"
+              sizes="(max-width: 640px) 260px, 360px"
               className="eps-home__logo"
             />
+            <span className="eps-home__title">GUIDE DE MUSCULATION</span>
           </div>
         </header>
         <p className="text-sm text-white/70">

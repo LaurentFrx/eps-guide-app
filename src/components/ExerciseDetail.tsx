@@ -1,16 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GlassCard } from "@/components/GlassCard";
 import { EditorialCard } from "@/components/EditorialCard";
 import { DetailSections } from "@/components/DetailSections";
 import { GlossaryText } from "@/components/GlossaryText";
+import { BackButton } from "@/components/BackButton";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
 import {
@@ -158,12 +157,9 @@ export const ExerciseDetail = ({
     <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
-          <Button asChild variant="secondary" size="sm" className="ui-surface gap-2 p-1">
-            <Link href={sessionId ? `/exercises/${sessionId}` : "/exercises"}>
-              <ChevronLeft className="h-4 w-4" />
-              Retour
-            </Link>
-          </Button>
+          <BackButton
+            fallbackHref={sessionId ? `/exercises/${sessionId}` : "/exercises"}
+          />
         </div>
         <div className="relative h-64 w-full">
           {imageSrc ? (
@@ -249,12 +245,6 @@ export const ExerciseDetail = ({
         </div>
       ) : null}
 
-      <div className="flex flex-wrap gap-2">
-        <Button asChild size="sm" variant="secondary" className="ui-btn-primary">
-          <Link href="/guide">Voir le guide</Link>
-        </Button>
-      </div>
-
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList className="ui-surface gap-2 p-1">
           <TabsTrigger className="ui-chip" value="terrain">Terrain</TabsTrigger>
@@ -329,6 +319,4 @@ export const ExerciseDetail = ({
     </div>
   );
 };
-
-
 

@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import { ChevronLeft, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import { GlassCard } from "@/components/GlassCard";
 import { MarkdownText } from "@/components/MarkdownText";
+import { BackButton } from "@/components/BackButton";
 import { normalizeLevelLabel, splitEquipment, type Session } from "@/lib/exercise-data";
 
 export const SessionView = ({ session }: { session: Session }) => {
@@ -59,12 +59,7 @@ export const SessionView = ({ session }: { session: Session }) => {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
-        <Button asChild variant="ghost" className="ui-link px-0">
-          <Link href="/">
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Retour
-          </Link>
-        </Button>
+        <BackButton className="self-start" fallbackHref="/exercises" />
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-widest text-white/60">
             Session {session.num}
