@@ -177,8 +177,8 @@
   z-index: 0;
   background-image: url("/theme/eps-circuit.svg");
   background-repeat: repeat;
-  background-size: 520px 520px;
-  opacity: 0.08;
+  background-size: 680px 680px;
+  opacity: 0.12;
   mix-blend-mode: screen;
 }
 
@@ -293,14 +293,38 @@
 
 .eps-home__brand {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
 }
 
 .eps-home__logo {
-  height: 44px;
+  height: 56px;
   width: auto;
   filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.32));
+}
+
+.eps-home__title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 640px) {
+  .eps-home__brand {
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eps-home__logo {
+    height: 64px;
+  }
+
+  .eps-home__title {
+    font-size: 2rem;
+  }
 }
 
 .eps-home__chips {
