@@ -1,4 +1,4 @@
-import { PDF_INDEX } from "@/data/pdfIndex";
+import pdfIndex from "@/data/pdfIndex.json";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
 
 export type ExerciseStats = {
@@ -17,10 +17,10 @@ const EMPTY_SERIES: ExerciseStats["bySeries"] = {
 
 export const getExerciseStats = (): ExerciseStats => {
   const bySeries = { ...EMPTY_SERIES };
-  for (const entry of PDF_INDEX) {
-    const series =
-      (entry.series as keyof ExerciseStats["bySeries"]) ??
-      (normalizeExerciseCode(entry.code).slice(0, 2) as keyof ExerciseStats["bySeries"]);
+  const entries = pdfIndex as Array<{ code: string; series?: string }>;
+  for (const entry of entries) {
+    const series = (entry.series ??
+      normalizeExerciseCode(entry.code).slice(0, 2)) as keyof ExerciseStats["bySeries"];
     if (series in bySeries) {
       bySeries[series] += 1;
     }

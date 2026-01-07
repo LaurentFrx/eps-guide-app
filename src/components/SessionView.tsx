@@ -11,8 +11,10 @@ import { GlassCard } from "@/components/GlassCard";
 import { MarkdownText } from "@/components/MarkdownText";
 import { BackButton } from "@/components/BackButton";
 import { normalizeLevelLabel, splitEquipment, type Session } from "@/lib/exercise-data";
+import { getExerciseStats } from "@/lib/stats";
 
 export const SessionView = ({ session }: { session: Session }) => {
+  const stats = getExerciseStats();
   const [query, setQuery] = useState("");
   const [levelFilter, setLevelFilter] = useState("Tous");
   const [equipmentFilter, setEquipmentFilter] = useState("Tous");
@@ -71,7 +73,9 @@ export const SessionView = ({ session }: { session: Session }) => {
         </div>
         <div className="flex items-center gap-2 text-sm text-white/70">
           <Badge className="ui-chip border-0">
-            {session.exercises.length} exercices
+            {stats.bySeries[`S${session.num}` as keyof typeof stats.bySeries] ??
+              session.exercises.length}{" "}
+            exercices
           </Badge>
         </div>
         {session.chips.length ? (
