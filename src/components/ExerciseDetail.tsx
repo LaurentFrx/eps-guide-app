@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { GlassCard } from "@/components/GlassCard";
 import { EditorialCard } from "@/components/EditorialCard";
 import { DetailSections } from "@/components/DetailSections";
+import { GlossaryText } from "@/components/GlossaryText";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
 import {
@@ -53,6 +54,7 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
     key: "contreind",
     title: "Contre-indications / adaptations",
     labels: [
+      "Contre-indications et adaptations",
       "Contre-indications / adaptations",
       "Contre-indications",
       "Contre indications",
@@ -146,6 +148,7 @@ export const ExerciseDetail = ({
     return "Aucun";
   })();
   const detailSource = resolveText(exercise.detailMd, exercise.fullMdRaw);
+  const complementsText = resolveText(exercise.complementsMd);
   const detailSections = useMemo(
     () => splitByInlineLabels(detailSource, DETAIL_LABEL_SPECS),
     [detailSource]
@@ -300,6 +303,16 @@ export const ExerciseDetail = ({
                 </p>
               </GlassCard>
             )}
+            {complementsText ? (
+              <GlassCard>
+                <p className="text-xs uppercase tracking-widest text-white/60">
+                  Compléments
+                </p>
+                <div className="mt-3 max-w-prose">
+                  <GlossaryText text={complementsText} />
+                </div>
+              </GlassCard>
+            ) : null}
             {sourcesText ? (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-white/60">
@@ -316,7 +329,6 @@ export const ExerciseDetail = ({
     </div>
   );
 };
-
 
 
 
