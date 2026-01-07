@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
+import { APP_VERSION, BUILD_TIME, COMMIT_SHA } from "@/lib/version";
 
 export const dynamic = "force-dynamic";
 
 export const GET = async () => {
   const payload = {
-    commit: process.env.VERCEL_GIT_COMMIT_SHA ?? null,
-    buildTime: new Date().toISOString(),
+    version: APP_VERSION,
+    commitSha: COMMIT_SHA ?? "unknown",
+    buildTime: BUILD_TIME ?? null,
   };
 
   return NextResponse.json(payload, {
