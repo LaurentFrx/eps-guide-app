@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Home, Search, Star } from "lucide-react";
-import BuildStamp from "@/components/build-stamp";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -19,9 +18,6 @@ export const BottomNav = () => {
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)]">
       <div className="mx-auto w-full max-w-lg px-4 pointer-events-none">
-        <div className="flex justify-center pb-2">
-          <BuildStamp className="text-[11px] text-white/60" />
-        </div>
         <nav className="pointer-events-auto">
           <div className="ui-surface ui-bottomnav flex items-center justify-between gap-2 rounded-full px-4 py-2 shadow-lg">
             {navItems.map((item) => {
