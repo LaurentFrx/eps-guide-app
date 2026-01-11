@@ -61,6 +61,19 @@ export default async function SessionPage(props: unknown) {
         </div>
       ) : null}
 
+      {session.extraMd ? (
+        <div className="ui-card p-4">
+          <p className="text-xs uppercase tracking-widest text-white/60">
+            Résumé des exercices (audit)
+          </p>
+          <MarkdownText
+            text={session.extraMd}
+            className="mt-3 max-w-prose text-sm leading-relaxed text-white/75"
+          />
+        </div>
+      ) : null}
+
+
       <ExercisesGrid exercises={sessionExercises} />
     </div>
   );

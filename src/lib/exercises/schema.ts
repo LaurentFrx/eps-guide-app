@@ -26,6 +26,7 @@ export type ExerciseRecord = {
   detailMd?: string;
   fullMdRaw?: string;
   complementsMd?: string;
+  auditSummaryMd?: string;
 };
 
 type ExerciseInput = Partial<{
@@ -54,6 +55,7 @@ type ExerciseInput = Partial<{
   detailMd: unknown;
   fullMdRaw: unknown;
   complementsMd: unknown;
+  auditSummaryMd: unknown;
 }>;
 
 const toString = (value: unknown): string =>
@@ -114,5 +116,6 @@ export function normalizeExerciseRecord(input: ExerciseInput): ExerciseRecord {
     detailMd: toRawString(input.detailMd) || undefined,
     fullMdRaw: toRawString(input.fullMdRaw) || undefined,
     complementsMd: toRawString(input.complementsMd) || undefined,
+    auditSummaryMd: toRawString(input.auditSummaryMd) || undefined,
   };
 }

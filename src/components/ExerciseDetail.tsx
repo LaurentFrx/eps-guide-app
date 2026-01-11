@@ -148,6 +148,7 @@ export const ExerciseDetail = ({
   })();
   const detailSource = resolveText(exercise.detailMd, exercise.fullMdRaw);
   const complementsText = resolveText(exercise.complementsMd);
+  const auditSummaryText = resolveText(exercise.auditSummaryMd);
   const detailSections = useMemo(
     () => splitByInlineLabels(detailSource, DETAIL_LABEL_SPECS),
     [detailSource]
@@ -281,6 +282,17 @@ export const ExerciseDetail = ({
 
         <TabsContent value="detail">
           <div className="grid gap-4">
+            {auditSummaryText ? (
+              <GlassCard>
+                <p className="text-xs uppercase tracking-widest text-white/60">
+                  Résumé (audit)
+                </p>
+                <div className="mt-3 max-w-prose">
+                  <GlossaryText text={auditSummaryText} />
+                </div>
+              </GlassCard>
+            ) : null}
+
             {detailSections.length ? (
               <DetailSections sections={detailSections} />
             ) : (
@@ -306,7 +318,7 @@ export const ExerciseDetail = ({
             {sourcesText ? (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-white/60">
-                  Sources de l&apos;exercice
+                  Sources de l’exercice
                 </p>
                 <div className="mt-3 max-w-prose whitespace-pre-wrap text-sm leading-relaxed text-white/75">
                   {sourcesText}
@@ -319,4 +331,8 @@ export const ExerciseDetail = ({
     </div>
   );
 };
+
+
+
+
 

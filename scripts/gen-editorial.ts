@@ -16,6 +16,11 @@ import {
   splitParagraphs,
   stripReferralPhrases,
 } from "./editorial-utils";
+import { applyEditorialOverrides } from "./editorial-overrides";
+import {
+  SESSION_IDS,
+  type SessionId,
+} from "../src/lib/editorial/sessionsBase";
 
 type EditorialEntry = {
   materielMd: string;
@@ -25,6 +30,7 @@ type EditorialEntry = {
   detailMd: string;
   fullMdRaw: string;
   complementsMd: string;
+  auditSummaryMd: string;
 };
 
 type EditorialByCode = Record<string, EditorialEntry>;
@@ -47,6 +53,14 @@ const INPUT_PATHS = [
   path.join(ROOT, "docs", "editorial", "audit-editorial.report.md"),
 ];
 const OUTPUT_PATH = path.join(ROOT, "src", "lib", "editorial.generated.ts");
+const SESSION_OUTPUT_PATH = path.join(
+  ROOT,
+  "src",
+  "lib",
+  "editorial",
+  "sessions.generated.ts"
+);
+const GUIDE_OUTPUT_PATH = path.join(ROOT, "src", "data", "editorial.fr.json");
 const FALLBACK_REPORT_PATH = path.join(
   ROOT,
   "docs",
@@ -101,21 +115,75 @@ const logAuditContext = (
   console.warn(snippet);
 };
 
+const stripOmissionPrefix = (value: string) => {
+  const trimmed = value.trim();
+  const hadWrapper = trimmed.startsWith("(") && trimmed.includes("Omission");
+  let output = value.replace(
+    /(^|\n)\s*\(?\s*Omission\s*[-\u2013\u2014]\s*/g,
+    "$1"
+  );
+  if (hadWrapper) {
+    output = output.replace(/^\s*\(/, "").replace(/\)\s*$/, "");
+  }
+  return output;
+};
+
 const sanitizeEditorialText = (value: string) =>
-  normalizeTypography(stripReferralPhrases(value));
+  normalizeTypography(stripReferralPhrases(stripOmissionPrefix(value)));
+
+const STRIP_REF_PARENS_RE =
+  /\([^)]*\b(?:idem|identique|similaire)[^)]*S[1-5]-\d{2}[^)]*\)/gi;
+const EST_SIM_RE =
+  /\best\s+(?:similaire|identique)\s+(?:à|a|au|aux)\s+S[1-5]-\d{2}\b/gi;
+const SONT_SIM_RE =
+  /\bsont\s+(?:similaires|identiques)\s+(?:à|a|au|aux)\s+S[1-5]-\d{2}\b/gi;
+const CODE_REF_RE = /\b(?:à|a|au|aux)?\s*(S[1-5]-\d{2})\b/gi;
+
+const stripForeignExerciseCodes = (value: string, code: string) => {
+  const normalizedCode = normalizeExerciseCode(code);
+  return value.replace(CODE_REF_RE, (match, rawCode) => {
+    const normalized = normalizeExerciseCode(rawCode);
+    if (!normalized) return "";
+    if (normalized === normalizedCode) return match;
+    return "";
+  });
+};
+
+const sanitizeExerciseText = (value: string, code: string) => {
+  let output = stripOmissionPrefix(value);
+  output = output.replace(STRIP_REF_PARENS_RE, "");
+  output = output.replace(EST_SIM_RE, "est comparable");
+  output = output.replace(SONT_SIM_RE, "sont comparables");
+  output = stripReferralPhrases(output);
+  output = stripForeignExerciseCodes(output, code);
+  output = output.replace(/\bcomparables?\s+à(?=\s*[.,;:]|$)/gi, "comparables");
+  output = output.replace(/\bcomparable\s+à(?=\s*[.,;:]|$)/gi, "comparable");
+  output = output.replace(
+    /\bcomparables?\s+(?!à|a|au|aux|de|du|des|d')([a-zA-Z][\w-]*)/gi,
+    (_match, noun) => `comparables au ${noun}`
+  );
+  output = output.replace(
+    /\bcomparable\s+(?!à|a|au|aux|de|du|des|d')([a-zA-Z][\w-]*)/gi,
+    (_match, noun) => `comparable au ${noun}`
+  );
+  output = output.replace(
+    /(Contre-indications(?: et adaptations)?\s*:)\s*comparables?\s*\.\s*/gi,
+    "$1 "
+  );
+  output = output.replace(/\(\s*coudes?\s*\)/gi, "sur coudes");
+  output = output.replace(/\bpar\s+sur\s+coudes\b/gi, "par une planche sur coudes");
+  output = output.replace(/\(\s*\)/g, "");
+  output = output.replace(/:\s*,/g, ": ");
+  output = output.replace(/\s+,/g, ",");
+  output = output.replace(/\s+;/g, ";");
+  output = output.replace(/\s+:/g, ":");
+  output = output.replace(/\s+\./g, ".");
+  output = output.replace(/:\s*\n\s*\n(?=\S)/g, ": ");
+  return normalizeTypography(output);
+};
 
 const toComparable = (value: string) =>
-  normalizeForCompare(sanitizeEditorialText(value));
-
-const replaceSegmentContent = (
-  segment: string,
-  originalContent: string,
-  content: string
-) => {
-  if (!segment || !originalContent) return content;
-  const prefix = segment.slice(0, segment.length - originalContent.length);
-  return `${prefix}${content}`;
-};
+  normalizeForCompare(normalizeTypography(value));
 
 const buildUnmappedText = (
   block: string,
@@ -169,6 +237,63 @@ function extractImplicitSection(
 
   return block.slice(start, end);
 }
+
+const REF_CODE_RE = /\bS[1-5]\s*[-_\u2010\u2011\u2012\u2013\u2014]?\s*\d{1,2}\b/gi;
+const REF_MARKER_RE =
+  /\b(idem|id\.|identique(?:s)?|similaire(?:s)?|voir|cf\.?|ref\.?|reference|m(?:e|\u00EA)me\s+exercice|se\s+r(?:e|\u00E9)f(?:e|\u00E9)rer)\b/i;
+const OMISSION_PREFIX_RE = /^\s*\(?\s*Omission\s*[-\u2013\u2014]\s*/i;
+const CODE_LINE_RE = /^\s*\(?S[1-5]\s*[-_\u2010\u2011\u2012\u2013\u2014]?\s*\d{1,2}\b.*$/;
+
+const normalizeRefCode = (value: string) =>
+  normalizeExerciseCode(value.replace(/[\s_\u2010\u2011\u2012\u2013\u2014]+/g, "-"));
+
+const extractReferenceCodes = (value: string) => {
+  const matches = value.match(REF_CODE_RE) ?? [];
+  const codes = matches
+    .map((match) => normalizeRefCode(match))
+    .filter(Boolean);
+  return Array.from(new Set(codes));
+};
+
+const stripExerciseHeader = (value: string) => {
+  const lines = value.split("\n");
+  if (lines.length && CODE_LINE_RE.test(lines[0])) {
+    lines.shift();
+  }
+  return lines.join("\n").trim();
+};
+
+const buildCodePattern = (code: string) =>
+  code.replace(/^S/, "S\\s*").replace("-", "\\s*[-_\\u2010\\u2011\\u2012\\u2013\\u2014]?\\s*");
+
+const stripReferencePhrases = (value: string, codes: string[]) => {
+  let output = value;
+  output = output.replace(OMISSION_PREFIX_RE, "");
+  if (output.startsWith("(") && output.endsWith(")")) {
+    output = output.slice(1, -1);
+  }
+  for (const code of codes) {
+    const codePattern = buildCodePattern(code);
+    const markerToken =
+      "(?:idem|id\\.|identique|identiques|similaire|similaires|voir|cf\\.?|ref\\.?|reference|m(?:e|\\u00EA)me\\s+exercice|se\\s+r(?:e|\\u00E9)f(?:e|\\u00E9)rer)";
+    const prepToken = "(?:a|\\u00E0|au|aux|de|d'|du|des)";
+    const patterns = [
+      new RegExp(`${markerToken}\\s+(?:${prepToken}\\s+)?${codePattern}`, "gi"),
+      new RegExp(`(?:exercice|exo|fiche)\\s+${codePattern}`, "gi"),
+      new RegExp(codePattern, "gi"),
+    ];
+    patterns.forEach((pattern) => {
+      output = output.replace(pattern, "");
+    });
+  }
+  output = output.replace(REF_MARKER_RE, "");
+  output = output
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\s+([,.;:!?])/g, "$1")
+    .replace(/^[\s,.;:!?\u2013\u2014-]+/, "")
+    .replace(/[\s,.;:!?\u2013\u2014-]+$/, "");
+  return output.trim();
+};
 
 
 async function main() {
@@ -261,11 +386,23 @@ async function main() {
     masterKey?: keyof MasterExtraEntry;
     aliases?: string[];
   }> = [
-    { key: "description", label: "Description anatomique", masterKey: "description" },
+    {
+      key: "description",
+      label: "Description anatomique",
+      masterKey: "description",
+    },
     { key: "anatomie", label: "Anatomie" },
     { key: "muscles", label: "Muscles", masterKey: "muscles" },
-    { key: "objectifs", label: "Objectifs fonctionnels", masterKey: "objectifs" },
-    { key: "justifications", label: "Justifications biomécaniques", masterKey: "justifications" },
+    {
+      key: "objectifs",
+      label: "Objectifs fonctionnels",
+      masterKey: "objectifs",
+    },
+    {
+      key: "justifications",
+      label: "Justifications biomécaniques",
+      masterKey: "justifications",
+    },
     { key: "benefices", label: "Bénéfices avérés", masterKey: "benefices" },
     {
       key: "contre",
@@ -279,7 +416,11 @@ async function main() {
       masterKey: "progression",
       aliases: ["regression"],
     },
-    { key: "consignes", label: "Consignes pédagogiques", masterKey: "consignes" },
+    {
+      key: "consignes",
+      label: "Consignes pédagogiques",
+      masterKey: "consignes",
+    },
     { key: "dosage", label: "Dosage recommandé", masterKey: "dosage" },
   ];
 
@@ -417,11 +558,9 @@ async function main() {
 
     const fallbackFields: string[] = [];
     if (!consignes) {
-      consignes = entry.blockForFields;
       fallbackFields.push("consignes");
     }
     if (!dosage) {
-      dosage = entry.blockForFields;
       fallbackFields.push("dosage");
     }
     if (securite === "Aucun") {
@@ -436,6 +575,7 @@ async function main() {
     }
 
     const detailSegments: string[] = [];
+    const isSummaryEntry = entry.source === "summary";
     for (const section of detailOrder) {
       const auditSections = getSections([
         section.key,
@@ -443,14 +583,9 @@ async function main() {
       ]);
       if (auditSections.length) {
         for (const auditSection of auditSections) {
-          if (!auditSection.content.trim()) continue;
-          detailSegments.push(
-            replaceSegmentContent(
-              auditSection.segment,
-              auditSection.content,
-              auditSection.content
-            )
-          );
+          const segment = auditSection.segment.trim();
+          if (!segment) continue;
+          detailSegments.push(segment);
         }
         continue;
       }
@@ -463,7 +598,8 @@ async function main() {
       detailSegments.push(`${section.label} : ${masterContent}`);
     }
 
-    const detailMd = sanitizeEditorialText(detailSegments.join("\n\n"));
+    const detailMd = sanitizeExerciseText(detailSegments.join("\n\n"), code);
+    const auditSummary = auditParse.summaryByCode[code] ?? "";
 
     const usedText = [materiel, consignes, dosage, securite, detailMd]
       .filter(Boolean)
@@ -472,7 +608,9 @@ async function main() {
       splitParagraphs(usedText).map((part) => toComparable(part))
     );
 
-    const unmappedText = buildUnmappedText(entry.block, entry.sections);
+    const unmappedText = isSummaryEntry
+      ? ""
+      : stripExerciseHeader(buildUnmappedText(entry.block, entry.sections));
     const complementPieces = splitParagraphs(unmappedText);
     const complementSet = new Set<string>();
     const complements = complementPieces
@@ -486,15 +624,114 @@ async function main() {
       })
       .join("\n\n");
 
+    const sanitizeExercise = (value: string) =>
+      sanitizeExerciseText(value, code);
+
     editorialByCode[code] = {
-      materielMd: sanitizeEditorialText(materiel),
-      consignesMd: sanitizeEditorialText(consignes),
-      dosageMd: sanitizeEditorialText(dosage),
-      securiteMd: sanitizeEditorialText(securite),
+      materielMd: sanitizeExercise(materiel),
+      consignesMd: sanitizeExercise(consignes),
+      dosageMd: sanitizeExercise(dosage),
+      securiteMd: sanitizeExercise(securite),
       detailMd,
-      fullMdRaw: sanitizeEditorialText(entry.block),
-      complementsMd: sanitizeEditorialText(complements),
+      fullMdRaw: isSummaryEntry ? "" : sanitizeExercise(entry.block),
+      complementsMd: isSummaryEntry ? "" : sanitizeExercise(complements),
+      auditSummaryMd: sanitizeExercise(auditSummary),
     };
+  }
+
+  applyEditorialOverrides(editorialByCode, sanitizeExerciseText);
+
+  const rawEditorialByCode: EditorialByCode = {};
+  for (const [code, entry] of Object.entries(editorialByCode)) {
+    rawEditorialByCode[code] = { ...entry };
+  }
+
+  const resolvedCache = new Map<string, string>();
+  const resolveField = (
+    code: string,
+    field: keyof EditorialEntry,
+    stack: string[] = []
+  ): string => {
+    const key = `${code}:${field}`;
+    const cached = resolvedCache.get(key);
+    if (cached != null) return cached;
+    if (stack.includes(key)) {
+      throw new Error(`Cross-reference cycle detected: ${[...stack, key].join(" -> ")}`);
+    }
+    const rawEntry = rawEditorialByCode[code];
+    if (!rawEntry) {
+      resolvedCache.set(key, "");
+      return "";
+    }
+    const rawValue = rawEntry[field] ?? "";
+    if (!rawValue.trim()) {
+      resolvedCache.set(key, "");
+      return "";
+    }
+    const refCodes = extractReferenceCodes(rawValue).filter((ref) => ref !== code);
+    const hasMarker = REF_MARKER_RE.test(rawValue) || refCodes.length > 0;
+    if (!hasMarker) {
+      resolvedCache.set(key, rawValue);
+      return rawValue;
+    }
+
+    const cleaned = stripReferencePhrases(rawValue, refCodes);
+    const parts: string[] = [];
+    if (cleaned.trim()) parts.push(cleaned);
+
+    for (const refCode of refCodes) {
+      const refText = resolveField(refCode, field, [...stack, key]);
+      if (!refText.trim()) continue;
+      const refKey = toComparable(refText);
+      if (parts.some((part) => toComparable(part) === refKey)) continue;
+      parts.push(refText);
+    }
+
+    const combined = parts.join("\n\n").trim();
+    resolvedCache.set(key, combined);
+    return combined;
+  };
+
+  const fieldsToResolve: Array<keyof EditorialEntry> = [
+    "materielMd",
+    "consignesMd",
+    "dosageMd",
+    "securiteMd",
+    "detailMd",
+    "fullMdRaw",
+    "complementsMd",
+  ];
+
+  for (const code of expectedList) {
+    const entry = editorialByCode[code];
+    if (!entry) continue;
+    for (const field of fieldsToResolve) {
+      const resolved = resolveField(code, field, []);
+      entry[field] = sanitizeEditorialText(resolved) as never;
+    }
+  }
+
+  const missingEditorial: Array<{ code: string; fields: string[] }> = [];
+  for (const code of expectedList) {
+    const entry = editorialByCode[code];
+    const source = auditEntries[code]?.source ?? "explicit";
+    if (source === "summary") continue;
+    if (!entry) continue;
+    const fields: string[] = [];
+    if (!entry.consignesMd.trim()) fields.push("consignes");
+    if (!entry.dosageMd.trim()) fields.push("dosage");
+    if (!entry.securiteMd.trim()) fields.push("securite");
+    if (!entry.detailMd.trim() && !entry.fullMdRaw.trim()) {
+      fields.push("detail");
+    }
+    if (fields.length) missingEditorial.push({ code, fields });
+  }
+  if (missingEditorial.length) {
+    throw new Error(
+      `Missing editorial fields for: ${missingEditorial
+        .map((entry) => `${entry.code} (${entry.fields.join(", ")})`)
+        .join(", ")}`
+    );
   }
 
   const codeCount = Object.keys(editorialByCode).length;
@@ -531,6 +768,58 @@ async function main() {
     );
   }
 
+  const sessionAboutOutput: Record<
+    SessionId,
+    { aboutMd: string; extraMd: string }
+  > = SESSION_IDS.reduce((acc, id) => {
+    const session = auditParse.sessions[id];
+    acc[id] = {
+      aboutMd: sanitizeEditorialText(session?.about ?? ""),
+      extraMd: sanitizeEditorialText(session?.extra ?? ""),
+    };
+    return acc;
+  }, {} as Record<SessionId, { aboutMd: string; extraMd: string }>);
+
+  const missingSessionAbout = SESSION_IDS.filter(
+    (id) => !sessionAboutOutput[id].aboutMd
+  );
+  if (missingSessionAbout.length) {
+    throw new Error(
+      `Missing session about blocks for: ${missingSessionAbout.join(", ")}`
+    );
+  }
+
+  const sessionsOutput =
+    `/* Auto-generated by scripts/gen-editorial.ts. */\n` +
+    `import type { SessionId } from "@/lib/editorial/sessionsBase";\n\n` +
+    `export type SessionAbout = { aboutMd: string; extraMd: string };\n\n` +
+    `export const SESSION_ABOUT: Record<SessionId, SessionAbout> = ${JSON.stringify(
+      sessionAboutOutput,
+      null,
+      2
+    )};\n`;
+
+  await fs.mkdir(path.dirname(SESSION_OUTPUT_PATH), { recursive: true });
+  await fs.writeFile(SESSION_OUTPUT_PATH, sessionsOutput, "utf8");
+
+  const guideOutput = {
+    presentation: sanitizeEditorialText(auditParse.guide.presentation),
+    conclusion: sanitizeEditorialText(auditParse.guide.conclusion),
+    sources: sanitizeEditorialText(auditParse.guide.sources),
+    notes: sanitizeEditorialText(auditParse.guide.notes),
+  };
+
+  if (!guideOutput.presentation.trim()) {
+    throw new Error("Missing guide presentation block in audit report.");
+  }
+
+  await fs.mkdir(path.dirname(GUIDE_OUTPUT_PATH), { recursive: true });
+  await fs.writeFile(
+    GUIDE_OUTPUT_PATH,
+    JSON.stringify(guideOutput, null, 2),
+    "utf8"
+  );
+
   const sample = editorialByCode["S5-10"];
   if (!sample) {
     throw new Error("Missing S5-10 in editorialByCode.");
@@ -548,6 +837,7 @@ async function main() {
     `  detailMd: string;\n` +
     `  fullMdRaw: string;\n` +
     `  complementsMd: string;\n` +
+    `  auditSummaryMd: string;\n` +
     `}>;\n\n` +
     `export const editorialByCode: EditorialByCode = ${serialized};\n\n` +
     `export type MasterEditorialByCode = Record<string, {\n` +
@@ -576,5 +866,6 @@ main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+
 
 

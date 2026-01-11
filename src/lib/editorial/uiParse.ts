@@ -14,7 +14,7 @@ export type DisplayBlock =
   | { type: "paragraph"; text: string }
   | { type: "list"; items: string[] };
 
-const BULLET_RE = /(^|\n)\s*[-\u2022]\s+/g;
+const BULLET_RE = /(^|\n)\s*[-*\u0007\u00B7\u2022\u2023\u2043\u2219\u25AA\u25AB\u25CF\u25E6]\s+/g;
 const SENTENCE_RE = /[.!?;]\s+/g;
 
 const PLACEHOLDER_TOKENS = new Set([

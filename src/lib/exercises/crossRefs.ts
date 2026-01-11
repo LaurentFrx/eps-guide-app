@@ -26,6 +26,7 @@ export const UI_TEXT_FIELDS: TextFieldSpec[] = [
   { key: "detailMd", kind: "string" },
   { key: "fullMdRaw", kind: "string" },
   { key: "complementsMd", kind: "string" },
+  { key: "auditSummaryMd", kind: "string" },
   { key: "safety", kind: "stringArray" },
   { key: "key_points", kind: "stringArray" },
   { key: "cues", kind: "stringArray" },

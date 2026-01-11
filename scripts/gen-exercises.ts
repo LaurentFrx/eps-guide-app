@@ -188,13 +188,9 @@ async function main() {
       const id = u.id;
       const normalized = normalizeExerciseCode(id);
       const editorial = editorialByCode[normalized];
-      if (!editorial.consignesMd) {
-        throw new Error(`Missing consignes for ${normalized}`);
-      }
-      if (!editorial.dosageMd) {
-        throw new Error(`Missing dosage for ${normalized}`);
-      }
       const materielMd = editorial.materielMd || "Aucun";
+      const consignesMd = editorial.consignesMd || "Aucune consigne.";
+      const dosageMd = editorial.dosageMd || "Aucun";
       const securiteMd = editorial.securiteMd || "Aucun";
       return `  {
     id: "${id}",
@@ -211,8 +207,8 @@ async function main() {
     progression: { regression: "Contenu à compléter", progression: "Contenu à compléter" },
     dosage: "Contenu à compléter",
     materielMd: ${JSON.stringify(materielMd)},
-    consignesMd: ${JSON.stringify(editorial.consignesMd)},
-    dosageMd: ${JSON.stringify(editorial.dosageMd)},
+    consignesMd: ${JSON.stringify(consignesMd)},
+    dosageMd: ${JSON.stringify(dosageMd)},
     securiteMd: ${JSON.stringify(securiteMd)},
     detailMd: ${JSON.stringify(editorial.detailMd)},
     fullMdRaw: ${JSON.stringify(editorial.fullMdRaw)}
