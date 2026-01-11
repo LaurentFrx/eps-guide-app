@@ -207,6 +207,7 @@
   {
     "code": "S3-20",
     "fields": [
+      "consignes",
       "securite"
     ],
     "reason": "label absent"

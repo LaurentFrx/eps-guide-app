@@ -40,6 +40,9 @@ const REF_PATTERNS: RegExp[] = [
   /\bid\.\b/gi,
   /\bidentique(s)?\b/gi,
   /\bsimilaire(s)?\b/gi,
+  /\bsemblable(s)?\b/gi,
+  /\bcf\.\b/gi,
+  /\bcf\./gi,
   /\bvoir\b\s+(?:l'|le|les)?\s*(?:exercice|exo|fiche)\b/gi,
   /\bvoir\b\s+(S[1-5]\s*[-_ ]\s*\d{1,2})\b/gi,
   /\bcf\.?\b\s+(?:l'|le|les)?\s*(?:exercice|exo|fiche)\b/gi,
@@ -57,11 +60,16 @@ export const stripReferralPhrases = (value: string) => {
     (_match, plural) => (plural ? "comparables" : "comparable")
   );
   output = output.replace(
+    /\bsemblable(s)?\b/gi,
+    (_match, plural) => (plural ? "comparables" : "comparable")
+  );
+  output = output.replace(
     /\bidentique(s)?\b/gi,
     (_match, plural) => (plural ? "equivalents" : "equivalent")
   );
   output = output.replace(/\bidem\b/gi, "meme");
   output = output.replace(/\bid\.\b/gi, "meme");
+  output = output.replace(/\bcf\./gi, "");
   for (const pattern of REF_PATTERNS) {
     output = output.replace(pattern, "");
   }

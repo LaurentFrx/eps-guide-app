@@ -3,7 +3,8 @@ import { UI_TEXT_FIELDS } from "../src/lib/exercises/crossRefs";
 import { SESSION_ABOUT } from "../src/lib/editorial/sessions.generated";
 import { getGuideData } from "../src/lib/editorial";
 
-const REFERRAL_RE = /\b(idem|identique(?:s)?|similaire(?:s)?)\b/i;
+const REFERRAL_RE =
+  /\b(?:idem|identique(?:s)?|similaire(?:s)?|semblable(?:s)?)\b|\bcf\./i;
 
 type Issue = { scope: string; field: string; excerpt: string };
 const issues: Issue[] = [];

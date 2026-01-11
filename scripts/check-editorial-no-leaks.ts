@@ -1,18 +1,26 @@
 import { getAllExercises } from "../src/lib/exercises/index";
+import { normalizeExerciseCode } from "../src/lib/exerciseCode";
 import { UI_TEXT_FIELDS } from "../src/lib/exercises/crossRefs";
 
 const SESSION_RE = /Session\s+[1-5]\s*[-:\u2010-\u2015]/i;
 const SUITE_RE = /Suite des exercices/i;
-const CODE_RE = /\bS[1-5]-\d{2}\b/g;
+const CODE_RE = /\bS[1-5]\s*[-\u2010-\u2015]\s*\d{2}\b/g;
 
 type Issue = { code: string; field: string; message: string; excerpt: string };
 const issues: Issue[] = [];
 
 const compact = (value: string) => value.replace(/\s+/g, " ").trim().slice(0, 160);
 
+const normalizeCode = (value: string) =>
+  normalizeExerciseCode(value.replace(/[\u2010-\u2015]/g, "-"));
+
 const findForeignCodes = (value: string, current: string) => {
   const matches = value.match(CODE_RE) ?? [];
-  return Array.from(new Set(matches.filter((code) => code !== current)));
+  const normalizedCurrent = normalizeCode(current);
+  const normalized = matches
+    .map((code) => normalizeCode(code))
+    .filter((code) => code && code !== normalizedCurrent);
+  return Array.from(new Set(normalized));
 };
 
 const checkValue = (code: string, field: string, value: string) => {
