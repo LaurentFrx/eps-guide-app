@@ -63,6 +63,8 @@
   {
     "code": "S3-04",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -70,6 +72,8 @@
   {
     "code": "S3-05",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -77,6 +81,8 @@
   {
     "code": "S3-06",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -84,6 +90,8 @@
   {
     "code": "S3-07",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -91,6 +99,8 @@
   {
     "code": "S3-08",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -98,6 +108,8 @@
   {
     "code": "S3-09",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -105,6 +117,8 @@
   {
     "code": "S3-10",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -112,6 +126,8 @@
   {
     "code": "S3-11",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -119,6 +135,8 @@
   {
     "code": "S3-12",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -126,6 +144,8 @@
   {
     "code": "S3-13",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -133,6 +153,8 @@
   {
     "code": "S3-14",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -140,6 +162,8 @@
   {
     "code": "S3-15",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -147,6 +171,8 @@
   {
     "code": "S3-16",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -154,6 +180,8 @@
   {
     "code": "S3-17",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -161,6 +189,8 @@
   {
     "code": "S3-18",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -168,6 +198,8 @@
   {
     "code": "S3-19",
     "fields": [
+      "consignes",
+      "dosage",
       "securite"
     ],
     "reason": "label absent"
@@ -182,6 +214,7 @@
   {
     "code": "S4-05",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -190,6 +223,7 @@
   {
     "code": "S4-06",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -198,6 +232,7 @@
   {
     "code": "S4-07",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -206,6 +241,7 @@
   {
     "code": "S4-08",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -214,6 +250,7 @@
   {
     "code": "S4-09",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -222,6 +259,7 @@
   {
     "code": "S4-10",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -230,6 +268,7 @@
   {
     "code": "S4-11",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -238,6 +277,7 @@
   {
     "code": "S4-12",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -246,6 +286,7 @@
   {
     "code": "S4-13",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],
@@ -262,6 +303,7 @@
   {
     "code": "S4-15",
     "fields": [
+      "consignes",
       "dosage",
       "securite"
     ],

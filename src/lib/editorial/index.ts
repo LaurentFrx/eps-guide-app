@@ -1,12 +1,14 @@
 import raw from "@/data/editorial.fr.json";
 import type {
   EditorialData,
-  EditorialSession,
   GuideData,
   GuideSession,
 } from "@/lib/editorial/schema";
-
-const SESSION_IDS = ["S1", "S2", "S3", "S4", "S5"] as const;
+import {
+  SESSIONS_EDITORIAL,
+  SESSION_IDS,
+} from "@/lib/editorial/sessions";
+import { SESSION_ABOUT } from "@/lib/editorial/sessions.generated";
 
 const fallbackSessions: GuideSession[] = SESSION_IDS.map((id, index) => ({
   id,
@@ -24,13 +26,6 @@ const toText = (value: unknown): string => {
     if (typeof text === "string") return text.trim();
   }
   return "";
-};
-
-const normalizeSessionId = (value: string): string => {
-  const trimmed = value.trim().toUpperCase();
-  if (/^S[1-5]$/.test(trimmed)) return trimmed;
-  if (/^[1-5]$/.test(trimmed)) return `S${trimmed}`;
-  return trimmed;
 };
 
 const normalizeSources = (value: unknown): string[] => {
@@ -51,51 +46,6 @@ const normalizeSources = (value: unknown): string[] => {
     .filter(Boolean);
 };
 
-const normalizeSession = (
-  id: string,
-  session: EditorialSession | undefined
-): GuideSession => ({
-  id: normalizeSessionId(id),
-  title: stripTextPrefix(toText(session?.title)),
-  theme: stripTextPrefix(toText(session?.theme)),
-  body: stripTextPrefix(toText(session?.body)),
-});
-
-const normalizeSessions = (value: unknown): GuideSession[] => {
-  if (Array.isArray(value)) {
-    return value
-      .map((item, index) => {
-        if (!item || typeof item !== "object") return null;
-        const entry = item as EditorialSession & { id?: unknown; session?: unknown };
-        const idValue =
-          typeof entry.id === "string"
-            ? entry.id
-            : typeof entry.session === "string"
-              ? entry.session
-              : SESSION_IDS[index] ?? "";
-        return normalizeSession(idValue, entry);
-      })
-      .filter((session): session is GuideSession => Boolean(session?.id));
-  }
-
-  if (value && typeof value === "object") {
-    const entries = Object.entries(value as Record<string, EditorialSession>);
-    return entries
-      .map(([id, session]) => normalizeSession(id, session))
-      .filter((session) => session.id.length > 0)
-      .sort((a, b) => {
-        const indexA = SESSION_IDS.indexOf(a.id as (typeof SESSION_IDS)[number]);
-        const indexB = SESSION_IDS.indexOf(b.id as (typeof SESSION_IDS)[number]);
-        if (indexA === -1 && indexB === -1) return a.id.localeCompare(b.id);
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
-        return indexA - indexB;
-      });
-  }
-
-  return [];
-};
-
 export function getGuideData(): GuideData {
   const data = raw as unknown as EditorialData;
   const guide = data.guide ?? {};
@@ -106,12 +56,23 @@ export function getGuideData(): GuideData {
   const conclusion = stripTextPrefix(
     toText(data.conclusion ?? guide.conclusion)
   );
+  const notes = stripTextPrefix(toText(data.notes ?? guide.notes));
   const sources = normalizeSources(data.sources ?? guide.sources);
-  const sessions = normalizeSessions(data.sessions ?? guide.sessions);
+  const sessions = SESSION_IDS.map((id) => {
+    const base = SESSIONS_EDITORIAL[id];
+    const about = SESSION_ABOUT[id]?.aboutMd ?? base?.introMd ?? "";
+    return {
+      id,
+      title: base?.title ?? "",
+      theme: base?.subtitle ?? "",
+      body: about,
+    };
+  });
 
   return {
     presentation,
     conclusion,
+    notes,
     sources,
     sessions: sessions.length ? sessions : fallbackSessions,
   };

@@ -27,6 +27,7 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
   const hasSections =
     Boolean(guide.presentation) ||
     Boolean(guide.conclusion) ||
+    Boolean(guide.notes) ||
     guide.sources.length > 0;
   const showEmpty = !hasSections && isFallbackSessions(guide);
 
@@ -92,6 +93,15 @@ export default function GuideView({ guide, counts }: GuideViewProps) {
             Conclusion
           </p>
           <GlossaryText text={guide.conclusion} />
+        </GlassCard>
+      ) : null}
+
+      {guide.notes ? (
+        <GlassCard className="space-y-2">
+          <p className="text-xs uppercase tracking-widest text-white/60">
+            Structure des fiches
+          </p>
+          <GlossaryText text={guide.notes} />
         </GlassCard>
       ) : null}
 

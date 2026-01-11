@@ -36,6 +36,7 @@ const withEditorial = (exercise: ExerciseRecord): ExerciseRecord => {
     detailMd: editorial.detailMd,
     fullMdRaw: editorial.fullMdRaw,
     complementsMd: editorial.complementsMd,
+    auditSummaryMd: editorial.auditSummaryMd,
   };
 };
 
@@ -190,4 +191,3 @@ export function getExerciseByCode(code: string): ExerciseRecord | undefined {
     )
   );
 }
-

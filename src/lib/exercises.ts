@@ -19,6 +19,7 @@ export type Session = {
   heroImage: string; // public path
   chips: string[];
   introMd: string;
+  extraMd: string;
 };
 
 export type Exercise = {
@@ -43,6 +44,7 @@ export type Exercise = {
   detailMd?: string;
   fullMdRaw?: string;
   complementsMd?: string;
+  auditSummaryMd?: string;
 };
 
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -80,6 +82,7 @@ const sessionsBase: Array<Omit<Session, "exerciseCount">> = SESSION_IDS.map(
       subtitle: editorial.subtitle,
       chips: editorial.chips,
       introMd: editorial.introMd,
+      extraMd: editorial.extraMd,
       accent: `var(--${id.toLowerCase()})`,
       heroImage: `/exercises/${id}/hero.jpg`,
     };
@@ -124,6 +127,7 @@ function toExercise(entry: PdfIndexItem): Exercise {
     detailMd: editorial?.detailMd,
     fullMdRaw: editorial?.fullMdRaw,
     complementsMd: editorial?.complementsMd,
+    auditSummaryMd: editorial?.auditSummaryMd,
   };
 
   exercise.status = detail ? "ready" : "draft";

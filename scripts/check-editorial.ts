@@ -44,6 +44,7 @@ const TEXT_FIELDS: FieldSpec[] = [
   { key: "securiteMd", kind: "string" },
   { key: "detailMd", kind: "string" },
   { key: "complementsMd", kind: "string" },
+  { key: "auditSummaryMd", kind: "string" },
   { key: "safety", kind: "stringArray" },
   { key: "key_points", kind: "stringArray" },
 ];

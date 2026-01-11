@@ -72,7 +72,7 @@ export function EditorialCard({
               );
             }
             const hasExplicitBullet = block.items.some((item) =>
-              /^\s*[-\u2022]/.test(item)
+              /^\s*[-*\u0007\u00B7\u2022]/.test(item)
             );
             return (
               <ul
