@@ -75,6 +75,13 @@ export type AuditParseResult = {
   unassigned: string[];
 };
 
+type MetaLineKind =
+  | "session3-suite"
+  | "session4-condensed"
+  | "session4-summary"
+  | "structure-sources"
+  | "generic";
+
 const ROOT = process.cwd();
 const INPUT_PATHS = [
   path.join(ROOT, "docs", "editorial", "audit-editorial.report.md"),
@@ -95,8 +102,24 @@ const SOURCES_RE = /^\s*Sources\s*:\s*/i;
 const META_NOTE_RE =
   /(Suite des exercices|En raison de la longueur|Chaque fiche suit la m.?me structure|\(Les exercices S2-10|\(En r.?sum|Probablement ins.?r.?|\(S4-05)/i;
 const STRUCTURE_NOTE_RE =
-  /Chaque fiche suit la m.?me structure/i;
-const DOSAGE_NOTE_RE = /Le dosage\\b/i;
+  /Chaque fiche suiv\w*\s+la m.?me structure/i;
+const DOSAGE_NOTE_RE = /Le dosage\b/i;
+
+const SESSION3_SUITE_LINE =
+  "(. Suite des exercices de Session 3, y compris S3-04 pompes inclin‚es, S3-05 pompes avec rotation (T push-up) qui travaille la stabilit‚ unilat‚rale et l'ouverture thoracique, S3-06 dips aux barres parallŠles - renfor‡ant triceps, pectoraux inf‚rieurs, delto‹des ant., avec attention aux ‚paules en bas, S3-07 … S3-09 variantes de tractions pronation, supination, neutre - travail dorsaux, biceps avec diff‚rences d'activation (pull-up vs chin-up, cf. citations sur biceps plus engag‚s en chin-ups), S3-10 d‚velopp‚ haltŠres couch‚ - force pectoraux sans barre, S3-11 d‚velopp‚ haltŠres inclin‚ - focus pectoraux sup‚rieurs, S3-12 rowing un bras haltŠre - renforcement dorsaux unilat‚raux et transversaux, S3-13 rowing pench‚ deux haltŠres - global dos, S3-14 ‚levations lat‚rales - isolation delto‹des lat., S3-15 ‚levations frontales - delto‹des ant., S3-16 curl biceps - isolation biceps, S3-17 hammer curl - brachial, avant-bras, S3-18 extension triceps overhead - longue portion triceps, S3-19 kickback triceps - chef lat‚ral triceps, S3-20 face pulls ‚lastique - travail r‚traction scapulaire, exo posture scapulo-hum‚rale). Chaque fiche suivrait la mˆme structure : description anatomique (muscles cibl‚s et synergiques), objectifs (souvent ‚quilibrer agonistes/antagonistes : ex face pull pour corriger posture des ‚paules), justifications biom‚caniques (ex: importance du centrage scapulaire en face pull pour posture), b‚n‚fices (r‚f‚rence possible comme face pulls am‚liorent posture ‚paule ), contre-indications (ex: prudence curls en cas tendinite coude), progressions (ex: tractions avec ‚lastique assist‚ -> poids du corps -> lest‚), consignes (beaucoup d'accent sur la forme : ex: tractions bien descendre bras tendus, pas de ® kipping ¯). Le dosage pour le haut du corps varie : force pure (3-6 reps pour tractions difficiles), hypertrophie (8-12), endurance (15+ pour petits exos).)";
+const SESSION4_CONDENSED_LINE =
+  "(En raison de la longueur, les fiches suivantes de la Session 4 sont condens‚es mais suivraient la mˆme structure d‚taill‚e.)";
+const SESSION4_SUMMARY_LINE =
+  "(S4-05 Fentes arriŠre : semblable aux fentes avant mais en reculant, moins de stress ant‚rieur genou, plus de fessier ; S4-06 Fentes lat‚rales : sollicitent adducteurs et abducteurs en plus, visent la mobilit‚ dans le plan frontal ; S4-07 Soulev‚ de terre roumain (RDL) : exercice chaŒne post‚rieure, ischio-jambiers, fessiers, lombaires - on d‚taillerait posture dos neutre, charniŠre de hanche, ne pas arrondir, grand b‚n‚fice sur force ischios et pr‚vention blessures ischio ; S4-08 Hip Thrust au sol : pont fessier au sol avec poids corporel, cible grand fessier, ischios second., renforce extension hanche utile pour sprint/saut ; S4-09 Hip Thrust sur banc avec charge : variation plus complŠte amplitude, trŠs grande activation du grand fessier (on citerait Contreras 2015 qui montrait plus d'EMG glute max qu'un squat), b‚n‚fices sur performance sprint et pr‚vention lombalgie ; S4-10 Glute Bridge (pont fessier) : similaire hip thrust au sol sans charge ; S4-11 Step-ups sur caisson : quadriceps et fessiers en unilat‚ral fonctionnel (monter marche), am‚liore puissance jambe individuelle et ‚quilibre ; S4-12 Pistol Squat (squat une jambe) : exercice avanc‚ de force et ‚quilibre une jambe, quadriceps trŠs sollicit‚, demandant grande stabilit‚ - mention des risques pour genou si mal contr“l‚, progressions avec assistance ; S4-13 Nordic Hamstring Curl : exo chaŒn‚s, on le mentionne d‚j… plus haut - il cible ischio en excentrique pur, prouv‚ r‚duire blessures de ~50% , on insisterait sur la technique (corps droit, se laisser tomber frein‚ par ischios), contre-indication si tendinopathies aigu‰s, progression via assistance ‚lastique ; S4-14 Mollets debout : isolant gastrocs, important pour cheville et impulsion (am‚liore l'‚conomie de course, pr‚vient tendinopathies Achille), consignes (plein amplitude, pause en bas) ; S4-15 Jump Squats : squat saut‚ pour puissance, usage prudent pour articulations, bas volume, etc.)";
+const STRUCTURE_SOURCES_LINE =
+  "(Chaque fiche suit la mˆme structure ; sources scientifiques pourraient ˆtre cit‚es notamment pour le Nordic Curl, le hip thrust vs squat, etc.)";
+
+const META_LINE_KINDS = new Map<string, MetaLineKind>([
+  [SESSION3_SUITE_LINE, "session3-suite"],
+  [SESSION4_CONDENSED_LINE, "session4-condensed"],
+  [SESSION4_SUMMARY_LINE, "session4-summary"],
+  [STRUCTURE_SOURCES_LINE, "structure-sources"],
+]);
 
 
 const LABEL_PATTERNS: Array<{ key: AuditSectionKey; label: string }> = [
@@ -201,22 +224,34 @@ const normalizeSessionId = (value: string) => {
   return trimmed;
 };
 
-const isMetaNoteLine = (line: string) => {
+const getMetaLineKind = (line: string): MetaLineKind | null => {
   const trimmed = line.trim();
-  if (!trimmed) return false;
-  if (!trimmed.startsWith("(")) return false;
-  return META_NOTE_RE.test(trimmed);
+  if (!trimmed) return null;
+  const exact = META_LINE_KINDS.get(trimmed);
+  if (exact) return exact;
+  if (!trimmed.startsWith("(")) return null;
+  if (META_NOTE_RE.test(trimmed)) return "generic";
+  return null;
 };
 
 const splitExerciseBlockLines = (lines: string[]) => {
-  const leakIndex = lines.findIndex((line) => isMetaNoteLine(line));
+  let leakIndex = -1;
+  let leakKind: MetaLineKind | null = null;
+  for (let i = 0; i < lines.length; i += 1) {
+    const kind = getMetaLineKind(lines[i]);
+    if (!kind) continue;
+    leakIndex = i;
+    leakKind = kind;
+    break;
+  }
   if (leakIndex <= 0) {
-    return { exercise: lines, leak: [] as string[], leakIndex: -1 };
+    return { exercise: lines, leak: [] as string[], leakIndex: -1, leakKind: null };
   }
   return {
     exercise: lines.slice(0, leakIndex),
     leak: lines.slice(leakIndex),
     leakIndex,
+    leakKind,
   };
 };
 
@@ -334,6 +369,36 @@ const splitStructureNote = (value: string) => {
   }
   const remaining = before.trim();
   return { structure: after, remaining };
+};
+
+const splitSession3Suite = (value: string) => {
+  const structureIndex = value.search(STRUCTURE_NOTE_RE);
+  const summaryRaw =
+    structureIndex >= 0 ? value.slice(0, structureIndex).trim() : value.trim();
+  const structureRaw =
+    structureIndex >= 0 ? value.slice(structureIndex).trim() : "";
+  let summaryText = summaryRaw;
+  const firstCodeMatches = summaryRaw.match(CODE_TOKEN_RE);
+  if (firstCodeMatches?.length) {
+    const startIndex = summaryRaw.indexOf(firstCodeMatches[0]);
+    if (startIndex >= 0) {
+      summaryText = summaryRaw.slice(startIndex).trim();
+    }
+  }
+
+  let structureNote = "";
+  let dosageNote = "";
+  if (structureRaw) {
+    const dosageIndex = structureRaw.search(DOSAGE_NOTE_RE);
+    if (dosageIndex >= 0) {
+      structureNote = structureRaw.slice(0, dosageIndex).trim();
+      dosageNote = structureRaw.slice(dosageIndex).trim();
+    } else {
+      structureNote = structureRaw.trim();
+    }
+  }
+
+  return { summaryText, structureNote, dosageNote };
 };
 
 
@@ -464,42 +529,136 @@ export async function parseAuditEditorialReport(
     };
   };
 
+  const appendSessionExtra = (sessionId: string, text: string) => {
+    if (!text.trim()) return;
+    const existing = sessions[sessionId];
+    sessions[sessionId] = {
+      id: sessionId,
+      header: existing?.header ?? "",
+      about: existing?.about ?? "",
+      extra: [existing?.extra, text].filter(Boolean).join("\n\n"),
+    };
+  };
+
+  const appendGuideNote = (text: string) => {
+    if (!text.trim()) return;
+    guideNotes.push(text.trim());
+  };
+
+  const registerSummaryItems = (text: string) => {
+    const items = extractSummaryItems(text);
+    for (const [code, item] of Object.entries(items)) {
+      if (!isValidExerciseCode(code)) continue;
+      summaryByCode[code] = item;
+      registerEntry(code, item, "summary");
+    }
+  };
+
   const registerMetaBlock = (
     text: string,
     startLine?: number,
     endLine?: number,
-    sessionHint?: string
+    sessionHint?: string,
+    kind?: MetaLineKind | null
   ) => {
     const trimmed = text.trim();
     if (!trimmed) return;
     const cleaned = stripMetaWrapper(trimmed);
     if (!cleaned) return;
+    const metaKind = kind ?? getMetaLineKind(trimmed) ?? "generic";
+
+    if (metaKind === "session4-condensed") {
+      appendGuideNote(cleaned);
+      if (typeof startLine === "number" && typeof endLine === "number") {
+        addSegment({
+          type: "guide",
+          id: "notes",
+          text: cleaned,
+          startLine,
+          endLine,
+        });
+      }
+      return;
+    }
+
+    if (metaKind === "structure-sources") {
+      appendGuideNote(cleaned);
+      if (typeof startLine === "number" && typeof endLine === "number") {
+        addSegment({
+          type: "guide",
+          id: "notes",
+          text: cleaned,
+          startLine,
+          endLine,
+        });
+      }
+      return;
+    }
+
+    if (metaKind === "session3-suite") {
+      const { summaryText, structureNote, dosageNote } =
+        splitSession3Suite(cleaned);
+      if (summaryText) {
+        appendSessionExtra("S3", summaryText);
+        registerSummaryItems(summaryText);
+        if (typeof startLine === "number" && typeof endLine === "number") {
+          addSegment({
+            type: "session",
+            id: "S3:extra",
+            text: summaryText,
+            startLine,
+            endLine,
+          });
+        }
+      }
+      if (structureNote) appendGuideNote(structureNote);
+      if (dosageNote) appendGuideNote(dosageNote);
+      if (
+        (structureNote || dosageNote) &&
+        typeof startLine === "number" &&
+        typeof endLine === "number"
+      ) {
+        addSegment({
+          type: "guide",
+          id: "notes",
+          text: [structureNote, dosageNote].filter(Boolean).join("\n\n"),
+          startLine,
+          endLine,
+        });
+      }
+      return;
+    }
+
+    if (metaKind === "session4-summary") {
+      appendSessionExtra("S4", cleaned);
+      registerSummaryItems(cleaned);
+      if (typeof startLine === "number" && typeof endLine === "number") {
+        addSegment({
+          type: "session",
+          id: "S4:extra",
+          text: cleaned,
+          startLine,
+          endLine,
+        });
+      }
+      return;
+    }
+
     const { structure, remaining } = splitStructureNote(cleaned);
-    if (structure) guideNotes.push(structure.trim());
+    if (structure) appendGuideNote(structure.trim());
     const sessionId = sessionHint ?? inferSessionFromText(cleaned);
     const sessionText = remaining.trim();
 
     if (sessionText) {
       if (sessionId) {
-        const existing = sessions[sessionId];
-        sessions[sessionId] = {
-          id: sessionId,
-          header: existing?.header ?? "",
-          about: existing?.about ?? "",
-          extra: [existing?.extra, sessionText].filter(Boolean).join("\n\n"),
-        };
+        appendSessionExtra(sessionId, sessionText);
       } else {
-        guideNotes.push(sessionText);
+        appendGuideNote(sessionText);
       }
     }
 
     if (sessionId === "S3" || sessionId === "S4") {
-      const items = extractSummaryItems(sessionText || cleaned);
-      for (const [code, item] of Object.entries(items)) {
-        if (!isValidExerciseCode(code)) continue;
-        summaryByCode[code] = item;
-        registerEntry(code, item, "summary");
-      }
+      registerSummaryItems(sessionText || cleaned);
     }
 
     const codes = new Set<string>();
@@ -571,8 +730,12 @@ export async function parseAuditEditorialReport(
     );
 
     const blockLines = lines.slice(startLine, endLine);
-    const { exercise: exerciseLines, leak: leakLines, leakIndex } =
-      splitExerciseBlockLines(blockLines);
+    const {
+      exercise: exerciseLines,
+      leak: leakLines,
+      leakIndex,
+      leakKind,
+    } = splitExerciseBlockLines(blockLines);
     const block = exerciseLines.join("\n");
     const code = current.code;
     registerEntry(code, block, "explicit");
@@ -592,7 +755,7 @@ export async function parseAuditEditorialReport(
       const leakText = leakLines.join("\n").trim();
       const leakStart = startLine + (leakIndex >= 0 ? leakIndex : 0);
       const leakEnd = startLine + blockLines.length;
-      registerMetaBlock(leakText, leakStart, leakEnd);
+      registerMetaBlock(leakText, leakStart, leakEnd, undefined, leakKind);
     }
   }
 
@@ -600,11 +763,12 @@ export async function parseAuditEditorialReport(
     if (!range.id) return;
     const contentLines = lines.slice(range.startLine + 1, range.endLine);
     const aboutLines: string[] = [];
-    const noteLines: string[] = [];
-    contentLines.forEach((line) => {
+    contentLines.forEach((line, offset) => {
       if (!line.trim()) return;
-      if (isMetaNoteLine(line)) {
-        noteLines.push(line);
+      const kind = getMetaLineKind(line);
+      if (kind) {
+        const lineIndex = range.startLine + 1 + offset;
+        registerMetaBlock(line, lineIndex, lineIndex + 1, range.id, kind);
       } else {
         aboutLines.push(line);
       }
@@ -618,14 +782,6 @@ export async function parseAuditEditorialReport(
         .join("\n\n"),
       extra: existing?.extra ?? "",
     };
-    if (noteLines.length) {
-      registerMetaBlock(
-        noteLines.join("\n"),
-        range.startLine + 1,
-        range.endLine,
-        range.id
-      );
-    }
     if (sessions[range.id].about) {
       addSegment({
         type: "session",

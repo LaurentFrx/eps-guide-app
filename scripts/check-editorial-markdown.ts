@@ -4,7 +4,7 @@ import { getGuideData } from "../src/lib/editorial";
 
 const BAD_PATTERNS: Array<{ label: string; re: RegExp }> = [
   { label: "star-dash", re: /\*\s*-\s+/ },
-  { label: "tab-bullet", re: /\t•/ },
+  { label: "tab-bullet", re: /\t\u2022\t/ },
 ];
 
 type Issue = { scope: string; field: string; label: string; excerpt: string };

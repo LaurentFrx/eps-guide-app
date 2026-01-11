@@ -1,6 +1,6 @@
 {
   "name": "eps-guide",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "dev": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && next dev --webpack",

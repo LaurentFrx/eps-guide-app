@@ -14,11 +14,13 @@ type EditorialOverride = Partial<EditorialFields>;
 const OVERRIDES: Record<string, EditorialOverride> = {
   "S1-09": {
     securiteMd:
-      "- Deconseille en cas de syndromes femoro-patellaires ou psoitis : la forte contraction du psoas peut majorer la douleur.\n- Manque de force ou bras courts : utiliser parallettes/blocks pour rehausser les mains et donner de l'espace.\n- Raideur ischio-jambiers : garder une legere flexion des genoux au depart.\n- Douleur d'epaule en appui prolonge : verifier la depression scapulaire et utiliser des barres basses.\n- Variante adaptee : chaise romaine (dips station) pour reduire la sollicitation lombaire, avec soutien du dos.",
+      "Deconseille en cas de syndromes femoro-patellaires ou psoitis, car la forte contraction du psoas et du droit femoral peut accentuer ces problemes. Les personnes manquant de force initiale ou ayant des bras trop courts par rapport au torse auront du mal a se soulever du sol - on peut compenser avec des blocs/parallettes (rehausser les mains pour donner de l'espace). En cas de raideur ischio-jambiers empechant de tendre les jambes a l'horizontale, on peut garder une legere flexion de genoux au debut.\n\nSi douleur aux epaules en appui prolonge, verifier la depression scapulaire (ne pas rester epaules oreilles). On peut utiliser des barres paralleles basses pour s'entrainer progressivement (plus stable). En adaptation facile, tenter l'exercice sur une chaise romaine (dips station) qui a un dossier pour le dos - cela reduit la sollicitation lombaire en soutenant legerement le dos, mais ce n'est plus un L-Sit libre.",
   },
   "S4-02": {
-    securiteMd:
-      "- Douleur aigue au genou : limiter l'amplitude et eviter la flexion profonde.\n- Raideur de cheville : utiliser une cale sous les talons et travailler la mobilite.\n- Lombalgies : garder le dos neutre, eviter la retroversion en bas.\n- Post-chirurgie genou/hanche ou douleur severe : eviter sans avis medical.",
+    securiteMd: "Aucun",
+  },
+  "S4-04": {
+    dosageMd: "3x10 pas par jambe.",
   },
   "S2-08": {
     securiteMd:
