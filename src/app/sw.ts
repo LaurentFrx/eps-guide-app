@@ -29,6 +29,7 @@ self.addEventListener("install", (event) => {
     (async () => {
       const cache = await caches.open(CACHE_NAME);
       await cache.add(OFFLINE_URL).catch(() => undefined);
+      await cache.add("/branding/flyer-eps-ht-1.png").catch(() => undefined);
     })()
   );
 });
@@ -51,6 +52,26 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
+  const url = new URL(req.url);
+
+  // Cache-first explicite pour /branding (évite les images cassées en PWA)
+  if (url.origin === self.location.origin && url.pathname.startsWith("/branding/")) {
+    event.respondWith(
+      (async () => {
+        const cache = await caches.open(CACHE_NAME);
+        const cached = await cache.match(req);
+        if (cached) return cached;
+        try {
+          const res = await fetch(req);
+          if (res && res.ok) cache.put(req, res.clone());
+          return res;
+        } catch {
+          return cached ?? Response.error();
+        }
+      })()
+    );
+    return;
+  }
 
   if (req.mode === "navigate") {
     event.respondWith(
