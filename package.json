@@ -19,6 +19,7 @@
     "check:editorial:no-leaks": "tsx scripts/check-editorial-no-leaks.ts",
     "check:editorial:markdown": "tsx scripts/check-editorial-markdown.ts",
     "check:editorial:no-editor-comments": "tsx scripts/check-editorial-no-editor-comments.ts",
+    "check:muscu": "tsx scripts/check-muscu.ts",
     "check:stats": "tsx scripts/check-stats.ts",
     "check:exercises:text": "tsx scripts/validate-exercises-text.ts",
     "check:no-referrals": "tsx scripts/check-no-referrals.ts",

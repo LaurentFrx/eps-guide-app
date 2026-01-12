@@ -1,4 +1,5 @@
 import { GlassCard } from "@/components/GlassCard";
+import { ImageZoomModal } from "@/components/muscu/ImageZoomModal";
 import { knowledgeThemes } from "@/lib/muscu";
 
 export default function MuscuConnaissancesPage() {
@@ -39,9 +40,7 @@ export default function MuscuConnaissancesPage() {
                   ))}
                 </ul>
                 {theme.imageSrc ? (
-                  <p className="text-xs text-white/50">
-                    Infographie disponible.
-                  </p>
+                  <ImageZoomModal src={theme.imageSrc} alt={theme.alt ?? theme.title} />
                 ) : null}
               </GlassCard>
             ))}
