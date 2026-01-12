@@ -249,7 +249,7 @@ export const ExerciseDetail = ({
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList className="ui-surface gap-2 p-1">
           <TabsTrigger className="ui-chip" value="terrain">Terrain</TabsTrigger>
-          <span className="text-xs text-white/60" aria-hidden="true">
+          <span className="text-xs text-white/60 px-1" aria-hidden="true">
             &middot;
           </span>
           <TabsTrigger className="ui-chip" value="detail">Détail</TabsTrigger>
@@ -334,6 +334,7 @@ export const ExerciseDetail = ({
     </div>
   );
 };
+
 
 
 

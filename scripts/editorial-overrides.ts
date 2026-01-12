@@ -14,7 +14,7 @@ type EditorialOverride = Partial<EditorialFields>;
 const OVERRIDES: Record<string, EditorialOverride> = {
   "S1-09": {
     securiteMd:
-      "Deconseille en cas de syndromes femoro-patellaires ou psoitis, car la forte contraction du psoas et du droit femoral peut accentuer ces problemes. Les personnes manquant de force initiale ou ayant des bras trop courts par rapport au torse auront du mal a se soulever du sol - on peut compenser avec des blocs/parallettes (rehausser les mains pour donner de l'espace). En cas de raideur ischio-jambiers empechant de tendre les jambes a l'horizontale, on peut garder une legere flexion de genoux au debut.\n\nSi douleur aux epaules en appui prolonge, verifier la depression scapulaire (ne pas rester epaules oreilles). On peut utiliser des barres paralleles basses pour s'entrainer progressivement (plus stable). En adaptation facile, tenter l'exercice sur une chaise romaine (dips station) qui a un dossier pour le dos - cela reduit la sollicitation lombaire en soutenant legerement le dos, mais ce n'est plus un L-Sit libre.",
+      "- Déconseillé en cas de syndromes fémoro-patellaires ou psoïtis : la forte contraction du psoas peut majorer la douleur.\n- Manque de force ou bras courts : utiliser parallettes/blocks pour rehausser les mains et donner de l’espace.\n- Raideur ischio-jambiers : garder une légère flexion des genoux au départ.\n- Douleur d’épaule en appui prolongé : vérifier la dépression scapulaire et utiliser des barres basses.\n- Variante adaptée : chaise romaine (dips station) pour réduire la sollicitation lombaire avec soutien du dos (ce n’est plus un L-Sit libre).",
   },
   "S4-02": {
     securiteMd: "Aucun",
