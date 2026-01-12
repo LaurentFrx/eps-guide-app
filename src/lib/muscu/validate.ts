@@ -10,8 +10,8 @@ import {
   muscuExercises,
   stretches,
 } from "@/lib/muscu";
+import { PDF_INDEX } from "@/data/pdfIndex";
 import { exerciseTagsByCode } from "@/lib/exercises/exerciseTags";
-import { exercises } from "@/lib/exercises";
 
 export type ValidationIssue = { scope: string; message: string };
 
@@ -151,7 +151,7 @@ export const validateMuscuData = () => {
 
 export const validateExerciseTags = () => {
   const issues: ValidationIssue[] = [];
-  const exerciseIds = new Set(exercises.map((exercise) => exercise.id));
+  const exerciseIds = new Set(PDF_INDEX.map((exercise) => exercise.code));
   const allowedTypes = new Set(["Exercice", "Étirement", "Technique", "Séance"]);
 
   Object.entries(exerciseTagsByCode).forEach(([code, tags]) => {
