@@ -11,10 +11,29 @@ type EditorialFields = {
 
 type EditorialOverride = Partial<EditorialFields>;
 
+const LIST_FIELDS = new Set<keyof EditorialFields>([
+  "consignesMd",
+  "dosageMd",
+  "securiteMd",
+]);
+
+const toListValue = (field: keyof EditorialFields, value: string) => {
+  if (!LIST_FIELDS.has(field)) return value;
+  const lines = value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (lines.length < 2) return value;
+  if (lines.some((line) => /^\s*[-*\u0007\u00B7\u2022]/.test(line))) {
+    return value;
+  }
+  return lines.map((line) => `- ${line}`).join("\n");
+};
+
 const OVERRIDES: Record<string, EditorialOverride> = {
   "S1-09": {
     securiteMd:
-      "- Déconseillé en cas de syndromes fémoro-patellaires ou psoïtis : la forte contraction du psoas peut majorer la douleur.\n- Manque de force ou bras courts : utiliser parallettes/blocks pour rehausser les mains et donner de l’espace.\n- Raideur ischio-jambiers : garder une légère flexion des genoux au départ.\n- Douleur d’épaule en appui prolongé : vérifier la dépression scapulaire et utiliser des barres basses.\n- Variante adaptée : chaise romaine (dips station) pour réduire la sollicitation lombaire avec soutien du dos (ce n’est plus un L-Sit libre).",
+      "Déconseillé en cas de syndromes fémoro-patellaires ou psoïtis : la forte contraction du psoas peut majorer la douleur.\nManque de force ou bras courts : utiliser parallettes/blocks pour rehausser les mains et donner de l’espace.\nRaideur des ischio-jambiers : garder une légère flexion des genoux au départ.\nDouleur d’épaule en appui prolongé : vérifier la dépression scapulaire et utiliser des barres basses.\nVariante adaptée : chaise romaine (dips station) pour réduire la sollicitation lombaire avec soutien du dos (ce n’est plus un L-Sit libre).",
   },
   "S4-02": {
     securiteMd: "Aucun",
@@ -60,7 +79,9 @@ export const applyEditorialOverrides = (
     if (!entry) return;
     Object.entries(overrides).forEach(([field, value]) => {
       const key = field as keyof EditorialFields;
-      const nextValue = value == null ? "" : sanitize(String(value), code);
+      const rawValue = value == null ? "" : String(value);
+      const normalized = toListValue(key, rawValue);
+      const nextValue = sanitize(normalized, code);
       entry[key] = nextValue;
     });
   });

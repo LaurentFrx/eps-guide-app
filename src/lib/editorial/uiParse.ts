@@ -181,13 +181,15 @@ const extractBulletItems = (text: string) => {
   if (!matches.length) return [];
 
   const items: string[] = [];
+  const bulletPrefix = /^\s*[-*\u0007\u00B7\u2022\u2023\u2043\u2219\u25AA\u25AB\u25CF\u25E6]\s+/;
   for (let i = 0; i < matches.length; i += 1) {
     const match = matches[i];
     const prefixLength = match[1]?.length ?? 0;
     const start = (match.index ?? 0) + prefixLength;
     const end = matches[i + 1]?.index ?? text.length;
     const item = text.slice(start, end);
-    if (item.trim()) items.push(item);
+    const cleaned = item.replace(bulletPrefix, "").trim();
+    if (cleaned) items.push(cleaned);
   }
   return items;
 };

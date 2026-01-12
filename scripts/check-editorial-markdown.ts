@@ -4,10 +4,12 @@ import { getGuideData } from "../src/lib/editorial";
 
 const BAD_PATTERNS: Array<{ label: string; re: RegExp }> = [
   { label: "star-dash", re: /\*\s*-\s+/ },
+  { label: "dash-dash", re: /-\s*-\s+/ },
   { label: "tab-bullet", re: /\t\u2022\t/ },
 ];
 const INLINE_CODE_RE = /-\s*S[1-5]-\d{2}\b/g;
 const INLINE_COLON_RE = /:\s*-\s+/;
+const INLINE_BULLET_RE = /\s-\s+[A-Z]/g;
 
 type Issue = { scope: string; field: string; label: string; excerpt: string };
 const issues: Issue[] = [];
@@ -37,12 +39,29 @@ const checkValue = (scope: string, field: string, value: string) => {
         excerpt: compact(line),
       });
     }
+    if (/^\s*[-*]\s*-\s+/.test(line)) {
+      issues.push({
+        scope,
+        field,
+        label: "double-bullet",
+        excerpt: compact(line),
+      });
+    }
     const matches = line.match(INLINE_CODE_RE) ?? [];
     if (matches.length > 1) {
       issues.push({
         scope,
         field,
         label: "inline-code-list",
+        excerpt: compact(line),
+      });
+    }
+    const bulletMatches = line.match(INLINE_BULLET_RE) ?? [];
+    if (bulletMatches.length > 1) {
+      issues.push({
+        scope,
+        field,
+        label: "inline-bullet-list",
         excerpt: compact(line),
       });
     }

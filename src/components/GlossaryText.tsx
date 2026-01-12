@@ -19,7 +19,13 @@ type GlossaryTextProps = {
   className?: string;
 };
 
+type GlossaryBlock =
+  | { type: "paragraph"; text: string }
+  | { type: "list"; items: string[] };
+
 const WORD_CHAR_RE = /[A-Za-z0-9]/;
+const BULLET_RE =
+  /^\s*[-*\u0007\u00B7\u2022\u2023\u2043\u2219\u25AA\u25AB\u25CF\u25E6]\s+/;
 
 const escapeRegExp = (value: string) =>
   value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -39,6 +45,46 @@ function isWordChar(value?: string): boolean {
   if (!value) return false;
   return WORD_CHAR_RE.test(value);
 }
+
+const toBlocks = (text: string): GlossaryBlock[] => {
+  const blocks: GlossaryBlock[] = [];
+  const lines = text.split(/\r?\n/);
+  let paragraph: string[] = [];
+  let listItems: string[] = [];
+
+  const flushParagraph = () => {
+    if (paragraph.length) {
+      blocks.push({ type: "paragraph", text: paragraph.join("\n").trim() });
+      paragraph = [];
+    }
+  };
+
+  const flushList = () => {
+    if (listItems.length) {
+      blocks.push({ type: "list", items: listItems.slice() });
+      listItems = [];
+    }
+  };
+
+  lines.forEach((line) => {
+    if (!line.trim()) {
+      flushParagraph();
+      flushList();
+      return;
+    }
+    if (BULLET_RE.test(line)) {
+      flushParagraph();
+      listItems.push(line.replace(BULLET_RE, "").trim());
+      return;
+    }
+    flushList();
+    paragraph.push(line);
+  });
+
+  flushParagraph();
+  flushList();
+  return blocks;
+};
 
 export function GlossaryText({ text, className }: GlossaryTextProps) {
   const trimmed = text?.trim();
@@ -66,18 +112,28 @@ export function GlossaryText({ text, className }: GlossaryTextProps) {
 
   if (!trimmed) return null;
 
-  const paragraphs = trimmed
-    .split(/\n{2,}/)
-    .map((paragraph) => paragraph.trim())
-    .filter(Boolean);
+  const blocks = toBlocks(trimmed);
 
   return (
     <div className={cn("space-y-3 text-sm text-white/75", className)}>
-      {paragraphs.map((paragraph, index) => (
-        <p key={`${paragraph.slice(0, 16)}-${index}`} className="leading-relaxed">
-          {regex ? renderParagraph(paragraph, regex, lookup) : paragraph}
-        </p>
-      ))}
+      {blocks.map((block, index) => {
+        if (block.type === "list") {
+          return (
+            <ul key={`list-${index}`} className="space-y-2 list-disc pl-5">
+              {block.items.map((item, itemIndex) => (
+                <li key={`item-${index}-${itemIndex}`} className="leading-relaxed">
+                  {regex ? renderParagraph(item, regex, lookup) : item}
+                </li>
+              ))}
+            </ul>
+          );
+        }
+        return (
+          <p key={`para-${index}`} className="leading-relaxed whitespace-pre-wrap">
+            {regex ? renderParagraph(block.text, regex, lookup) : block.text}
+          </p>
+        );
+      })}
     </div>
   );
 }
