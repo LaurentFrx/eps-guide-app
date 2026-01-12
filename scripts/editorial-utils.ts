@@ -10,6 +10,32 @@ export const collapseSpaces = (value: string) =>
 export const collapseNewlines = (value: string) =>
   value.replace(/\n{3,}/g, "\n\n");
 
+const INLINE_CODE_RE = /-\s+S[1-5]-\d{2}\b/g;
+const INLINE_BULLET_RE = /-\s+[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜ]/g;
+
+const normalizeInlineLists = (value: string) => {
+  let output = value.replace(/:\s*-\s+/g, ":\n\n- ");
+  output = output
+    .split("\n")
+    .map((line) => {
+      let next = line;
+      const codeMatches = next.match(INLINE_CODE_RE) ?? [];
+      if (codeMatches.length > 1) {
+        next = next.replace(/\s+-\s+(?=S[1-5]-\d{2}\b)/g, "\n- ");
+      }
+      const bulletMatches = next.match(INLINE_BULLET_RE) ?? [];
+      if (bulletMatches.length > 1) {
+        next = next.replace(
+          /\s+-\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜ])/g,
+          "\n- "
+        );
+      }
+      return next;
+    })
+    .join("\n");
+  return output;
+};
+
 export const normalizeTypography = (value: string) => {
   let output = normalizeLineEndings(value);
   output = stripTrailingWhitespace(output);
@@ -20,6 +46,7 @@ export const normalizeTypography = (value: string) => {
     "- "
   );
   output = output.replace(/\t\u2022\t/g, "- ");
+  output = normalizeInlineLists(output);
   output = collapseSpaces(output);
   output = collapseNewlines(output);
   return output.trim();

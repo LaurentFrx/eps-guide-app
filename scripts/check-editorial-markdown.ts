@@ -6,6 +6,8 @@ const BAD_PATTERNS: Array<{ label: string; re: RegExp }> = [
   { label: "star-dash", re: /\*\s*-\s+/ },
   { label: "tab-bullet", re: /\t\u2022\t/ },
 ];
+const INLINE_CODE_RE = /-\s*S[1-5]-\d{2}\b/g;
+const INLINE_COLON_RE = /:\s*-\s+/;
 
 type Issue = { scope: string; field: string; label: string; excerpt: string };
 const issues: Issue[] = [];
@@ -21,6 +23,27 @@ const checkValue = (scope: string, field: string, value: string) => {
         field,
         label: pattern.label,
         excerpt: compact(value),
+      });
+    }
+  }
+  const lines = value.split(/\r?\n/);
+  for (const line of lines) {
+    if (!line.trim()) continue;
+    if (INLINE_COLON_RE.test(line)) {
+      issues.push({
+        scope,
+        field,
+        label: "inline-colon-list",
+        excerpt: compact(line),
+      });
+    }
+    const matches = line.match(INLINE_CODE_RE) ?? [];
+    if (matches.length > 1) {
+      issues.push({
+        scope,
+        field,
+        label: "inline-code-list",
+        excerpt: compact(line),
       });
     }
   }

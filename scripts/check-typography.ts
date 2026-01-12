@@ -10,7 +10,8 @@ const issues: Issue[] = [];
 const hasTrailingWhitespace = (value: string) => /[ \t]+$/m.test(value);
 const hasDoubleSpaces = (value: string) => /[^\n][ \t]{2,}[^\n]/.test(value);
 const hasExcessNewlines = (value: string) => /\n{3,}/.test(value);
-const hasEmptyHeading = (value: string) => /(^|\n)[^:\n]{2,}:\s*$/m.test(value);
+const hasEmptyHeading = (value: string) =>
+  /(^|\n)[^:\n]{2,}:\s*$(?!\n\s*-\s+|\n\n\s*-\s+)/m.test(value);
 
 const addIssue = (code: string, field: string, message: string, value: string) => {
   issues.push({ code, field, message, excerpt: compact(value) });
