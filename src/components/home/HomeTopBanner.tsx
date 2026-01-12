@@ -21,9 +21,6 @@ export function HomeTopBanner() {
       {/* optionnel: léger voile pour homogénéiser */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/10" />
 
-      <span className="absolute left-2 top-2 rounded-full bg-emerald-500/90 px-2 py-1 text-[10px] font-semibold uppercase tracking-widest text-black shadow">
-        BANNER OK
-      </span>
     </section>
   );
 }
