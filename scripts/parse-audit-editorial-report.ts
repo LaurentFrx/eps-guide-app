@@ -104,6 +104,7 @@ const META_NOTE_RE =
 const STRUCTURE_NOTE_RE =
   /Chaque fiche suiv\w*\s+la m.?me structure/i;
 const DOSAGE_NOTE_RE = /Le dosage\b/i;
+const EDITOR_COMMENT_RE = /\b(Probablement|Peut[-\u2010-\u2015]?[\u00EAe]tre)\b/i;
 
 const SESSION3_SUITE_LINE =
   "(. Suite des exercices de Session 3, y compris S3-04 pompes inclin‚es, S3-05 pompes avec rotation (T push-up) qui travaille la stabilit‚ unilat‚rale et l'ouverture thoracique, S3-06 dips aux barres parallŠles - renfor‡ant triceps, pectoraux inf‚rieurs, delto‹des ant., avec attention aux ‚paules en bas, S3-07 … S3-09 variantes de tractions pronation, supination, neutre - travail dorsaux, biceps avec diff‚rences d'activation (pull-up vs chin-up, cf. citations sur biceps plus engag‚s en chin-ups), S3-10 d‚velopp‚ haltŠres couch‚ - force pectoraux sans barre, S3-11 d‚velopp‚ haltŠres inclin‚ - focus pectoraux sup‚rieurs, S3-12 rowing un bras haltŠre - renforcement dorsaux unilat‚raux et transversaux, S3-13 rowing pench‚ deux haltŠres - global dos, S3-14 ‚levations lat‚rales - isolation delto‹des lat., S3-15 ‚levations frontales - delto‹des ant., S3-16 curl biceps - isolation biceps, S3-17 hammer curl - brachial, avant-bras, S3-18 extension triceps overhead - longue portion triceps, S3-19 kickback triceps - chef lat‚ral triceps, S3-20 face pulls ‚lastique - travail r‚traction scapulaire, exo posture scapulo-hum‚rale). Chaque fiche suivrait la mˆme structure : description anatomique (muscles cibl‚s et synergiques), objectifs (souvent ‚quilibrer agonistes/antagonistes : ex face pull pour corriger posture des ‚paules), justifications biom‚caniques (ex: importance du centrage scapulaire en face pull pour posture), b‚n‚fices (r‚f‚rence possible comme face pulls am‚liorent posture ‚paule ), contre-indications (ex: prudence curls en cas tendinite coude), progressions (ex: tractions avec ‚lastique assist‚ -> poids du corps -> lest‚), consignes (beaucoup d'accent sur la forme : ex: tractions bien descendre bras tendus, pas de ® kipping ¯). Le dosage pour le haut du corps varie : force pure (3-6 reps pour tractions difficiles), hypertrophie (8-12), endurance (15+ pour petits exos).)";
@@ -222,6 +223,14 @@ const normalizeSessionId = (value: string) => {
   if (/^S[1-5]$/.test(trimmed)) return trimmed;
   if (/^[1-5]$/.test(trimmed)) return `S${trimmed}`;
   return trimmed;
+};
+
+const hasMultipleCodes = (value: string) => {
+  const matches = value.match(CODE_TOKEN_RE) ?? [];
+  const normalized = matches
+    .map((code) => normalizeExerciseCode(normalizeCodeToken(code)))
+    .filter(Boolean);
+  return new Set(normalized).size > 1;
 };
 
 const getMetaLineKind = (line: string): MetaLineKind | null => {
@@ -378,6 +387,8 @@ const splitSession3Suite = (value: string) => {
   const structureRaw =
     structureIndex >= 0 ? value.slice(structureIndex).trim() : "";
   let summaryText = summaryRaw;
+  let structureNote = "";
+  let dosageNote = "";
   const firstCodeMatches = summaryRaw.match(CODE_TOKEN_RE);
   if (firstCodeMatches?.length) {
     const startIndex = summaryRaw.indexOf(firstCodeMatches[0]);
@@ -386,8 +397,15 @@ const splitSession3Suite = (value: string) => {
     }
   }
 
-  let structureNote = "";
-  let dosageNote = "";
+  const dosageIndex = summaryText.search(DOSAGE_NOTE_RE);
+  if (dosageIndex >= 0) {
+    dosageNote = [dosageNote, summaryText.slice(dosageIndex).trim()]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    summaryText = summaryText.slice(0, dosageIndex).trim();
+  }
+
   if (structureRaw) {
     const dosageIndex = structureRaw.search(DOSAGE_NOTE_RE);
     if (dosageIndex >= 0) {
@@ -531,6 +549,7 @@ export async function parseAuditEditorialReport(
 
   const appendSessionExtra = (sessionId: string, text: string) => {
     if (!text.trim()) return;
+    if (hasMultipleCodes(text)) return;
     const existing = sessions[sessionId];
     sessions[sessionId] = {
       id: sessionId,
@@ -554,18 +573,24 @@ export async function parseAuditEditorialReport(
     }
   };
 
-  const registerMetaBlock = (
-    text: string,
-    startLine?: number,
-    endLine?: number,
-    sessionHint?: string,
-    kind?: MetaLineKind | null
-  ) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
-    const cleaned = stripMetaWrapper(trimmed);
-    if (!cleaned) return;
-    const metaKind = kind ?? getMetaLineKind(trimmed) ?? "generic";
+const registerMetaBlock = (
+  text: string,
+  startLine?: number,
+  endLine?: number,
+  sessionHint?: string,
+  kind?: MetaLineKind | null
+) => {
+  const trimmed = text.trim();
+  if (!trimmed) return;
+  const cleaned = stripMetaWrapper(trimmed);
+  if (!cleaned) return;
+  if (EDITOR_COMMENT_RE.test(cleaned)) {
+    if (typeof startLine === "number" && typeof endLine === "number") {
+      markRange(startLine, endLine);
+    }
+    return;
+  }
+  const metaKind = kind ?? getMetaLineKind(trimmed) ?? "generic";
 
     if (metaKind === "session4-condensed") {
       appendGuideNote(cleaned);
@@ -599,7 +624,6 @@ export async function parseAuditEditorialReport(
       const { summaryText, structureNote, dosageNote } =
         splitSession3Suite(cleaned);
       if (summaryText) {
-        appendSessionExtra("S3", summaryText);
         registerSummaryItems(summaryText);
         if (typeof startLine === "number" && typeof endLine === "number") {
           addSegment({
@@ -630,13 +654,18 @@ export async function parseAuditEditorialReport(
     }
 
     if (metaKind === "session4-summary") {
-      appendSessionExtra("S4", cleaned);
-      registerSummaryItems(cleaned);
+      let summaryText = cleaned;
+      const structureMatch = cleaned.match(STRUCTURE_NOTE_RE);
+      if (structureMatch?.index != null) {
+        appendGuideNote(cleaned.slice(structureMatch.index).trim());
+        summaryText = cleaned.slice(0, structureMatch.index).trim();
+      }
+      registerSummaryItems(summaryText);
       if (typeof startLine === "number" && typeof endLine === "number") {
         addSegment({
           type: "session",
           id: "S4:extra",
-          text: cleaned,
+          text: summaryText,
           startLine,
           endLine,
         });
@@ -651,7 +680,10 @@ export async function parseAuditEditorialReport(
 
     if (sessionText) {
       if (sessionId) {
-        appendSessionExtra(sessionId, sessionText);
+        const codes = sessionText.match(CODE_TOKEN_RE) ?? [];
+        if (codes.length <= 1) {
+          appendSessionExtra(sessionId, sessionText);
+        }
       } else {
         appendGuideNote(sessionText);
       }

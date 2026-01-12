@@ -25,18 +25,23 @@ export const GET = async (request: NextRequest) => {
   }
 
   const codes = collectExerciseCodes();
-  const paths = [
+  const pathSet = new Set<string>([
     "/",
     "/guide",
     "/exercises",
     ...SESSION_IDS.map((session) => `/exercises/${session}`),
+    "/exercises/S1",
+    "/exercises/S2",
+    "/exercises/S3",
+    "/exercises/S4",
+    "/exercises/S5",
     ...codes.map((code) => `/exercises/detail/${code}`),
-  ];
+  ]);
 
-  paths.forEach((path) => revalidatePath(path));
+  pathSet.forEach((path) => revalidatePath(path));
 
   return NextResponse.json(
-    { revalidated: true, paths: paths.length, codes: codes.length },
+    { revalidated: true, paths: pathSet.size, codes: codes.length },
     { headers: { "Cache-Control": "no-store" } }
   );
 };

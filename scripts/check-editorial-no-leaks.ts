@@ -1,6 +1,7 @@
 import { getAllExercises } from "../src/lib/exercises/index";
 import { normalizeExerciseCode } from "../src/lib/exerciseCode";
 import { UI_TEXT_FIELDS } from "../src/lib/exercises/crossRefs";
+import { SESSION_ABOUT } from "../src/lib/editorial/sessions.generated";
 
 const SESSION_RE = /Session\s+[1-5]\s*[-:\u2010-\u2015]/i;
 const SUITE_RE = /Suite des exercices/i;
@@ -23,7 +24,7 @@ const findForeignCodes = (value: string, current: string) => {
   return Array.from(new Set(normalized));
 };
 
-const checkValue = (code: string, field: string, value: string) => {
+const checkValue = (code: string, field: string, value: string, skipForeign = false) => {
   if (!value || !value.trim()) return;
   if (SESSION_RE.test(value)) {
     issues.push({
@@ -41,14 +42,16 @@ const checkValue = (code: string, field: string, value: string) => {
       excerpt: compact(value),
     });
   }
-  const foreign = findForeignCodes(value, code);
-  if (foreign.length) {
-    issues.push({
-      code,
-      field,
-      message: `foreign codes: ${foreign.join(", ")}`,
-      excerpt: compact(value),
-    });
+  if (!skipForeign) {
+    const foreign = findForeignCodes(value, code);
+    if (foreign.length) {
+      issues.push({
+        code,
+        field,
+        message: `foreign codes: ${foreign.join(", ")}`,
+        excerpt: compact(value),
+      });
+    }
   }
 };
 
@@ -69,6 +72,32 @@ for (const exercise of getAllExercises()) {
     }
   }
 }
+
+Object.entries(SESSION_ABOUT).forEach(([sessionId, entry]) => {
+  const about = entry.aboutMd ?? "";
+  const extra = entry.extraMd ?? "";
+  checkValue(sessionId, "aboutMd", about, true);
+  checkValue(sessionId, "extraMd", extra, true);
+  if ((sessionId === "S3" || sessionId === "S4") && extra) {
+    const lines = extra.split(/\r?\n/).filter((line) => line.trim());
+    const hasBadLine = lines.some((line) => {
+      const codes = Array.from(
+        new Set((line.match(CODE_RE) ?? []).map((code) => normalizeCode(code)))
+      );
+      if (!codes.length) return false;
+      if (codes.some((code) => !code.startsWith(sessionId))) return true;
+      return codes.length > 1;
+    });
+    if (hasBadLine) {
+      issues.push({
+        code: sessionId,
+        field: "extraMd",
+        message: "contains invalid multi-code line",
+        excerpt: compact(extra),
+      });
+    }
+  }
+});
 
 if (!issues.length) {
   console.log("Editorial leak check passed.");
