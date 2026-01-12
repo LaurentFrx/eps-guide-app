@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const tabs = [
+  { href: "/musculation/accueil", label: "Accueil" },
   { href: "/musculation/exercices", label: "Exercices" },
   { href: "/musculation/etirements", label: "Etirements" },
-  { href: "/musculation/anatomie", label: "Anatomie" },
   { href: "/musculation/connaissances", label: "Connaissances" },
-  { href: "/musculation/bac", label: "Bac" },
+  { href: "/musculation/evaluation", label: "Evaluation" },
 ];
 
 export function BottomTabsMuscu() {
