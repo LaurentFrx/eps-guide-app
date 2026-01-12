@@ -14,7 +14,7 @@ export function HomeTopBanner() {
               fill
               priority
               sizes="100vw"
-              style={{ objectFit: "cover", objectPosition: "50% 55%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 50%" }}
             />
           </div>
 
