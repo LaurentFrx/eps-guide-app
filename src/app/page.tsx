@@ -33,6 +33,9 @@ export default function HomePage() {
           <Button asChild variant="outline" size="sm" className="ui-chip">
             <Link href="/docs">Docs</Link>
           </Button>
+          <Button asChild variant="outline" size="sm" className="ui-chip">
+            <Link href="/musculation">Musculation</Link>
+          </Button>
         </div>
       </div>
 
