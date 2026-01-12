@@ -21,6 +21,7 @@ import {
   SESSION_IDS,
   type SessionId,
 } from "../src/lib/editorial/sessionsBase";
+const CODE_TOKEN_RE = /\bS[1-5]-\d{2}\b/g;
 
 type EditorialEntry = {
   materielMd: string;
@@ -180,6 +181,17 @@ const sanitizeExerciseText = (value: string, code: string) => {
   output = output.replace(/\s+\./g, ".");
   output = output.replace(/:\s*\n\s*\n(?=\S)/g, ": ");
   return normalizeTypography(output);
+};
+
+const sanitizeAuditSummary = (value: string, code: string) => {
+  let output = sanitizeExerciseText(value, code);
+  output = output
+    .replace(/Chaque fiche suit[\s\S]*$/i, "")
+    .replace(/Le dosage[\s\S]*$/i, "")
+    .replace(/\(\s*Chaque fiche suit[\s\S]*$/i, "")
+    .replace(/\(\s*Le dosage[\s\S]*$/i, "");
+  output = output.replace(/\(\s*$/g, "").replace(/[).]+\s*$/g, "");
+  return output.trim();
 };
 
 const toComparable = (value: string) =>
@@ -342,6 +354,7 @@ async function main() {
   const blocks = new Map<string, AuditEditorialEntry>(
     Object.entries(auditEntries).map(([code, entry]) => [code, entry])
   );
+  const auditSummaryByCode = auditParse.summaryByCode;
 
   const extraCodes = Object.keys(auditEntries).filter(
     (code) => !expectedCodes.has(code)
@@ -635,7 +648,7 @@ async function main() {
       detailMd,
       fullMdRaw: isSummaryEntry ? "" : sanitizeExercise(entry.block),
       complementsMd: isSummaryEntry ? "" : sanitizeExercise(complements),
-      auditSummaryMd: sanitizeExercise(auditSummary),
+      auditSummaryMd: sanitizeAuditSummary(auditSummary, code),
     };
   }
 
@@ -768,14 +781,67 @@ async function main() {
     );
   }
 
+  const sessionSummaries: Record<SessionId, Array<{ code: string; text: string }>> =
+    SESSION_IDS.reduce((acc, id) => {
+      acc[id] = [];
+      return acc;
+    }, {} as Record<SessionId, Array<{ code: string; text: string }>>);
+
+  for (const [code, summary] of Object.entries(auditSummaryByCode)) {
+    const normalized = normalizeExerciseCode(code);
+    const sessionId = normalized.slice(0, 2) as SessionId;
+    if (!SESSION_IDS.includes(sessionId)) continue;
+    const trimmed = sanitizeAuditSummary(summary, normalized);
+    if (!trimmed.trim()) continue;
+    sessionSummaries[sessionId].push({ code: normalized, text: trimmed });
+  }
+
+  const formatSessionSummary = (entries: Array<{ code: string; text: string }>) => {
+    if (!entries.length) return "";
+    const sorted = entries.slice().sort((a, b) => a.code.localeCompare(b.code));
+    const lines = sorted
+      .map((item) => {
+        let text = item.text.trim();
+        const prefix = `${item.code} `;
+        if (text.startsWith(prefix)) {
+          text = text.slice(prefix.length).trim();
+        }
+        text = text
+          .replace(/Chaque fiche suit[\s\S]*$/i, "")
+          .replace(/Le dosage[\s\S]*$/i, "");
+        text = text
+          .replace(/[).]+\s*$/g, "")
+          .replace(/^[()]+|[()]+$/g, "")
+          .replace(/[.,;:]+\s*$/g, "")
+          .trim();
+        if (!text) return "";
+        const line = `- ${item.code} ${text}`.replace(/[).]+\s*$/g, "").trimEnd();
+        return line;
+      })
+      .filter((line) => {
+        const value = line.trim();
+        if (!value.startsWith("-")) return false;
+        const content = value.slice(1).trim();
+        return Boolean(content);
+      });
+    return lines.join("\n").trim();
+  };
+
   const sessionAboutOutput: Record<
     SessionId,
     { aboutMd: string; extraMd: string }
   > = SESSION_IDS.reduce((acc, id) => {
     const session = auditParse.sessions[id];
+    const about = sanitizeEditorialText(session?.about ?? "");
+    const summaryList = formatSessionSummary(sessionSummaries[id]);
+    const extraSource =
+      summaryList.trim() ||
+      (session?.extra?.trim() && session?.extra?.match(CODE_TOKEN_RE)?.length === 1
+        ? session.extra
+        : "");
     acc[id] = {
-      aboutMd: sanitizeEditorialText(session?.about ?? ""),
-      extraMd: sanitizeEditorialText(session?.extra ?? ""),
+      aboutMd: about,
+      extraMd: sanitizeEditorialText(extraSource),
     };
     return acc;
   }, {} as Record<SessionId, { aboutMd: string; extraMd: string }>);

@@ -19,6 +19,7 @@ export const normalizeTypography = (value: string) => {
     /^\s*[\u0007\u00B7\u2022\u2023\u2043\u2219\u25AA\u25AB\u25CF\u25E6]\s+/gm,
     "- "
   );
+  output = output.replace(/\t\u2022\t/g, "- ");
   output = collapseSpaces(output);
   output = collapseNewlines(output);
   return output.trim();

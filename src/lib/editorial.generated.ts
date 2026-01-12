@@ -459,7 +459,7 @@ export const editorialByCode: EditorialByCode = {
     "detailMd": "",
     "fullMdRaw": "",
     "complementsMd": "",
-    "auditSummaryMd": "S3-20 face pulls élastique - travail rétraction scapulaire, exo posture scapulo-humérale). Le dosage pour le haut du corps varie: force pure (3-6 reps pour tractions difficiles), hypertrophie (8-12), endurance (15+ pour petits exos)."
+    "auditSummaryMd": "S3-20 face pulls élastique - travail rétraction scapulaire, exo posture scapulo-humérale"
   },
   "S4-01": {
     "materielMd": "Aucun",
@@ -609,7 +609,7 @@ export const editorialByCode: EditorialByCode = {
     "detailMd": "",
     "fullMdRaw": "",
     "complementsMd": "",
-    "auditSummaryMd": "S4-15 Jump Squats: squat sauté pour puissance, usage prudent pour articulations, bas volume, etc.)\n\n(Chaque fiche suit la même structure; sources scientifiques pourraient être citées notamment pour le Nordic Curl, le hip thrust vs squat, etc."
+    "auditSummaryMd": "S4-15 Jump Squats: squat sauté pour puissance, usage prudent pour articulations, bas volume, etc"
   },
   "S5-01": {
     "materielMd": "Aucun",
