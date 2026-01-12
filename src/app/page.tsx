@@ -16,9 +16,7 @@ export default function HomePage() {
         <header className="eps-home__header space-y-3">
           <div className="eps-home__brand">
             <h1 className="sr-only">Guide EPS</h1>
-            <div className="mb-4 w-full">
-              <HomeTopBanner />
-            </div>
+            <HomeTopBanner />
             <span className="eps-home__title">GUIDE DE MUSCULATION</span>
           </div>
         </header>
