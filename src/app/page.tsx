@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GlassCard } from "@/components/GlassCard";
+import { HomeTopBanner } from "@/components/home/HomeTopBanner";
 import { sessions } from "@/lib/exercises";
 import { getExerciseStats } from "@/lib/stats";
 
@@ -16,15 +16,9 @@ export default function HomePage() {
         <header className="eps-home__header space-y-3">
           <div className="eps-home__brand">
             <h1 className="sr-only">Guide EPS</h1>
-            <Image
-              src="/branding/logo-eps.png"
-              alt="EPS"
-              width={360}
-              height={144}
-              priority
-              sizes="(max-width: 640px) 260px, 360px"
-              className="eps-home__logo"
-            />
+            <div className="mb-4 w-full">
+              <HomeTopBanner />
+            </div>
             <span className="eps-home__title">GUIDE DE MUSCULATION</span>
           </div>
         </header>
