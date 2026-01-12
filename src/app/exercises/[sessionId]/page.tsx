@@ -13,6 +13,21 @@ function normalizeSessionId(raw: string | undefined | null) {
   return s.toUpperCase();
 }
 
+const SUMMARY_CODE_RE = /\bS[1-5]-\d{2}\b/;
+
+const splitSummaryItems = (value: string) => {
+  if (!value.trim()) return [];
+  const normalized = value
+    .replace(/\r/g, "")
+    .replace(/\s+-\s+(?=S[1-5]-\d{2}\b)/g, "\n- ");
+  return normalized
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("-"))
+    .map((line) => line.replace(/^-+\s*/, "").trim())
+    .filter((line) => SUMMARY_CODE_RE.test(line));
+};
+
 export default async function SessionPage(props: unknown) {
   const { params } = props as {
     params: { sessionId: string } | Promise<{ sessionId: string }>;
@@ -23,6 +38,7 @@ export default async function SessionPage(props: unknown) {
   if (!session) return notFound();
 
   const sessionExercises = getSeriesCards(sessionIdNorm);
+  const summaryItems = splitSummaryItems(session.extraMd ?? "");
 
   return (
     <div className="p-6 space-y-6">
@@ -66,10 +82,20 @@ export default async function SessionPage(props: unknown) {
           <p className="text-xs uppercase tracking-widest text-white/60">
             Résumé des exercices (audit)
           </p>
-          <MarkdownText
-            text={session.extraMd}
-            className="mt-3 max-w-prose text-sm leading-relaxed text-white/75"
-          />
+          {summaryItems.length ? (
+            <ul className="mt-3 max-w-prose text-sm leading-relaxed text-white/75 list-disc pl-5 space-y-2">
+              {summaryItems.map((item, index) => (
+                <li key={`${session.id}-${index}`} className="whitespace-pre-wrap">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <MarkdownText
+              text={session.extraMd}
+              className="mt-3 max-w-prose text-sm leading-relaxed text-white/75"
+            />
+          )}
         </div>
       ) : null}
 

@@ -11,7 +11,7 @@ export const collapseNewlines = (value: string) =>
   value.replace(/\n{3,}/g, "\n\n");
 
 const INLINE_CODE_RE = /-\s+S[1-5]-\d{2}\b/g;
-const INLINE_BULLET_RE = /-\s+[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜ]/g;
+const INLINE_BULLET_RE = /-\s+[A-Z]/g;
 
 const normalizeInlineLists = (value: string) => {
   let output = value.replace(/:\s*-\s+/g, ":\n\n- ");
@@ -26,7 +26,7 @@ const normalizeInlineLists = (value: string) => {
       const bulletMatches = next.match(INLINE_BULLET_RE) ?? [];
       if (bulletMatches.length > 1) {
         next = next.replace(
-          /\s+-\s+(?=[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜ])/g,
+          /\s+-\s+(?=[A-Z])/g,
           "\n- "
         );
       }
