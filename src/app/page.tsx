@@ -11,9 +11,8 @@ import { getExerciseStats } from "@/lib/stats";
 export default function HomePage() {
   const stats = getExerciseStats();
   return (
-    <>
+    <div className="eps-home space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <HomeTopBanner />
-      <main className="eps-home space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
         <header className="eps-home__header space-y-3">
           <div className="eps-home__brand">
@@ -89,7 +88,6 @@ export default function HomePage() {
           ))}
         </div>
       </div>
-      </main>
-    </>
+    </div>
   );
 }
