@@ -13,8 +13,8 @@ export const knowledgeThemes: KnowledgeTheme[] = [
       "Temps de repos 45-75 s.",
       "Priorite a la technique et a l amplitude.",
     ],
-    imageSrc: "/muscu/infographies/connaissances/tonification.png",
-    alt: "Parametres tonification",
+    imageSrc: "/muscu/infographies/connaissances/param-endurance-force.png",
+    alt: "Parametres endurance de force (tonification)",
   },
   {
     id: "projets-volume",
@@ -28,8 +28,8 @@ export const knowledgeThemes: KnowledgeTheme[] = [
       "Repos 60-90 s.",
       "Tension continue, tempo controle.",
     ],
-    imageSrc: "/muscu/infographies/connaissances/volume.png",
-    alt: "Parametres volume",
+    imageSrc: "/muscu/infographies/connaissances/param-volume.png",
+    alt: "Parametres volume (hypertrophie)",
   },
   {
     id: "projets-puissance",
@@ -43,8 +43,8 @@ export const knowledgeThemes: KnowledgeTheme[] = [
       "Repos long 2-3 min.",
       "Priorite a la qualite du mouvement.",
     ],
-    imageSrc: "/muscu/infographies/connaissances/puissance.png",
-    alt: "Parametres puissance",
+    imageSrc: "/muscu/infographies/connaissances/detente-verticale.png",
+    alt: "Puissance detente verticale",
   },
   {
     id: "methodes-series",
@@ -58,8 +58,8 @@ export const knowledgeThemes: KnowledgeTheme[] = [
       "Circuit ou pyramidal selon l objectif.",
       "Pre-fatigue pour cibler un muscle.",
     ],
-    imageSrc: "/muscu/infographies/connaissances/methodes.png",
-    alt: "Methodes d entrainement",
+    imageSrc: "/muscu/infographies/methodes/techniques-entrainement.png",
+    alt: "Techniques d entrainement",
   },
   {
     id: "parametres-recuperation",
@@ -73,8 +73,6 @@ export const knowledgeThemes: KnowledgeTheme[] = [
       "Repos variable selon objectif.",
       "Tempo stable pour controler la technique.",
     ],
-    imageSrc: "/muscu/infographies/connaissances/parametres.png",
-    alt: "Parametres d entrainement",
   },
   {
     id: "anatomie-chaine-post",
@@ -101,7 +99,5 @@ export const knowledgeThemes: KnowledgeTheme[] = [
       "Excentrique: phase de descente controlee.",
       "Isometrique: maintien statique.",
     ],
-    imageSrc: "/muscu/infographies/connaissances/contractions.png",
-    alt: "Types de contractions",
   },
 ];

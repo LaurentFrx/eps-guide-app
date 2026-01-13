@@ -7,12 +7,12 @@ import type { EvaluationProfile, Infographic } from "@/lib/muscu/types";
 
 type MuscuEvaluationViewProps = {
   profiles: EvaluationProfile[];
-  infographics: Infographic[];
+  infographicsBySection: Record<string, Infographic[]>;
 };
 
 export function MuscuEvaluationView({
   profiles,
-  infographics,
+  infographicsBySection,
 }: MuscuEvaluationViewProps) {
   const [profileId, setProfileId] = useState(profiles[0]?.id ?? "");
 
@@ -20,6 +20,7 @@ export function MuscuEvaluationView({
     () => profiles.find((profile) => profile.id === profileId) ?? profiles[0],
     [profiles, profileId]
   );
+  const infographicSections = Object.entries(infographicsBySection);
 
   return (
     <div className="space-y-4">
@@ -53,20 +54,25 @@ export function MuscuEvaluationView({
             </GlassCard>
           ))}
 
-          {(selected.infographics ?? []).length ? (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {selected.infographics?.map((src) => {
-                const info = infographics.find((item) => item.src === src);
-                const alt = info?.alt ?? "Infographie evaluation";
-                return (
-                  <ImageZoomModal
-                    key={src}
-                    src={src}
-                    alt={alt}
-                    className="shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
-                  />
-                );
-              })}
+          {infographicSections.length ? (
+            <div className="space-y-4">
+              {infographicSections.map(([section, infographics]) => (
+                <div key={section} className="space-y-3">
+                  <p className="text-xs uppercase tracking-widest text-white/60">
+                    {section}
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {infographics.map((info) => (
+                      <ImageZoomModal
+                        key={info.id}
+                        src={info.src}
+                        alt={info.alt}
+                        className="shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
           ) : null}
         </div>

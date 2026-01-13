@@ -1,6 +1,6 @@
 import { GlassCard } from "@/components/GlassCard";
 import { ImageZoomModal } from "@/components/muscu/ImageZoomModal";
-import { knowledgeThemes } from "@/lib/muscu";
+import { knowledgeInfographicsBySection, knowledgeThemes } from "@/lib/muscu";
 
 export default function MuscuConnaissancesPage() {
   const bySection = knowledgeThemes.reduce<Record<string, typeof knowledgeThemes>>(
@@ -12,6 +12,7 @@ export default function MuscuConnaissancesPage() {
     },
     {}
   );
+  const infographicSections = Object.entries(knowledgeInfographicsBySection);
 
   return (
     <div className="space-y-6">
@@ -47,6 +48,31 @@ export default function MuscuConnaissancesPage() {
           </div>
         </div>
       ))}
+
+      {infographicSections.length ? (
+        <div className="space-y-4">
+          <h2 className="font-display text-xl font-semibold text-white">
+            Infographies
+          </h2>
+          {infographicSections.map(([section, infographics]) => (
+            <div key={section} className="space-y-3">
+              <p className="text-xs uppercase tracking-widest text-white/60">
+                {section}
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {infographics.map((info) => (
+                  <ImageZoomModal
+                    key={info.id}
+                    src={info.src}
+                    alt={info.alt}
+                    className="shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -3,13 +3,12 @@ import {
   KNOWLEDGE_SECTIONS,
   MUSCU_ZONES,
   PROJETS,
-  evaluationInfographics,
   evaluationProfiles,
-  knowledgeInfographics,
   knowledgeThemes,
   muscuExercises,
   stretches,
 } from "@/lib/muscu";
+import muscuInfographics from "@/lib/muscu/muscuInfographics.json";
 import { exerciseTagsByCode } from "@/lib/exercises/exerciseTags";
 import fs from "fs";
 import path from "path";
@@ -54,14 +53,8 @@ export const validateMuscuData = () => {
   uniqueIds(evaluationProfiles).forEach((id) =>
     issues.push({ scope: "evaluationProfiles", message: `duplicate id ${id}` })
   );
-  uniqueIds(knowledgeInfographics).forEach((id) =>
-    issues.push({ scope: "knowledgeInfographics", message: `duplicate id ${id}` })
-  );
-  uniqueIds(evaluationInfographics).forEach((id) =>
-    issues.push({
-      scope: "evaluationInfographics",
-      message: `duplicate id ${id}`,
-    })
+  uniqueIds(muscuInfographics).forEach((id) =>
+    issues.push({ scope: "muscuInfographics", message: `duplicate id ${id}` })
   );
 
   issues.push(...ensureBase(muscuExercises));
@@ -137,13 +130,20 @@ export const validateMuscuData = () => {
     });
   });
 
-  const allInfographics = [...knowledgeInfographics, ...evaluationInfographics];
-  allInfographics.forEach((item) => {
-    if (!item.src) {
-      issues.push({ scope: item.id, message: "missing src" });
+  muscuInfographics.forEach((item) => {
+    if (!item.imageSrc) {
+      issues.push({ scope: item.id, message: "missing imageSrc" });
+      return;
     }
-    if (!item.alt) {
+    if (!item.alt || !item.alt.trim()) {
       issues.push({ scope: item.id, message: "missing alt" });
+    }
+    const relativePath = item.imageSrc.startsWith("/")
+      ? item.imageSrc.slice(1)
+      : item.imageSrc;
+    const assetPath = path.join(process.cwd(), "public", relativePath);
+    if (!fs.existsSync(assetPath)) {
+      issues.push({ scope: item.id, message: `missing file ${item.imageSrc}` });
     }
   });
 
