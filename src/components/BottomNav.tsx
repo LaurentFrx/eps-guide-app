@@ -13,7 +13,7 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/musculation/entrainement", label: "S’entraîner", icon: Dumbbell },
+  { href: "/musculation/entrainement", label: "S'entraîner", icon: Dumbbell },
   { href: "/musculation/connaissances", label: "Connaissances", icon: BookOpen },
   { href: "/musculation/evaluation", label: "Évaluation", icon: ClipboardList },
   { href: "/musculation/bibliotheque", label: "Bibliothèque", icon: Library },
@@ -26,7 +26,7 @@ export const BottomNav = () => {
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)]">
-      <div className="mx-auto w-full max-w-lg px-4 pointer-events-none">
+      <div className="pointer-events-none mx-auto w-full max-w-lg px-4">
         <nav className="pointer-events-auto">
           <div className="ui-surface ui-bottomnav flex items-center justify-between gap-2 rounded-full px-4 py-2 shadow-lg">
             {navItems.map((item) => {

@@ -9,6 +9,8 @@ const CATEGORIES = [
   { id: "cross", label: "Cross / Functional" },
 ];
 
+const FROM_BIB = "/musculation/bibliotheque";
+
 export default function MuscuBibliothequePage() {
   return (
     <div className="space-y-6">
@@ -35,7 +37,10 @@ export default function MuscuBibliothequePage() {
             </span>
           ))}
         </div>
-        <Link href="/musculation/exercices" className="ui-link text-sm font-medium">
+        <Link
+          href={`/musculation/exercices?from=${encodeURIComponent(FROM_BIB)}`}
+          className="ui-link text-sm font-medium"
+        >
           Ouvrir les exercices
         </Link>
       </GlassCard>
@@ -47,7 +52,10 @@ export default function MuscuBibliothequePage() {
         <p className="text-sm text-white/70">
           Fiches rapides pour terminer la séance et récupérer.
         </p>
-        <Link href="/musculation/etirements" className="ui-link text-sm font-medium">
+        <Link
+          href={`/musculation/etirements?from=${encodeURIComponent(FROM_BIB)}`}
+          className="ui-link text-sm font-medium"
+        >
           Ouvrir les étirements
         </Link>
       </GlassCard>
@@ -59,7 +67,10 @@ export default function MuscuBibliothequePage() {
         <p className="text-sm text-white/70">
           Accès direct à la bibliothèque EPS complète.
         </p>
-        <Link href="/exercises" className="ui-link text-sm font-medium">
+        <Link
+          href={`/exercises?from=${encodeURIComponent(FROM_BIB)}`}
+          className="ui-link text-sm font-medium"
+        >
           Voir la bibliothèque EPS
         </Link>
       </GlassCard>

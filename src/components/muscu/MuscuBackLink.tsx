@@ -9,7 +9,10 @@ export function MuscuBackLink() {
 
   return (
     <div className="px-5 sm:px-6">
-      <BackLink label="← Accueil Musculation" fallbackHref="/musculation/accueil" />
+      <BackLink
+        label="← Accueil Musculation"
+        fallbackHref="/musculation/accueil"
+      />
     </div>
   );
 }
