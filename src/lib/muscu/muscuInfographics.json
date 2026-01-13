@@ -1,0 +1,107 @@
+[
+  {
+    "id": "param-endurance-force",
+    "title": "Paramètres — Endurance de force / Tonification",
+    "section": "Connaissances",
+    "imageSrc": "/muscu/infographies/connaissances/param-endurance-force.png",
+    "alt": "Infographie des paramètres d’entraînement en endurance de force (tonification)."
+  },
+  {
+    "id": "param-volume",
+    "title": "Paramètres — Volume / Hypertrophie",
+    "section": "Connaissances",
+    "imageSrc": "/muscu/infographies/connaissances/param-volume.png",
+    "alt": "Infographie des paramètres d’entraînement pour le volume (hypertrophie)."
+  },
+  {
+    "id": "techniques-entrainement",
+    "title": "Techniques d’entraînement — synthèse",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/techniques-entrainement.png",
+    "alt": "Infographie présentant plusieurs techniques d’entraînement (ex. drop set, rest-pause, superset, circuit…)."
+  },
+  {
+    "id": "detente-verticale",
+    "title": "Puissance — améliorer la détente verticale",
+    "section": "Connaissances",
+    "imageSrc": "/muscu/infographies/connaissances/detente-verticale.png",
+    "alt": "Infographie sur des pistes d’entraînement pour améliorer la détente verticale (puissance)."
+  },
+  {
+    "id": "musculation-au-bac",
+    "title": "Musculation — épreuve au bac (référentiel local)",
+    "section": "Évaluation",
+    "imageSrc": "/muscu/infographies/evaluation/musculation-au-bac.png",
+    "alt": "Infographie sur l’épreuve de musculation au bac (attendus, compétences/points)."
+  },
+  {
+    "id": "revisions-bac-1",
+    "title": "Révisions bac — connaissances (1/3)",
+    "section": "Connaissances",
+    "imageSrc": "/muscu/infographies/connaissances/revisions-bac-1.png",
+    "alt": "Infographie de révisions bac : connaissances musculation (page 1)."
+  },
+  {
+    "id": "revisions-bac-2",
+    "title": "Révisions bac — connaissances (2/3)",
+    "section": "Connaissances",
+    "imageSrc": "/muscu/infographies/connaissances/revisions-bac-2.png",
+    "alt": "Infographie de révisions bac : connaissances musculation (page 2)."
+  },
+  {
+    "id": "revisions-bac-3",
+    "title": "Révisions bac — connaissances (3/3)",
+    "section": "Connaissances",
+    "imageSrc": "/muscu/infographies/connaissances/revisions-bac-3.png",
+    "alt": "Infographie de révisions bac : connaissances musculation (page 3)."
+  },
+  {
+    "id": "fiches-methodes-1",
+    "title": "Fiches méthodes — 1/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-1.png",
+    "alt": "Infographie fiches méthodes (page 1 sur 7)."
+  },
+  {
+    "id": "fiches-methodes-2",
+    "title": "Fiches méthodes — 2/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-2.png",
+    "alt": "Infographie fiches méthodes (page 2 sur 7)."
+  },
+  {
+    "id": "fiches-methodes-3",
+    "title": "Fiches méthodes — 3/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-3.png",
+    "alt": "Infographie fiches méthodes (page 3 sur 7)."
+  },
+  {
+    "id": "fiches-methodes-4",
+    "title": "Fiches méthodes — 4/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-4.png",
+    "alt": "Infographie fiches méthodes (page 4 sur 7)."
+  },
+  {
+    "id": "fiches-methodes-5",
+    "title": "Fiches méthodes — 5/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-5.png",
+    "alt": "Infographie fiches méthodes (page 5 sur 7)."
+  },
+  {
+    "id": "fiches-methodes-6",
+    "title": "Fiches méthodes — 6/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-6.png",
+    "alt": "Infographie fiches méthodes (page 6 sur 7)."
+  },
+  {
+    "id": "fiches-methodes-7",
+    "title": "Fiches méthodes — 7/7",
+    "section": "Méthodes",
+    "imageSrc": "/muscu/infographies/methodes/fiches-methodes-7.png",
+    "alt": "Infographie fiches méthodes (page 7 sur 7)."
+  }
+]
