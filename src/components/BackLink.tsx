@@ -6,6 +6,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 type BackLinkProps = {
+  href?: string;
   label?: string;
   fallbackHref?: string;
   className?: string;
@@ -70,6 +71,18 @@ function BackLinkFallback({
 }
 
 export function BackLink(props: BackLinkProps) {
+  if (props.href) {
+    return (
+      <Link
+        href={props.href}
+        aria-label={props.label ?? "Retour"}
+        className={cn("ui-link text-sm font-medium", props.className)}
+      >
+        {props.children ?? props.label ?? "Retour"}
+      </Link>
+    );
+  }
+
   return (
     <Suspense fallback={<BackLinkFallback {...props} />}>
       <BackLinkInner {...props} />

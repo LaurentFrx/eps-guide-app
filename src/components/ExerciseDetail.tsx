@@ -87,12 +87,14 @@ type ExerciseDetailProps = {
   exercise: ExerciseRecord;
   heroSrc?: string | null;
   heroIsSvg?: boolean;
+  backHref?: string;
 };
 
 export const ExerciseDetail = ({
   exercise,
   heroSrc,
   heroIsSvg,
+  backHref,
 }: ExerciseDetailProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image ?? "");
@@ -101,6 +103,7 @@ export const ExerciseDetail = ({
   const levelClass = levelStyles[exercise.level] ?? "ui-chip";
 
   const sessionId = exercise.code.split("-")[0] ?? "";
+  const fallbackBackHref = sessionId ? `/exercises/${sessionId}` : "/exercises";
   const sessionLabel = sessionId ? `Session ${sessionId.replace("S", "")}` : "";
   const muscleChips = useMemo(() => {
     return exercise.muscles
@@ -159,8 +162,9 @@ export const ExerciseDetail = ({
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
           <BackLink
+            href={backHref}
             label="← Retour"
-            fallbackHref={sessionId ? `/exercises/${sessionId}` : "/exercises"}
+            fallbackHref={fallbackBackHref}
           />
         </div>
         <div className="relative h-64 w-full">
