@@ -53,3 +53,29 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: contrastes/verifs clavier/labels.
   - Fichiers: `src/app/globals.css`, `src/components/*`
   - Etat: TODO
+
+## IA Fred (Refonte)
+- [DONE] Phase 1 - Navigation: S'entraîner / Connaissances / Evaluation / Bibliotheque
+  - Attendu: labels et ordre alignes, exercices relegues en bibliotheque.
+  - Fichiers: `src/components/BottomNav.tsx`, `src/components/muscu/BottomTabsMuscu.tsx`
+  - Etat: DONE
+- [TODO] Phase 2 - Accueil musculation (topo + hub 4 piliers)
+  - Attendu: cartes hub orientees projets, connaissances, evaluation, bibliotheque.
+  - Fichiers: `src/app/musculation/(tabs)/accueil/page.tsx`
+  - Etat: TODO
+- [TODO] Phase 3 - Index S'entraîner (projets + parametres + methodes)
+  - Attendu: page d'entree projets et liens vers parametres/methodes/seances type.
+  - Fichiers: `src/app/musculation/(tabs)/entrainement/page.tsx`, `src/lib/muscu/*`
+  - Etat: TODO
+- [TODO] Phase 4 - Connaissances (index clair + a11y)
+  - Attendu: sections anatomie/contractions/methodes avec structure accessible.
+  - Fichiers: `src/app/musculation/(tabs)/connaissances/page.tsx`
+  - Etat: TODO
+- [TODO] Phase 5 - Evaluation (index par niveau + Bac contextualise)
+  - Attendu: niveaux + branches Bac LGT/Pro sans diffusion globale du terme.
+  - Fichiers: `src/app/musculation/(tabs)/evaluation/page.tsx`
+  - Etat: TODO
+- [TODO] Phase 6 - Bibliotheque (hub categories + etirements)
+  - Attendu: hub categories + liens vers /exercises et /musculation/etirements.
+  - Fichiers: `src/app/musculation/(tabs)/bibliotheque/page.tsx`
+  - Etat: TODO
