@@ -54,12 +54,7 @@ export type KnowledgeTheme = BaseMeta & {
   relatedExerciseIds?: string[];
 };
 
-export type EvaluationProfileName =
-  | "Bac LGT"
-  | "Bac Pro"
-  | "CAP"
-  | "Seconde/CAP"
-  | "Première/CAP";
+export type EvaluationProfileName = "Evaluation";
 
 export type EvaluationProfile = BaseMeta & {
   profile: EvaluationProfileName;
@@ -92,10 +87,5 @@ export const KNOWLEDGE_SECTIONS: KnowledgeSection[] = [
   "Contractions",
 ];
 
-export const EVALUATION_PROFILES: EvaluationProfileName[] = [
-  "Bac LGT",
-  "Bac Pro",
-  "CAP",
-  "Seconde/CAP",
-  "Première/CAP",
-];
+export const EVALUATION_PROFILES: EvaluationProfileName[] = ["Evaluation"];
+

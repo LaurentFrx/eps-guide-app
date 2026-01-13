@@ -4,7 +4,7 @@ import { evaluationInfographicsBySection, evaluationProfiles } from "@/lib/muscu
 export default function MuscuEvaluationPage() {
   return (
     <MuscuEvaluationView
-      profiles={evaluationProfiles}
+      sections={evaluationProfiles[0]?.sections ?? []}
       infographicsBySection={evaluationInfographicsBySection}
     />
   );

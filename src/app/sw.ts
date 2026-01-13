@@ -31,7 +31,7 @@ const runtimeCaching = [
       url.pathname.startsWith("/bac/musculation/pdfs/") &&
       url.pathname.endsWith(".pdf"),
     handler: new CacheFirst({
-      cacheName: "bac-musculation-pdfs",
+      cacheName: "musculation-pdfs",
       plugins: [
         new ExpirationPlugin({
           maxEntries: 24,

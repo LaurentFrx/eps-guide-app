@@ -61,7 +61,7 @@ const PDF_BASE = "/bac/musculation/pdfs";
 export const BAC_MUSCULATION_DOCS: BacMusculationDoc[] = [
   {
     slug: "musculation-au-bac",
-    title: "Musculation au bac",
+    title: "Epreuve musculation",
     sectionId: "epreuve",
     tags: ["epreuve", "evaluation", "criteres"],
     pdfPath: `${PDF_BASE}/musculation-au-bac.pdf`,

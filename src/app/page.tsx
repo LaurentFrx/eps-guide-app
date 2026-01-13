@@ -16,13 +16,21 @@ export default function HomePage() {
       <div className="space-y-4">
         <header className="eps-home__header space-y-3">
           <div className="eps-home__brand">
-            <h1 className="sr-only">Guide EPS</h1>
-            <span className="eps-home__title">GUIDE DE MUSCULATION</span>
+            <h1 className="sr-only">Guide Musculation</h1>
+            <span className="eps-home__title">GUIDE MUSCULATION</span>
           </div>
         </header>
         <p className="text-sm text-white/70">
-          Recherchez, filtrez et sauvegardez vos exercices, même hors ligne.
+          Projets • Seances • Exercices • Revisions • Evaluation
         </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button asChild className="ui-btn-primary">
+            <Link href="/musculation/accueil">Commencer</Link>
+          </Button>
+          <Button asChild variant="secondary" className="ui-chip">
+            <Link href="/exercises">Bibliotheque exercices</Link>
+          </Button>
+        </div>
         <div className="eps-home__chips flex flex-wrap items-center gap-2">
           <Badge variant="outline" className="ui-chip">
             {stats.sessionsCount} sessions
@@ -31,38 +39,13 @@ export default function HomePage() {
             {stats.totalExercises} exercices
           </Badge>
           <Button asChild variant="outline" size="sm" className="ui-chip">
-            <Link href="/docs">Docs</Link>
-          </Button>
-          <Button asChild variant="outline" size="sm" className="ui-chip">
-            <Link href="/bac">Mode Bac</Link>
-          </Button>
-          <Button asChild variant="outline" size="sm" className="ui-chip">
             <Link href="/musculation">Musculation</Link>
+          </Button>
+          <Button asChild variant="outline" size="sm" className="ui-chip">
+            <Link href="/docs">Docs</Link>
           </Button>
         </div>
       </div>
-
-      <GlassCard className="space-y-3">
-        <p className="text-xs uppercase tracking-widest text-white/60">
-          Nouveau module
-        </p>
-        <div className="space-y-2">
-          <h2 className="font-display text-2xl font-semibold text-white">
-            Mode Bac
-          </h2>
-          <p className="text-sm text-white/70">
-            Ressources lisibles terrain, filtres rapides et acces PDF.
-          </p>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <Button asChild className="ui-btn-primary">
-            <Link href="/bac">Entrer en Mode Bac</Link>
-          </Button>
-          <Button asChild variant="secondary" className="ui-chip">
-            <Link href="/musculation">Guide Musculation</Link>
-          </Button>
-        </div>
-      </GlassCard>
 
       <GlassCard className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-white/60">
@@ -102,7 +85,9 @@ export default function HomePage() {
                     <h3 className="font-display text-xl font-semibold text-white">
                       {session.title}
                     </h3>
-                    <p className="mt-1 text-sm text-white/70">{session.subtitle}</p>
+                    <p className="mt-1 text-sm text-white/70">
+                      {session.subtitle}
+                    </p>
                   </div>
                   <ArrowUpRight className="h-5 w-5 text-white/70" />
                 </div>

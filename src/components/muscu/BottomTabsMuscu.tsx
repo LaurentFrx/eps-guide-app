@@ -8,7 +8,7 @@ const tabs = [
   { href: "/musculation/accueil", label: "Accueil" },
   { href: "/musculation/exercices", label: "Exercices" },
   { href: "/musculation/etirements", label: "Etirements" },
-  { href: "/musculation/connaissances", label: "Connaissances" },
+  { href: "/musculation/connaissances", label: "Revisions" },
   { href: "/musculation/evaluation", label: "Evaluation" },
 ];
 
