@@ -59,10 +59,10 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: labels et ordre alignes, exercices relegues en bibliotheque.
   - Fichiers: `src/components/BottomNav.tsx`, `src/components/muscu/BottomTabsMuscu.tsx`
   - Etat: DONE
-- [TODO] Phase 2 - Accueil musculation (topo + hub 4 piliers)
+- [DONE] Phase 2 - Accueil musculation (topo + hub 4 piliers)
   - Attendu: cartes hub orientees projets, connaissances, evaluation, bibliotheque.
   - Fichiers: `src/app/musculation/(tabs)/accueil/page.tsx`
-  - Etat: TODO
+  - Etat: DONE
 - [TODO] Phase 3 - Index S'entraîner (projets + parametres + methodes)
   - Attendu: page d'entree projets et liens vers parametres/methodes/seances type.
   - Fichiers: `src/app/musculation/(tabs)/entrainement/page.tsx`, `src/lib/muscu/*`
