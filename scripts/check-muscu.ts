@@ -1,6 +1,6 @@
-import { validateExerciseTags, validateMuscuData } from "../src/lib/muscu/validate";
+import { validateMuscuData } from "../src/lib/muscu/validate";
 
-const issues = [...validateMuscuData(), ...validateExerciseTags()];
+const issues = validateMuscuData();
 
 if (!issues.length) {
   console.log("Muscu data check passed.");

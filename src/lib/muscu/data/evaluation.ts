@@ -23,7 +23,7 @@ export const evaluationProfiles: EvaluationProfile[] = [
         ],
       },
     ],
-    infographics: ["/muscu/infographies/evaluation/bac-lgt.png"],
+    infographics: ["/muscu/infographies/evaluation/musculation-au-bac.png"],
   },
   {
     id: "eval-bac-pro",
@@ -41,7 +41,7 @@ export const evaluationProfiles: EvaluationProfile[] = [
         bullets: ["Regularite", "Gestion de l effort"],
       },
     ],
-    infographics: ["/muscu/infographies/evaluation/bac-pro.png"],
+    infographics: ["/muscu/infographies/evaluation/musculation-au-bac.png"],
   },
   {
     id: "eval-cap",
@@ -59,7 +59,7 @@ export const evaluationProfiles: EvaluationProfile[] = [
         bullets: ["Connaissance des charges", "Respect du protocole"],
       },
     ],
-    infographics: ["/muscu/infographies/evaluation/cap.png"],
+    infographics: ["/muscu/infographies/evaluation/musculation-au-bac.png"],
   },
   {
     id: "eval-seconde-cap",
@@ -77,7 +77,7 @@ export const evaluationProfiles: EvaluationProfile[] = [
         bullets: ["Participation active", "Ecoute des consignes"],
       },
     ],
-    infographics: ["/muscu/infographies/evaluation/seconde-cap.png"],
+    infographics: ["/muscu/infographies/evaluation/musculation-au-bac.png"],
   },
   {
     id: "eval-premiere-cap",
@@ -95,6 +95,6 @@ export const evaluationProfiles: EvaluationProfile[] = [
         bullets: ["Preparation du materiel", "Respect de la securite"],
       },
     ],
-    infographics: ["/muscu/infographies/evaluation/premiere-cap.png"],
+    infographics: ["/muscu/infographies/evaluation/musculation-au-bac.png"],
   },
 ];
