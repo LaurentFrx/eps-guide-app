@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { GlassCard } from "@/components/GlassCard";
+import { MuscuProjectPicker } from "@/components/muscu/MuscuProjectPicker";
+import { MuscuQuickLog } from "@/components/muscu/MuscuQuickLog";
 import { evaluationProfiles, knowledgeThemes, muscuExercises, stretches } from "@/lib/muscu";
 
 export default function MuscuAccueilPage() {
@@ -14,6 +16,11 @@ export default function MuscuAccueilPage() {
           criteres d evaluation.
         </p>
       </GlassCard>
+
+      <div className="space-y-4">
+        <MuscuProjectPicker />
+        <MuscuQuickLog />
+      </div>
 
       <GlassCard className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-white/60">

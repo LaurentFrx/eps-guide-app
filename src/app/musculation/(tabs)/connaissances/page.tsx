@@ -7,6 +7,9 @@ import {
 } from "@/lib/muscu";
 
 export default function MuscuConnaissancesPage() {
+  const formatSection = (section: string) =>
+    section === "Connaissances" ? "Revisions" : section;
+
   const bySection = knowledgeThemes.reduce<Record<string, typeof knowledgeThemes>>(
     (acc, theme) => {
       const list = acc[theme.section] ?? [];
@@ -43,7 +46,7 @@ export default function MuscuConnaissancesPage() {
           <details key={section} className="ui-card p-4">
             <summary className="flex cursor-pointer items-center justify-between gap-3">
               <span className="font-display text-lg font-semibold text-white">
-                {section}
+                {formatSection(section)}
               </span>
               <span className="text-xs uppercase tracking-widest text-white/50">
                 {bySection[section]?.length ?? 0} fiches
@@ -86,8 +89,7 @@ export default function MuscuConnaissancesPage() {
           </summary>
           <div className="mt-4 space-y-4">
             {infographicSections.map(([section, infographics]) => {
-              const displaySection =
-                section === "Connaissances" ? "Revisions" : section;
+              const displaySection = formatSection(section);
               return (
               <div key={section} className="space-y-3">
                 <p className="text-xs uppercase tracking-widest text-white/60">
@@ -112,3 +114,5 @@ export default function MuscuConnaissancesPage() {
     </div>
   );
 }
+
+

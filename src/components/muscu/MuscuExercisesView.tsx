@@ -12,6 +12,7 @@ import {
   type MuscuZone,
   type Projet,
 } from "@/lib/muscu/types";
+import { readStoredProject, writeStoredProject } from "@/lib/muscu/projectStorage";
 import type { ExerciseTags, ItemType } from "@/lib/exercises/exerciseTags";
 
 type EpsExercise = {
@@ -44,8 +45,15 @@ export function MuscuExercisesView({
   const [mode, setMode] = useState<"fred" | "eps">("fred");
   const [zone, setZone] = useState<MuscuZone | "Tous">("Tous");
   const [type, setType] = useState<ItemType | "Tous">("Tous");
-  const [projet, setProjet] = useState<Projet | "Tous">("Tous");
+  const [projet, setProjet] = useState<Projet | "Tous">(
+    () => readStoredProject() ?? "Tous"
+  );
   const [showUntagged, setShowUntagged] = useState(false);
+
+  const handleProjetChange = (value: Projet | "Tous") => {
+    setProjet(value);
+    writeStoredProject(value === "Tous" ? null : value);
+  };
 
   const filteredEps = useMemo(() => {
     return epsExercises.filter((exercise) => {
@@ -114,9 +122,6 @@ export function MuscuExercisesView({
                     {exercise.title}
                   </h3>
                 </div>
-                <Badge variant="outline" className="ui-chip">
-                  {exercise.status === "approved" ? "Valide" : "Draft"}
-                </Badge>
               </div>
               <div className="flex flex-wrap gap-2">
                 {exercise.projets.map((item) => (
@@ -174,7 +179,7 @@ export function MuscuExercisesView({
                 className="mt-1 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm text-white/80"
                 value={projet}
                 onChange={(event) =>
-                  setProjet(event.target.value as Projet | "Tous")
+                  handleProjetChange(event.target.value as Projet | "Tous")
                 }
               >
                 {["Tous", ...PROJETS].map((item) => (
