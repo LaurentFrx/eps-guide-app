@@ -5,7 +5,7 @@ const PROJECTS = [
   {
     id: "endurance",
     title: "Endurance",
-    summary: "Stabiliser, tenir l effort et enchaîner les répétitions.",
+    summary: "Stabiliser, tenir l’effort et enchaîner les répétitions.",
   },
   {
     id: "volume",
@@ -44,13 +44,13 @@ export default function MuscuEntrainementPage() {
             <h3 className="text-lg font-semibold text-white">{project.title}</h3>
             <p className="text-sm text-white/70">{project.summary}</p>
             <div className="flex flex-wrap items-center gap-3 text-sm">
-              <Link href="/musculation/connaissances" className="ui-link">
+              <Link href="/musculation/connaissances#parametres" className="ui-link">
                 Paramètres
               </Link>
-              <Link href="/musculation/connaissances" className="ui-link">
+              <Link href="/musculation/connaissances#methodes" className="ui-link">
                 Méthodes
               </Link>
-              <Link href="/musculation/accueil" className="ui-link">
+              <Link href="/exercises" className="ui-link">
                 Séances type
               </Link>
             </div>
@@ -66,7 +66,7 @@ export default function MuscuEntrainementPage() {
           Consigner la séance, le ressenti et les ajustements pour progresser
           plus vite.
         </p>
-        <Link href="/musculation/accueil" className="ui-link text-sm font-medium">
+        <Link href="/musculation/carnet" className="ui-link text-sm font-medium">
           Ouvrir le carnet rapide
         </Link>
       </GlassCard>
