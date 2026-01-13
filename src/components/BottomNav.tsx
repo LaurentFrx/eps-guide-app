@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Home, Search, Star } from "lucide-react";
+import { BookOpen, GraduationCap, Home, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", label: "Accueil", icon: Home },
+  { href: "/bac", label: "Mode Bac", icon: GraduationCap },
   { href: "/search", label: "Recherche", icon: Search },
-  { href: "/guide", label: "Guide", icon: BookOpen },
+  { href: "/guide", label: "Guide EPS", icon: BookOpen },
   { href: "/favorites", label: "Favoris", icon: Star },
 ];
 

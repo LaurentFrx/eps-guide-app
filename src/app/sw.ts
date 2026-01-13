@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
+import { CacheFirst, ExpirationPlugin } from "serwist";
 import { Serwist } from "serwist";
 
 type ServiceWorkerManifestScope = ServiceWorkerGlobalScope &
@@ -17,12 +18,35 @@ const OFFLINE_URL = "/~offline";
 
 const shouldPrecache = (entry: PrecacheEntry | string) => {
   const url = typeof entry === "string" ? entry : entry.url;
-  return !/\/muscu[\\/]+infographies[\\/]+/i.test(url);
+  return (
+    !/\/muscu[\\/]+infographies[\\/]+/i.test(url) &&
+    !/\/bac[\\/]+musculation[\\/]+pdfs[\\/]+/i.test(url)
+  );
 };
+
+const runtimeCaching = [
+  {
+    matcher: ({ sameOrigin, url }: { sameOrigin: boolean; url: URL }) =>
+      sameOrigin &&
+      url.pathname.startsWith("/bac/musculation/pdfs/") &&
+      url.pathname.endsWith(".pdf"),
+    handler: new CacheFirst({
+      cacheName: "bac-musculation-pdfs",
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 24,
+          maxAgeSeconds: 60 * 60 * 24 * 90,
+          maxAgeFrom: "last-used",
+        }),
+      ],
+    }),
+  },
+  ...defaultCache,
+];
 
 const serwist = new Serwist({
   precacheEntries: (self.__SW_MANIFEST ?? []).filter(shouldPrecache),
-  runtimeCaching: defaultCache,
+  runtimeCaching,
   skipWaiting: false,
   clientsClaim: false,
   navigationPreload: true,

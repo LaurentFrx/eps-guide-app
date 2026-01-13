@@ -34,10 +34,35 @@ export default function HomePage() {
             <Link href="/docs">Docs</Link>
           </Button>
           <Button asChild variant="outline" size="sm" className="ui-chip">
+            <Link href="/bac">Mode Bac</Link>
+          </Button>
+          <Button asChild variant="outline" size="sm" className="ui-chip">
             <Link href="/musculation">Musculation</Link>
           </Button>
         </div>
       </div>
+
+      <GlassCard className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-white/60">
+          Nouveau module
+        </p>
+        <div className="space-y-2">
+          <h2 className="font-display text-2xl font-semibold text-white">
+            Mode Bac
+          </h2>
+          <p className="text-sm text-white/70">
+            Ressources lisibles terrain, filtres rapides et acces PDF.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <Button asChild className="ui-btn-primary">
+            <Link href="/bac">Entrer en Mode Bac</Link>
+          </Button>
+          <Button asChild variant="secondary" className="ui-chip">
+            <Link href="/musculation">Guide Musculation</Link>
+          </Button>
+        </div>
+      </GlassCard>
 
       <GlassCard className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-white/60">
