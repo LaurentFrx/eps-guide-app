@@ -6,7 +6,7 @@ import { BookOpen, ClipboardList, Dumbbell, Library, Search, Star } from "lucide
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/musculation/accueil", label: "S’entraîner", icon: Dumbbell },
+  { href: "/musculation/entrainement", label: "S’entraîner", icon: Dumbbell },
   { href: "/musculation/connaissances", label: "Connaissances", icon: BookOpen },
   { href: "/musculation/evaluation", label: "Évaluation", icon: ClipboardList },
   { href: "/musculation/exercices", label: "Bibliothèque", icon: Library },

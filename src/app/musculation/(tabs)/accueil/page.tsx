@@ -31,7 +31,7 @@ export default function MuscuAccueilPage() {
             <span className="ui-chip">Puissance</span>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Link href="/musculation/accueil" className="ui-link font-medium">
+            <Link href="/musculation/entrainement" className="ui-link font-medium">
               Ouvrir S’entraîner
             </Link>
             <Link href="/musculation/connaissances" className="ui-link">
