@@ -75,7 +75,7 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: niveaux + branches Bac LGT/Pro sans diffusion globale du terme.
   - Fichiers: `src/app/musculation/(tabs)/evaluation/page.tsx`
   - Etat: DONE
-- [TODO] Phase 6 - Bibliotheque (hub categories + etirements)
+- [DONE] Phase 6 - Bibliotheque (hub categories + etirements)
   - Attendu: hub categories + liens vers /exercises et /musculation/etirements.
   - Fichiers: `src/app/musculation/(tabs)/bibliotheque/page.tsx`
-  - Etat: TODO
+  - Etat: DONE

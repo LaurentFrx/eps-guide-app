@@ -97,7 +97,7 @@ export default function MuscuAccueilPage() {
             <span className="ui-chip">Étirements</span>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <Link href="/musculation/exercices" className="ui-link font-medium">
+            <Link href="/musculation/bibliotheque" className="ui-link font-medium">
               Ouvrir la Bibliothèque
             </Link>
             <Link href="/musculation/etirements" className="ui-link">

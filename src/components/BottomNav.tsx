@@ -9,7 +9,7 @@ const navItems = [
   { href: "/musculation/entrainement", label: "S’entraîner", icon: Dumbbell },
   { href: "/musculation/connaissances", label: "Connaissances", icon: BookOpen },
   { href: "/musculation/evaluation", label: "Évaluation", icon: ClipboardList },
-  { href: "/musculation/exercices", label: "Bibliothèque", icon: Library },
+  { href: "/musculation/bibliotheque", label: "Bibliothèque", icon: Library },
   { href: "/search", label: "Recherche", icon: Search },
   { href: "/favorites", label: "Favoris", icon: Star },
 ];
