@@ -29,31 +29,31 @@
   },
   {
     "id": "musculation-au-bac",
-    "title": "Musculation — épreuve au bac (référentiel local)",
+    "title": "Musculation - epreuve (referentiel local)",
     "section": "Évaluation",
     "imageSrc": "/muscu/infographies/evaluation/musculation-au-bac.png",
-    "alt": "Infographie sur l’épreuve de musculation au bac (attendus, compétences/points)."
+    "alt": "Infographie sur l epreuve de musculation (attendus, competences/points)."
   },
   {
     "id": "revisions-bac-1",
-    "title": "Révisions bac — connaissances (1/3)",
+    "title": "Revisions musculation - connaissances (1/3)",
     "section": "Connaissances",
     "imageSrc": "/muscu/infographies/connaissances/revisions-bac-1.png",
-    "alt": "Infographie de révisions bac : connaissances musculation (page 1)."
+    "alt": "Infographie de revisions musculation : connaissances (page 1)."
   },
   {
     "id": "revisions-bac-2",
-    "title": "Révisions bac — connaissances (2/3)",
+    "title": "Revisions musculation - connaissances (2/3)",
     "section": "Connaissances",
     "imageSrc": "/muscu/infographies/connaissances/revisions-bac-2.png",
-    "alt": "Infographie de révisions bac : connaissances musculation (page 2)."
+    "alt": "Infographie de revisions musculation : connaissances (page 2)."
   },
   {
     "id": "revisions-bac-3",
-    "title": "Révisions bac — connaissances (3/3)",
+    "title": "Revisions musculation - connaissances (3/3)",
     "section": "Connaissances",
     "imageSrc": "/muscu/infographies/connaissances/revisions-bac-3.png",
-    "alt": "Infographie de révisions bac : connaissances musculation (page 3)."
+    "alt": "Infographie de revisions musculation : connaissances (page 3)."
   },
   {
     "id": "fiches-methodes-1",

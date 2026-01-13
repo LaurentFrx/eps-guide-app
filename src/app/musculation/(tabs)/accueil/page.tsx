@@ -7,7 +7,7 @@ export default function MuscuAccueilPage() {
     <div className="space-y-4">
       <GlassCard className="space-y-3">
         <p className="text-xs uppercase tracking-widest text-white/60">
-          Guide
+          Apercu
         </p>
         <p className="text-sm text-white/70">
           Ce module centralise les contenus de musculation, des exercices aux
@@ -20,19 +20,23 @@ export default function MuscuAccueilPage() {
           Sommaire
         </p>
         <div className="grid gap-2 text-sm text-white/80">
-          <Link href="/musculation/exercices" className="ui-link">
-            Exercices ({muscuExercises.length})
-          </Link>
-          <Link href="/musculation/etirements" className="ui-link">
-            Etirements ({stretches.length})
-          </Link>
-          <Link href="/musculation/connaissances" className="ui-link">
-            Connaissances ({knowledgeThemes.length})
-          </Link>
-          <Link href="/musculation/evaluation" className="ui-link">
-            Evaluation ({evaluationProfiles.length})
-          </Link>
+          <div>Exercices ({muscuExercises.length})</div>
+          <div>Etirements ({stretches.length})</div>
+          <div>Revisions ({knowledgeThemes.length})</div>
+          <div>Evaluation ({evaluationProfiles.length})</div>
         </div>
+      </GlassCard>
+
+      <GlassCard className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-white/60">
+          Ressources PDF
+        </p>
+        <p className="text-sm text-white/70">
+          Fiches synthese et methodes en lecture mobile.
+        </p>
+        <Link href="/bac/musculation" className="ui-link text-sm font-medium">
+          Ouvrir la bibliotheque
+        </Link>
       </GlassCard>
     </div>
   );

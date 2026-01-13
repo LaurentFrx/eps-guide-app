@@ -57,12 +57,14 @@ export default function BacMusculationPage() {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-white/60">Mode Bac</p>
+        <p className="text-xs uppercase tracking-widest text-white/60">
+          Ressources musculation
+        </p>
         <h1 className="font-display text-3xl font-semibold text-white">
           Musculation
         </h1>
         <p className="text-sm text-white/70">
-          17 ressources bac, filtrables par tags, avec lecture PDF.
+          17 ressources terrain, filtrables par tags, avec lecture PDF.
         </p>
       </header>
 

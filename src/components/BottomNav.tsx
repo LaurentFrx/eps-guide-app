@@ -2,19 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, GraduationCap, Home, Search, Star } from "lucide-react";
+import { BookOpen, Dumbbell, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/", label: "Accueil", icon: Home },
-  { href: "/bac", label: "Mode Bac", icon: GraduationCap },
+  { href: "/musculation/accueil", label: "Musculation", icon: Dumbbell },
+  { href: "/exercises", label: "Exercices", icon: BookOpen },
   { href: "/search", label: "Recherche", icon: Search },
-  { href: "/guide", label: "Guide EPS", icon: BookOpen },
   { href: "/favorites", label: "Favoris", icon: Star },
 ];
 
 export const BottomNav = () => {
   const pathname = usePathname();
+  if (pathname?.startsWith("/musculation")) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)]">
@@ -22,12 +22,7 @@ export const BottomNav = () => {
         <nav className="pointer-events-auto">
           <div className="ui-surface ui-bottomnav flex items-center justify-between gap-2 rounded-full px-4 py-2 shadow-lg">
             {navItems.map((item) => {
-              const isActive =
-                item.href === "/"
-                  ? pathname === "/" ||
-                    pathname?.startsWith("/sessions") ||
-                    pathname?.startsWith("/exercises")
-                  : pathname?.startsWith(item.href);
+              const isActive = pathname?.startsWith(item.href);
               const Icon = item.icon;
               return (
                 <Link
