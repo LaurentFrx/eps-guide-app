@@ -63,10 +63,10 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: cartes hub orientees projets, connaissances, evaluation, bibliotheque.
   - Fichiers: `src/app/musculation/(tabs)/accueil/page.tsx`
   - Etat: DONE
-- [TODO] Phase 3 - Index S'entraîner (projets + parametres + methodes)
+- [DONE] Phase 3 - Index S'entraîner (projets + parametres + methodes)
   - Attendu: page d'entree projets et liens vers parametres/methodes/seances type.
   - Fichiers: `src/app/musculation/(tabs)/entrainement/page.tsx`, `src/lib/muscu/*`
-  - Etat: TODO
+  - Etat: DONE
 - [TODO] Phase 4 - Connaissances (index clair + a11y)
   - Attendu: sections anatomie/contractions/methodes avec structure accessible.
   - Fichiers: `src/app/musculation/(tabs)/connaissances/page.tsx`

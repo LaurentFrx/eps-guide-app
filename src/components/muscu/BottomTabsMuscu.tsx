@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const tabs = [
-  { href: "/musculation/accueil", label: "S’entraîner" },
+  { href: "/musculation/entrainement", label: "S’entraîner" },
   { href: "/musculation/connaissances", label: "Connaissances" },
   { href: "/musculation/evaluation", label: "Évaluation" },
   { href: "/musculation/exercices", label: "Bibliothèque" },
