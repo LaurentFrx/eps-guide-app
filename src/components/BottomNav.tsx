@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Dumbbell, Search, Star } from "lucide-react";
+import { BookOpen, ClipboardList, Dumbbell, Library, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/musculation/accueil", label: "Musculation", icon: Dumbbell },
-  { href: "/exercises", label: "Exercices", icon: BookOpen },
+  { href: "/musculation/accueil", label: "S’entraîner", icon: Dumbbell },
+  { href: "/musculation/connaissances", label: "Connaissances", icon: BookOpen },
+  { href: "/musculation/evaluation", label: "Évaluation", icon: ClipboardList },
+  { href: "/musculation/exercices", label: "Bibliothèque", icon: Library },
   { href: "/search", label: "Recherche", icon: Search },
   { href: "/favorites", label: "Favoris", icon: Star },
 ];
