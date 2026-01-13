@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,7 @@ type BackLinkProps = {
   label?: string;
   fallbackHref?: string;
   className?: string;
+  children?: ReactNode;
 };
 
 const isSafeFrom = (value: string | null) =>
@@ -29,15 +30,24 @@ const resolveFallback = (pathname: string, fallbackHref?: string) => {
   return "/";
 };
 
-function BackLinkInner({ label = "Retour", fallbackHref, className }: BackLinkProps) {
+function BackLinkInner({
+  label = "Retour",
+  fallbackHref,
+  className,
+  children,
+}: BackLinkProps) {
   const pathname = usePathname() ?? "";
   const searchParams = useSearchParams();
   const from = isSafeFrom(searchParams?.get("from") ?? null);
   const href = from ?? resolveFallback(pathname, fallbackHref);
 
   return (
-    <Link href={href} className={cn("ui-link text-sm font-medium", className)}>
-      {label}
+    <Link
+      href={href}
+      aria-label={label}
+      className={cn("ui-link text-sm font-medium", className)}
+    >
+      {children ?? label}
     </Link>
   );
 }
@@ -46,13 +56,15 @@ function BackLinkFallback({
   label = "Retour",
   fallbackHref = "/",
   className,
+  children,
 }: BackLinkProps) {
   return (
     <Link
       href={fallbackHref}
+      aria-label={label}
       className={cn("ui-link text-sm font-medium", className)}
     >
-      {label}
+      {children ?? label}
     </Link>
   );
 }
