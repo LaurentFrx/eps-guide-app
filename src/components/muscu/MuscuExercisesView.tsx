@@ -45,16 +45,18 @@ export function MuscuExercisesView({
   const [zone, setZone] = useState<MuscuZone | "Tous">("Tous");
   const [type, setType] = useState<ItemType | "Tous">("Tous");
   const [projet, setProjet] = useState<Projet | "Tous">("Tous");
+  const [showUntagged, setShowUntagged] = useState(false);
 
   const filteredEps = useMemo(() => {
     return epsExercises.filter((exercise) => {
       const tags = exerciseTagsByCode[exercise.id];
+      if (showUntagged) return !tags;
       if (zone !== "Tous" && tags?.zone !== zone) return false;
       if (type !== "Tous" && tags?.type !== type) return false;
       if (projet !== "Tous" && !tags?.projets?.includes(projet)) return false;
       return true;
     });
-  }, [epsExercises, exerciseTagsByCode, zone, type, projet]);
+  }, [epsExercises, exerciseTagsByCode, zone, type, projet, showUntagged]);
 
   return (
     <div className="space-y-4">
@@ -83,6 +85,20 @@ export function MuscuExercisesView({
         >
           EPS (bibliotheque)
         </button>
+        {mode === "eps" ? (
+          <button
+            type="button"
+            onClick={() => setShowUntagged((current) => !current)}
+            className={cn(
+              "rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-widest",
+              showUntagged
+                ? "bg-white/10 text-white"
+                : "bg-transparent text-white/60 hover:text-white"
+            )}
+          >
+            Non classes
+          </button>
+        ) : null}
       </div>
 
       {mode === "fred" ? (
