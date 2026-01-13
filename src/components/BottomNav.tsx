@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, ClipboardList, Dumbbell, Library, Search, Star } from "lucide-react";
+import {
+  BookOpen,
+  ClipboardList,
+  Dumbbell,
+  Library,
+  Search,
+  Star,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -16,7 +23,6 @@ const navItems = [
 
 export const BottomNav = () => {
   const pathname = usePathname();
-  if (pathname?.startsWith("/musculation")) return null;
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 pb-[env(safe-area-inset-bottom)]">
