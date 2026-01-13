@@ -21,6 +21,7 @@
     "check:editorial:no-editor-comments": "tsx scripts/check-editorial-no-editor-comments.ts",
     "check:muscu": "npm run check:muscu:placeholders && tsx scripts/check-muscu.ts",
     "check:muscu:placeholders": "tsx scripts/check-muscu-placeholders.ts",
+    "check:bac:musculation": "tsx scripts/check-bac-musculation-docs.ts",
     "check:eps-tags": "tsx scripts/check-eps-tags.ts",
     "check:stats": "tsx scripts/check-stats.ts",
     "check:exercises:text": "tsx scripts/validate-exercises-text.ts",
