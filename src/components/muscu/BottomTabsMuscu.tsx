@@ -8,7 +8,7 @@ const tabs = [
   { href: "/musculation/entrainement", label: "S’entraîner" },
   { href: "/musculation/connaissances", label: "Connaissances" },
   { href: "/musculation/evaluation", label: "Évaluation" },
-  { href: "/musculation/exercices", label: "Bibliothèque" },
+  { href: "/musculation/bibliotheque", label: "Bibliothèque" },
 ];
 
 export function BottomTabsMuscu() {
