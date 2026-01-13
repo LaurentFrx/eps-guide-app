@@ -9,7 +9,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { EditorialCard } from "@/components/EditorialCard";
 import { DetailSections } from "@/components/DetailSections";
 import { GlossaryText } from "@/components/GlossaryText";
-import { BackButton } from "@/components/BackButton";
+import { BackLink } from "@/components/BackLink";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
 import {
@@ -158,7 +158,8 @@ export const ExerciseDetail = ({
     <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
-          <BackButton
+          <BackLink
+            label="← Retour"
             fallbackHref={sessionId ? `/exercises/${sessionId}` : "/exercises"}
           />
         </div>
@@ -334,7 +335,6 @@ export const ExerciseDetail = ({
     </div>
   );
 };
-
 
 
 
