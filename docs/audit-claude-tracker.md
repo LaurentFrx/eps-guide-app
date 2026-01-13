@@ -67,10 +67,10 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: page d'entree projets et liens vers parametres/methodes/seances type.
   - Fichiers: `src/app/musculation/(tabs)/entrainement/page.tsx`, `src/lib/muscu/*`
   - Etat: DONE
-- [TODO] Phase 4 - Connaissances (index clair + a11y)
+- [DONE] Phase 4 - Connaissances (index clair + a11y)
   - Attendu: sections anatomie/contractions/methodes avec structure accessible.
   - Fichiers: `src/app/musculation/(tabs)/connaissances/page.tsx`
-  - Etat: TODO
+  - Etat: DONE
 - [TODO] Phase 5 - Evaluation (index par niveau + Bac contextualise)
   - Attendu: niveaux + branches Bac LGT/Pro sans diffusion globale du terme.
   - Fichiers: `src/app/musculation/(tabs)/evaluation/page.tsx`

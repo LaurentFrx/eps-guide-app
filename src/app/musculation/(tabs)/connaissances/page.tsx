@@ -1,58 +1,123 @@
+"use client";
+
+import { useMemo, useState } from "react";
 import { GlassCard } from "@/components/GlassCard";
 import { ImageZoomModal } from "@/components/muscu/ImageZoomModal";
-import {
-  KNOWLEDGE_SECTIONS,
-  knowledgeInfographicsBySection,
-  knowledgeThemes,
-} from "@/lib/muscu";
+import { knowledgeInfographicsBySection, knowledgeThemes } from "@/lib/muscu";
 
 export default function MuscuConnaissancesPage() {
-  const formatSection = (section: string) =>
-    section === "Connaissances" ? "Revisions" : section;
+  const sectionLabels: Record<string, string> = {
+    Projets: "Projets",
+    ["Param\u0160tres"]: "Paramètres",
+    ["M\u201Athodes"]: "Méthodes",
+    Anatomie: "Anatomie",
+    Contractions: "Contractions",
+  };
+  const formatSection = (section: string) => sectionLabels[section] ?? section;
 
-  const bySection = knowledgeThemes.reduce<Record<string, typeof knowledgeThemes>>(
-    (acc, theme) => {
-      const list = acc[theme.section] ?? [];
-      list.push(theme);
-      acc[theme.section] = list;
-      return acc;
-    },
-    {}
+  const primarySections = ["Anatomie", "Contractions", "M\u201Athodes"];
+  const secondarySections = ["Projets", "Param\u0160tres"];
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+  const [infographicsOpen, setInfographicsOpen] = useState(false);
+
+  const bySection = useMemo(
+    () =>
+      knowledgeThemes.reduce<Record<string, typeof knowledgeThemes>>(
+        (acc, theme) => {
+          const list = acc[theme.section] ?? [];
+          list.push(theme);
+          acc[theme.section] = list;
+          return acc;
+        },
+        {}
+      ),
+    []
   );
 
   const orderedSections = [
-    ...KNOWLEDGE_SECTIONS.filter((section) => bySection[section]?.length),
+    ...primarySections.filter((section) => bySection[section]?.length),
+    ...secondarySections.filter((section) => bySection[section]?.length),
     ...Object.keys(bySection).filter(
-      (section) => !KNOWLEDGE_SECTIONS.includes(section as typeof KNOWLEDGE_SECTIONS[number])
+      (section) =>
+        !primarySections.includes(section) &&
+        !secondarySections.includes(section)
     ),
   ];
 
   const infographicSections = Object.entries(knowledgeInfographicsBySection);
 
+  const slugify = (value: string) =>
+    value
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+
+  const toggleSection = (section: string) => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
   return (
     <div className="space-y-6">
       <header className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-white/60">Revisions</p>
+        <p className="text-xs uppercase tracking-widest text-white/60">
+          Connaissances
+        </p>
         <h2 className="font-display text-2xl font-semibold text-white">
-          Revisions terrain
+          Connaissances terrain
         </h2>
         <p className="text-sm text-white/70">
-          Repere rapide sur les projets, methodes et consignes cles.
+          Repere rapide sur l anatomie, les contractions et les methodes.
         </p>
       </header>
 
+      <GlassCard className="space-y-3">
+        <p className="text-xs uppercase tracking-widest text-white/60">
+          Index
+        </p>
+        <div className="flex flex-wrap gap-2 text-xs text-white/70">
+          {primarySections
+            .filter((section) => bySection[section]?.length)
+            .map((section) => {
+              const label = formatSection(section);
+              const anchor = `section-${slugify(label)}`;
+              return (
+                <a key={section} href={`#${anchor}`} className="ui-chip">
+                  {label}
+                </a>
+              );
+            })}
+        </div>
+      </GlassCard>
+
       <div className="space-y-4">
-        {orderedSections.map((section) => (
-          <details key={section} className="ui-card p-4">
-            <summary className="flex cursor-pointer items-center justify-between gap-3">
+        {orderedSections.map((section) => {
+          const label = formatSection(section);
+          const sectionId = slugify(label);
+          const anchorId = `section-${sectionId}`;
+          return (
+          <div key={section} id={anchorId} className="ui-card p-4">
+            <button
+              type="button"
+              id={`toggle-${sectionId}`}
+              aria-controls={`panel-${sectionId}`}
+              aria-expanded={openSections[section] ?? false}
+              onClick={() => toggleSection(section)}
+              className="flex w-full items-center justify-between gap-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60"
+            >
               <span className="font-display text-lg font-semibold text-white">
-                {formatSection(section)}
+                {label}
               </span>
               <span className="text-xs uppercase tracking-widest text-white/50">
                 {bySection[section]?.length ?? 0} fiches
               </span>
-            </summary>
-            <div className="mt-4 grid gap-4">
+            </button>
+            <div
+              id={`panel-${sectionId}`}
+              role="region"
+              aria-labelledby={`toggle-${sectionId}`}
+              hidden={!openSections[section]}
+              className="mt-4 grid gap-4"
+            >
               {bySection[section]?.map((theme) => (
                 <GlassCard key={theme.id} className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -75,41 +140,57 @@ export default function MuscuConnaissancesPage() {
                 </GlassCard>
               ))}
             </div>
-          </details>
-        ))}
+          </div>
+        );
+        })}
       </div>
 
       {infographicSections.length ? (
-        <details className="ui-card p-4">
-          <summary className="flex cursor-pointer items-center justify-between gap-3">
+        <div className="ui-card p-4">
+          <button
+            type="button"
+            id="toggle-infographies"
+            aria-controls="panel-infographies"
+            aria-expanded={infographicsOpen}
+            onClick={() => setInfographicsOpen((current) => !current)}
+            className="flex w-full items-center justify-between gap-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-white/60"
+          >
             <span className="font-display text-lg font-semibold text-white">
               Infographies
             </span>
-            <span className="ui-chip px-3 py-1 text-xs">Voir toutes les infographies</span>
-          </summary>
-          <div className="mt-4 space-y-4">
+            <span className="ui-chip px-3 py-1 text-xs">
+              Voir toutes les infographies
+            </span>
+          </button>
+          <div
+            id="panel-infographies"
+            role="region"
+            aria-labelledby="toggle-infographies"
+            hidden={!infographicsOpen}
+            className="mt-4 space-y-4"
+          >
             {infographicSections.map(([section, infographics]) => {
               const displaySection = formatSection(section);
               return (
-              <div key={section} className="space-y-3">
-                <p className="text-xs uppercase tracking-widest text-white/60">
-                  {displaySection}
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {infographics.map((info) => (
-                    <ImageZoomModal
-                      key={info.id}
-                      src={info.src}
-                      alt={info.alt.replace(/\bbac\b/gi, "epreuve")}
-                      className="shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
-                    />
-                  ))}
+                <div key={section} className="space-y-3">
+                  <p className="text-xs uppercase tracking-widest text-white/60">
+                    {displaySection}
+                  </p>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {infographics.map((info) => (
+                      <ImageZoomModal
+                        key={info.id}
+                        src={info.src}
+                        alt={info.alt.replace(/\bbac\b/gi, "epreuve")}
+                        className="shadow-[0_10px_30px_rgba(0,0,0,0.35)]"
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            );
+              );
             })}
           </div>
-        </details>
+        </div>
       ) : null}
     </div>
   );
