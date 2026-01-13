@@ -8,15 +8,15 @@ import { knowledgeInfographicsBySection, knowledgeThemes } from "@/lib/muscu";
 export default function MuscuConnaissancesPage() {
   const sectionLabels: Record<string, string> = {
     Projets: "Projets",
-    ["Param\u0160tres"]: "Paramètres",
-    ["M\u201Athodes"]: "Méthodes",
+    Paramètres: "Paramètres",
+    Méthodes: "Méthodes",
     Anatomie: "Anatomie",
     Contractions: "Contractions",
   };
   const formatSection = (section: string) => sectionLabels[section] ?? section;
 
-  const primarySections = ["Anatomie", "Contractions", "M\u201Athodes"];
-  const secondarySections = ["Projets", "Param\u0160tres"];
+  const primarySections = ["Anatomie", "Contractions", "Méthodes"];
+  const secondarySections = ["Projets", "Paramètres"];
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
   const [infographicsOpen, setInfographicsOpen] = useState(false);
 
@@ -52,6 +52,12 @@ export default function MuscuConnaissancesPage() {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
 
+  const anchorForLabel = (label: string) => {
+    if (label === "Paramètres") return "parametres";
+    if (label === "Méthodes") return "methodes";
+    return `section-${slugify(label)}`;
+  };
+
   const toggleSection = (section: string) => {
     setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
@@ -66,7 +72,7 @@ export default function MuscuConnaissancesPage() {
           Connaissances terrain
         </h2>
         <p className="text-sm text-white/70">
-          Repere rapide sur l anatomie, les contractions et les methodes.
+          Repère rapide sur l’anatomie, les contractions et les méthodes.
         </p>
       </header>
 
@@ -79,7 +85,7 @@ export default function MuscuConnaissancesPage() {
             .filter((section) => bySection[section]?.length)
             .map((section) => {
               const label = formatSection(section);
-              const anchor = `section-${slugify(label)}`;
+              const anchor = anchorForLabel(label);
               return (
                 <a key={section} href={`#${anchor}`} className="ui-chip">
                   {label}
@@ -93,7 +99,7 @@ export default function MuscuConnaissancesPage() {
         {orderedSections.map((section) => {
           const label = formatSection(section);
           const sectionId = slugify(label);
-          const anchorId = `section-${sectionId}`;
+          const anchorId = anchorForLabel(label);
           return (
           <div key={section} id={anchorId} className="ui-card p-4">
             <button

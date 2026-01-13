@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,7 @@ const resolveFallback = (pathname: string, fallbackHref?: string) => {
   return "/";
 };
 
-export function BackLink({ label = "Retour", fallbackHref, className }: BackLinkProps) {
+function BackLinkInner({ label = "Retour", fallbackHref, className }: BackLinkProps) {
   const pathname = usePathname() ?? "";
   const searchParams = useSearchParams();
   const from = isSafeFrom(searchParams?.get("from") ?? null);
@@ -38,5 +39,28 @@ export function BackLink({ label = "Retour", fallbackHref, className }: BackLink
     <Link href={href} className={cn("ui-link text-sm font-medium", className)}>
       {label}
     </Link>
+  );
+}
+
+function BackLinkFallback({
+  label = "Retour",
+  fallbackHref = "/",
+  className,
+}: BackLinkProps) {
+  return (
+    <Link
+      href={fallbackHref}
+      className={cn("ui-link text-sm font-medium", className)}
+    >
+      {label}
+    </Link>
+  );
+}
+
+export function BackLink(props: BackLinkProps) {
+  return (
+    <Suspense fallback={<BackLinkFallback {...props} />}>
+      <BackLinkInner {...props} />
+    </Suspense>
   );
 }
