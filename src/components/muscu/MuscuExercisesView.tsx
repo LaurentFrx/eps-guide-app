@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { GlassCard } from "@/components/GlassCard";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -42,6 +43,9 @@ export function MuscuExercisesView({
   epsExercises,
   exerciseTagsByCode,
 }: MuscuExercisesViewProps) {
+  const searchParams = useSearchParams();
+  const fromParam = searchParams?.get("from") ?? "";
+  const safeFrom = fromParam.startsWith("/") ? fromParam : "";
   const [mode, setMode] = useState<"fred" | "eps">("fred");
   const [zone, setZone] = useState<MuscuZone | "Tous">("Tous");
   const [type, setType] = useState<ItemType | "Tous">("Tous");
@@ -65,6 +69,12 @@ export function MuscuExercisesView({
       return true;
     });
   }, [epsExercises, exerciseTagsByCode, zone, type, projet, showUntagged]);
+
+  const withFrom = (href: string) => {
+    if (!safeFrom) return href;
+    const separator = href.includes("?") ? "&" : "?";
+    return `${href}${separator}from=${encodeURIComponent(safeFrom)}`;
+  };
 
   return (
     <div className="space-y-4">
@@ -198,7 +208,7 @@ export function MuscuExercisesView({
                 return (
                   <Link
                     key={exercise.id}
-                    href={`/exercises/detail/${exercise.id}`}
+                    href={withFrom(`/exercises/detail/${exercise.id}`)}
                     className="block"
                   >
                     <GlassCard className="space-y-3 transition hover:-translate-y-0.5 hover:shadow-lg">

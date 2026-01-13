@@ -4,7 +4,14 @@ import { sessions } from "@/lib/exercises";
 
 export const revalidate = 60;
 
-export default function ExercicesPage() {
+export default async function ExercicesPage(props: unknown) {
+  const { searchParams } = props as {
+    searchParams?: { from?: string } | Promise<{ from?: string }>;
+  };
+  const resolvedSearchParams = await Promise.resolve(searchParams ?? {});
+  const rawFrom = resolvedSearchParams?.from;
+  const safeFrom = typeof rawFrom === "string" && rawFrom.startsWith("/") ? rawFrom : "";
+
   return (
     <div className="space-y-6 p-6">
       <header className="space-y-2">
@@ -15,7 +22,14 @@ export default function ExercicesPage() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {sessions.map((s) => (
           <article key={s.id} className="ui-card overflow-hidden">
-            <Link href={`/exercises/${s.id}`} className="block">
+            <Link
+              href={
+                safeFrom
+                  ? `/exercises/${s.id}?from=${encodeURIComponent(safeFrom)}`
+                  : `/exercises/${s.id}`
+              }
+              className="block"
+            >
               <div className="relative h-40 w-full">
                 <Image
                   src={s.heroImage}
