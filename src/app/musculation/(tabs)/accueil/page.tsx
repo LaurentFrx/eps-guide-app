@@ -1,14 +1,11 @@
 import Link from "next/link";
-import { ArrowUpRight, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { GlassCard } from "@/components/GlassCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { MuscuProjectPicker } from "@/components/muscu/MuscuProjectPicker";
 import { MuscuQuickLog } from "@/components/muscu/MuscuQuickLog";
-import { sessions } from "@/lib/exercises";
 import { muscuExercises, stretches } from "@/lib/muscu";
-
-const sessionPreview = sessions.slice(0, 2);
 
 export default function MuscuAccueilPage() {
   return (
@@ -82,14 +79,13 @@ export default function MuscuAccueilPage() {
               Bibliothèque
             </p>
             <h3 className="text-lg font-semibold text-white">
-              Exercices et séances
+              Exercices et outils
             </h3>
             <p className="text-sm text-white/70">
               Exercices / Sessions / Étirements
             </p>
             <div className="flex flex-wrap gap-2 text-xs text-white/70">
               <span className="ui-chip">{muscuExercises.length} exercices</span>
-              <span className="ui-chip">{sessions.length} sessions</span>
               <span className="ui-chip">{stretches.length} étirements</span>
             </div>
           </GlassCard>
@@ -109,13 +105,16 @@ export default function MuscuAccueilPage() {
           <h3 className="font-display text-xl font-semibold text-white">
             Accès rapide
           </h3>
-          <div className="flex items-center gap-3 text-sm">
-            <Link href="/search" className="ui-link">
-              Recherche
-            </Link>
-            <Link href="/favorites" className="ui-link">
-              Favoris
-            </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button asChild size="sm" variant="secondary" className="ui-chip">
+              <Link href="/musculation/bibliotheque">Ouvrir Bibliothèque</Link>
+            </Button>
+            <Button asChild size="sm" variant="secondary" className="ui-chip">
+              <Link href="/musculation/evaluation">Aller à l&rsquo;Évaluation</Link>
+            </Button>
+            <Button asChild size="sm" variant="secondary" className="ui-chip">
+              <Link href="/musculation/connaissances">Ouvrir Connaissances</Link>
+            </Button>
           </div>
         </div>
         <GlassCard className="space-y-3">
@@ -138,47 +137,41 @@ export default function MuscuAccueilPage() {
         </GlassCard>
       </section>
 
-      <section className="space-y-4">
+      <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3 className="font-display text-xl font-semibold text-white">Sessions</h3>
+          <h3 className="font-display text-xl font-semibold text-white">
+            Bibliothèque
+          </h3>
           <Link href="/musculation/bibliotheque" className="ui-link text-sm">
-            Tout parcourir
+            Tout ouvrir
           </Link>
         </div>
-        <div className="grid gap-4">
-          {sessionPreview.map((session) => (
-            <Link key={session.id} href={`/exercises/${session.id}`} className="block">
-              <GlassCard className="transition hover:-translate-y-0.5 hover:shadow-lg">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-white/60">
-                      {session.id}
-                    </p>
-                    <h3 className="font-display text-xl font-semibold text-white">
-                      {session.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-white/70">
-                      {session.subtitle}
-                    </p>
-                  </div>
-                  <ArrowUpRight className="h-5 w-5 text-white/70" />
-                </div>
-              </GlassCard>
-            </Link>
-          ))}
-        </div>
-
-        <GlassCard className="space-y-3">
-          <p className="text-xs uppercase tracking-widest text-white/60">
-            Ressources PDF
-          </p>
-          <p className="text-sm text-white/70">
-            Fiches synthèse et méthodes en lecture mobile.
-          </p>
-          <Link href="/bac/musculation" className="ui-link text-sm font-medium">
-            Ouvrir la bibliothèque
+        <div className="grid gap-3 sm:grid-cols-3">
+          <Link href="/musculation/bibliotheque" className="block">
+            <GlassCard className="space-y-2 text-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+              <p className="text-xs uppercase tracking-widest text-white/60">
+                Sessions
+              </p>
+              <p className="text-white/70">Parcours guidés</p>
+            </GlassCard>
           </Link>
-        </GlassCard>
+          <Link href="/musculation/exercices" className="block">
+            <GlassCard className="space-y-2 text-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+              <p className="text-xs uppercase tracking-widest text-white/60">
+                Exercices
+              </p>
+              <p className="text-white/70">Par zones musculaires</p>
+            </GlassCard>
+          </Link>
+          <Link href="/musculation/etirements" className="block">
+            <GlassCard className="space-y-2 text-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+              <p className="text-xs uppercase tracking-widest text-white/60">
+                Étirements
+              </p>
+              <p className="text-white/70">Récupération rapide</p>
+            </GlassCard>
+          </Link>
+        </div>
       </section>
     </div>
   );
