@@ -6,9 +6,6 @@ export default function MuscuEtirementsPage() {
     <div className="space-y-4">
       {stretches.map((stretch) => (
         <GlassCard key={stretch.id} className="space-y-2">
-          <p className="text-xs uppercase tracking-widest text-white/60">
-            {stretch.status === "approved" ? "Valide" : "Draft"}
-          </p>
           <h3 className="text-lg font-semibold text-white">{stretch.title}</h3>
           <div className="flex flex-wrap gap-2">
             {stretch.target.map((item) => (
