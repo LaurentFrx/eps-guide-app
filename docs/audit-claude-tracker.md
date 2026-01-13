@@ -71,10 +71,10 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: sections anatomie/contractions/methodes avec structure accessible.
   - Fichiers: `src/app/musculation/(tabs)/connaissances/page.tsx`
   - Etat: DONE
-- [TODO] Phase 5 - Evaluation (index par niveau + Bac contextualise)
+- [DONE] Phase 5 - Evaluation (index par niveau + Bac contextualise)
   - Attendu: niveaux + branches Bac LGT/Pro sans diffusion globale du terme.
   - Fichiers: `src/app/musculation/(tabs)/evaluation/page.tsx`
-  - Etat: TODO
+  - Etat: DONE
 - [TODO] Phase 6 - Bibliotheque (hub categories + etirements)
   - Attendu: hub categories + liens vers /exercises et /musculation/etirements.
   - Fichiers: `src/app/musculation/(tabs)/bibliotheque/page.tsx`
