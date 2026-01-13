@@ -22,11 +22,13 @@ const levelStyles: Record<string, string> = {
 type ExerciseCardProps = {
   exercise: ExerciseWithSession;
   showSession?: boolean;
+  from?: string;
 };
 
 export const ExerciseCard = ({
   exercise,
   showSession = false,
+  from,
 }: ExerciseCardProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(exercise.image);
@@ -41,7 +43,13 @@ export const ExerciseCard = ({
   return (
     <div className="ui-card group relative overflow-hidden">
       <Link
-        href={`/exercises/detail/${normalizeExerciseCode(exercise.code)}`}
+        href={
+          from
+            ? `/exercises/detail/${normalizeExerciseCode(exercise.code)}?from=${encodeURIComponent(
+                from
+              )}`
+            : `/exercises/detail/${normalizeExerciseCode(exercise.code)}`
+        }
         className="block"
       >
         <div className="relative h-36 overflow-hidden">

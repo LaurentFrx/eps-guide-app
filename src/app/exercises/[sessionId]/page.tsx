@@ -1,9 +1,10 @@
-import { sessions } from "@/lib/exercises";
-import { getSeriesCards } from "@/lib/exercisesCatalog";
-import ExercisesGrid from "@/components/ExercisesGrid";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { BackLink } from "@/components/BackLink";
+import ExercisesGrid from "@/components/ExercisesGrid";
 import { MarkdownText } from "@/components/MarkdownText";
+import { sessions } from "@/lib/exercises";
+import { getSeriesCards } from "@/lib/exercisesCatalog";
 
 function normalizeSessionId(raw: string | undefined | null) {
   const s = (raw ?? "").trim();
@@ -42,6 +43,7 @@ export default async function SessionPage(props: unknown) {
 
   return (
     <div className="p-6 space-y-6">
+      <BackLink label="← Retour aux sessions" fallbackHref="/exercises" />
       <div className="ui-card overflow-hidden">
         <div className="relative h-56 w-full">
           <Image
@@ -100,7 +102,7 @@ export default async function SessionPage(props: unknown) {
       ) : null}
 
 
-      <ExercisesGrid exercises={sessionExercises} />
+      <ExercisesGrid exercises={sessionExercises} from={`/exercises/${session.id}`} />
     </div>
   );
 }

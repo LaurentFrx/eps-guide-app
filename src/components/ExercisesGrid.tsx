@@ -5,7 +5,13 @@ import Image from "next/image";
 import { ImageOff } from "lucide-react";
 import type { SeriesCard } from "@/lib/exercisesCatalog";
 
-export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }) {
+export default function ExercisesGrid({
+  exercises,
+  from,
+}: {
+  exercises: SeriesCard[];
+  from?: string;
+}) {
   const [q, setQ] = useState("");
   const [levelFilter, setLevelFilter] = useState<string | null>(null);
 
@@ -22,6 +28,12 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
       e.title.toLowerCase().includes(needle) || e.code.toLowerCase().includes(needle)
     );
   });
+
+  const withFrom = (href?: string) => {
+    if (!href || !from) return href;
+    const separator = href.includes("?") ? "&" : "?";
+    return `${href}${separator}from=${encodeURIComponent(from)}`;
+  };
 
   return (
     <div className="space-y-4">
@@ -101,7 +113,7 @@ export default function ExercisesGrid({ exercises }: { exercises: SeriesCard[] }
             return (
               <Link
                 key={ex.code}
-                href={ex.href}
+                href={withFrom(ex.href) ?? "/exercises"}
                 className={
                   isDraft
                     ? "ui-card block overflow-hidden opacity-80"

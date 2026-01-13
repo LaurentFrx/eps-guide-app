@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { FlyerFrame } from "@/components/FlyerFrame";
+import { MuscuBackLink } from "@/components/muscu/MuscuBackLink";
 
 export default function MusculationLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,6 +16,8 @@ export default function MusculationLayout({ children }: { children: ReactNode })
           </p>
         </div>
       </FlyerFrame>
+
+      <MuscuBackLink />
 
       {children}
     </div>

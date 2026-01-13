@@ -168,6 +168,7 @@ export const SearchView = ({ initialQuery }: { initialQuery?: string }) => {
               key={exercise.code}
               exercise={exercise}
               showSession
+              from="/search"
             />
           ))}
         </div>
