@@ -15,8 +15,13 @@ const CACHE_PREFIX = "eps-guide-";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const OFFLINE_URL = "/~offline";
 
+const shouldPrecache = (entry: PrecacheEntry | string) => {
+  const url = typeof entry === "string" ? entry : entry.url;
+  return !/\/muscu[\\/]+infographies[\\/]+/i.test(url);
+};
+
 const serwist = new Serwist({
-  precacheEntries: self.__SW_MANIFEST,
+  precacheEntries: (self.__SW_MANIFEST ?? []).filter(shouldPrecache),
   runtimeCaching: defaultCache,
   skipWaiting: false,
   clientsClaim: false,
