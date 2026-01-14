@@ -4,7 +4,7 @@ import { BottomNav } from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import { DataWarning } from "@/components/DataWarning";
 import { Providers } from "@/components/Providers";
-import { withAssetVersion } from "@/lib/assetVersion";
+import { ICON_V } from "@/lib/version";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -21,35 +21,28 @@ const workSans = Work_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Guide EPS",
-    template: "%s - Guide EPS",
+    default: "Guide Musculation",
+    template: "%s · Guide Musculation",
   },
+  applicationName: "Guide Musculation",
   description:
-    "Fiches exercices EPS, recherche rapide, favoris et accès hors ligne.",
+    "Guide musculation terrain: projets, séances, exercices, révisions et évaluation.",
   icons: {
     icon: [
       {
-        rel: "icon",
-        url: withAssetVersion("/favicon-32.png"),
+        url: `/icon.png?v=${ICON_V}`,
         type: "image/png",
-        sizes: "32x32",
-      },
-      {
-        rel: "icon",
-        url: withAssetVersion("/favicon-16.png"),
-        type: "image/png",
-        sizes: "16x16",
       },
     ],
     apple: [
       {
-        url: withAssetVersion("/apple-touch-icon.png"),
-        sizes: "180x180",
+        url: `/apple-icon.png?v=${ICON_V}`,
         type: "image/png",
       },
     ],
+    shortcut: [`/favicon.ico?v=${ICON_V}`],
   },
-  manifest: withAssetVersion("/manifest.webmanifest"),
+  manifest: `/manifest.webmanifest?v=${ICON_V}`,
 };
 
 export default function RootLayout({
