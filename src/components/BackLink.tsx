@@ -25,10 +25,7 @@ const resolveFallback = (pathname: string, fallbackHref?: string) => {
     return "/exercises";
   }
   if (pathname.startsWith("/exercises/")) return "/exercises";
-  if (pathname.startsWith("/musculation/") && pathname !== "/musculation/accueil") {
-    return "/musculation/accueil";
-  }
-  return "/";
+  return "/accueil";
 };
 
 function BackLinkInner({
@@ -55,7 +52,7 @@ function BackLinkInner({
 
 function BackLinkFallback({
   label = "Retour",
-  fallbackHref = "/",
+  fallbackHref = "/accueil",
   className,
   children,
 }: BackLinkProps) {

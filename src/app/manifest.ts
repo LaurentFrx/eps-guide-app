@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Guide Musculation",
     short_name: "Musculation",
-    start_url: "/musculation/accueil",
+    start_url: "/accueil",
     scope: "/",
     display: "standalone",
     background_color: "#eef2f7",

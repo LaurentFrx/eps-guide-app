@@ -131,19 +131,20 @@ export const validateMuscuData = () => {
   });
 
   muscuInfographics.forEach((item) => {
-    if (!item.imageSrc) {
-      issues.push({ scope: item.id, message: "missing imageSrc" });
+    if (!item.imageDir || !item.imageFile) {
+      issues.push({ scope: item.id, message: "missing image file" });
       return;
     }
     if (!item.alt || !item.alt.trim()) {
       issues.push({ scope: item.id, message: "missing alt" });
     }
-    const relativePath = item.imageSrc.startsWith("/")
-      ? item.imageSrc.slice(1)
-      : item.imageSrc;
+    const relativePath = `${item.imageDir.replace(/^\//, "")}/${item.imageFile}`;
     const assetPath = path.join(process.cwd(), "public", relativePath);
     if (!fs.existsSync(assetPath)) {
-      issues.push({ scope: item.id, message: `missing file ${item.imageSrc}` });
+      issues.push({
+        scope: item.id,
+        message: `missing file ${item.imageDir}/${item.imageFile}`,
+      });
     }
   });
 

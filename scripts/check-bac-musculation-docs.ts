@@ -1,4 +1,4 @@
-import { BAC_MUSCULATION_DOCS } from "../src/lib/bac/musculationDocs";
+import { BAC_MUSCULATION_DOCS } from "../src/lib/bac/muscuDocs";
 
 const EXPECTED_COUNT = 17;
 

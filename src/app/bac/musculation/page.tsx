@@ -11,7 +11,11 @@ import { GlassCard } from "@/components/GlassCard";
 import {
   BAC_MUSCULATION_DOCS,
   BAC_MUSCULATION_SECTIONS,
-} from "@/lib/bac/musculationDocs";
+} from "@/lib/bac/muscuDocs";
+
+const BAC_BASE = "/bac";
+const MUSCULATION_SLUG = "musculation";
+const BAC_MUSCULATION_PATH = `${BAC_BASE}/${MUSCULATION_SLUG}`;
 
 const getSummaryPreview = (summaryMd: string) => {
   const line = summaryMd.split(/\r?\n/).find(Boolean) ?? "";
@@ -75,7 +79,7 @@ export default function BacMusculationPage() {
             Recherche rapide
           </div>
           <Input
-            placeholder="Epreuve, projet, methode..."
+            placeholder="Épreuve, projet, méthode..."
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
@@ -120,16 +124,16 @@ export default function BacMusculationPage() {
                 setActiveTags([]);
               }}
             >
-              Reinitialiser les filtres
+              Réinitialiser les filtres
             </Button>
           ) : null}
         </GlassCard>
         <div className="flex flex-wrap items-center gap-2">
           <Badge className="ui-chip border-0">
-            {totalResults} resultats
+            {totalResults} résultats
           </Badge>
           <Button asChild className="ui-btn-primary">
-            <Link href="/musculation">Aller au guide complet</Link>
+            <Link href="/accueil">Aller au guide complet</Link>
           </Button>
         </div>
       </div>
@@ -152,7 +156,7 @@ export default function BacMusculationPage() {
                 {docs.map((doc) => (
                   <Link
                     key={doc.slug}
-                    href={`/bac/musculation/${doc.slug}`}
+                    href={`${BAC_MUSCULATION_PATH}/${doc.slug}`}
                     className="block"
                   >
                     <GlassCard className="space-y-3 transition hover:-translate-y-0.5 hover:shadow-lg">
@@ -186,7 +190,7 @@ export default function BacMusculationPage() {
         })}
         {!totalResults ? (
           <GlassCard className="text-sm text-white/70">
-            Aucun document ne correspond a la recherche.
+            Aucun document ne correspond à la recherche.
           </GlassCard>
         ) : null}
       </div>
