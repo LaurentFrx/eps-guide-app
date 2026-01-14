@@ -37,6 +37,7 @@
     "icons:web": "tsx scripts/generate-web-icons.ts",
     "start": "next start",
     "lint": "eslint",
+    "version:bump": "node scripts/bump-version.mjs",
     "check:security": "node tools/check-no-ha-refs.js",
     "images:optimize": "node tools/generate-responsive-images.js",
     "extract:data": "python3 tools/extract_eps_docx.py ../../source_docs/EPS-1.docx ../../source_docs/EPS-2.docx"

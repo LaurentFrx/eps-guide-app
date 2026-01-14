@@ -1,4 +1,5 @@
-export const APP_VERSION = "0.2.7";
+// Versioning: PATCH (2.0.1) small UI/text/bugfix, MINOR (2.1.0) new visible feature, MAJOR (3.0.0) structural revamp.
+export const APP_VERSION = "2.0.0";
 
 export const BUILD_TIME =
   process.env.NEXT_PUBLIC_BUILD_TIME ??
