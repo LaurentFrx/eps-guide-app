@@ -27,7 +27,7 @@ export const GET = async (request: NextRequest) => {
   const codes = collectExerciseCodes();
   const pathSet = new Set<string>([
     "/",
-    "/guide",
+    "/musculation/accueil",
     "/exercises",
     ...SESSION_IDS.map((session) => `/exercises/${session}`),
     "/exercises/S1",
