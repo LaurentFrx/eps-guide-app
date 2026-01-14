@@ -1,5 +1,8 @@
 import type { EvaluationProfile } from "@/lib/muscu/types";
 
+const INFO_BASE = "/muscu/infographies/evaluation";
+const INFO_FILE = "musculation-au-bac.png";
+
 export const evaluationProfiles: EvaluationProfile[] = [
   {
     id: "eval-musculation",
@@ -23,6 +26,6 @@ export const evaluationProfiles: EvaluationProfile[] = [
         ],
       },
     ],
-    infographics: ["/muscu/infographies/evaluation/musculation-au-bac.png"],
+    infographics: [`${INFO_BASE}/${INFO_FILE}`],
   },
 ];

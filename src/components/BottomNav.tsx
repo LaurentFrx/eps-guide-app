@@ -15,15 +15,15 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   {
-    href: "/musculation/accueil",
+    href: "/accueil",
     label: "Accueil",
     icon: Home,
     exact: true,
   },
-  { href: "/musculation/entrainement", label: "S'entraîner", icon: Dumbbell },
-  { href: "/musculation/connaissances", label: "Connaissances", icon: BookOpen },
-  { href: "/musculation/evaluation", label: "Évaluation", icon: ClipboardList },
-  { href: "/musculation/bibliotheque", label: "Bibliothèque", icon: Library },
+  { href: "/entrainement", label: "S'entraîner", icon: Dumbbell },
+  { href: "/connaissances", label: "Connaissances", icon: BookOpen },
+  { href: "/evaluation", label: "Évaluation", icon: ClipboardList },
+  { href: "/bibliotheque", label: "Bibliothèque", icon: Library },
   { href: "/search", label: "Recherche", icon: Search },
   { href: "/favorites", label: "Favoris", icon: Star },
 ];
@@ -38,7 +38,7 @@ export const BottomNav = () => {
           <div className="ui-surface ui-bottomnav flex items-center justify-between gap-1 rounded-full px-2 py-2 shadow-lg">
             {navItems.map((item) => {
               const isActive = item.exact
-                ? pathname === item.href
+                ? pathname === "/" || pathname === item.href
                 : pathname?.startsWith(item.href);
               const Icon = item.icon;
               return (

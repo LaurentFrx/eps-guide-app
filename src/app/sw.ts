@@ -15,6 +15,9 @@ const CACHE_VERSION = "v2026-01-12-banner";
 const CACHE_PREFIX = "eps-guide-";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const OFFLINE_URL = "/~offline";
+const BAC_BASE = "/bac";
+const MUSCULATION_SLUG = "musculation";
+const BAC_PDF_PATH = `${BAC_BASE}/${MUSCULATION_SLUG}/pdfs/`;
 
 const shouldPrecache = (entry: PrecacheEntry | string) => {
   const url = typeof entry === "string" ? entry : entry.url;
@@ -28,7 +31,7 @@ const runtimeCaching = [
   {
     matcher: ({ sameOrigin, url }: { sameOrigin: boolean; url: URL }) =>
       sameOrigin &&
-      url.pathname.startsWith("/bac/musculation/pdfs/") &&
+      url.pathname.startsWith(BAC_PDF_PATH) &&
       url.pathname.endsWith(".pdf"),
     handler: new CacheFirst({
       cacheName: "musculation-pdfs",

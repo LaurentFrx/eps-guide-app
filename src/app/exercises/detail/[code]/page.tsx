@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
 import { getExerciseByCode } from "@/lib/exercises/index";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
@@ -19,13 +19,6 @@ export default async function ExercisePage(props: unknown) {
   const normalized = normalizeExerciseCode(code);
   if (!isValidExerciseCode(normalized)) {
     notFound();
-  }
-
-  if (code !== normalized) {
-    const redirectTarget = safeFrom
-      ? `/exercises/detail/${normalized}?from=${encodeURIComponent(safeFrom)}`
-      : `/exercises/detail/${normalized}`;
-    permanentRedirect(redirectTarget);
   }
 
   const exercise = getExerciseByCode(normalized);

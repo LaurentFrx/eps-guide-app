@@ -10,7 +10,11 @@ import { BacCopyLinkButton } from "@/components/bac/BacCopyLinkButton";
 import {
   BAC_MUSCULATION_SECTIONS,
   getMusculationDocBySlug,
-} from "@/lib/bac/musculationDocs";
+} from "@/lib/bac/muscuDocs";
+
+const BAC_BASE = "/bac";
+const MUSCULATION_SLUG = "musculation";
+const BAC_MUSCULATION_PATH = `${BAC_BASE}/${MUSCULATION_SLUG}`;
 
 export default async function BacMusculationDocPage(props: unknown) {
   const { params } = props as { params: { slug: string } | Promise<{ slug: string }> };
@@ -25,7 +29,7 @@ export default async function BacMusculationDocPage(props: unknown) {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="sticky top-0 z-30 -mx-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/5 bg-[#0b0f1a]/85 px-5 py-3 backdrop-blur">
-        <BackButton fallbackHref="/bac/musculation" label="Retour Musculation" />
+        <BackButton fallbackHref={BAC_MUSCULATION_PATH} label="Retour Musculation" />
         <Button asChild className="ui-btn-primary">
           <Link href={doc.pdfPath} target="_blank" rel="noreferrer">
             Ouvrir le PDF
@@ -51,7 +55,7 @@ export default async function BacMusculationDocPage(props: unknown) {
 
       <GlassCard className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-xs uppercase tracking-widest text-white/60">Resume</p>
+          <p className="text-xs uppercase tracking-widest text-white/60">Résumé</p>
           <BacCopyLinkButton />
         </div>
         <MarkdownText text={doc.summaryMd} />
@@ -68,7 +72,7 @@ export default async function BacMusculationDocPage(props: unknown) {
               </Link>
             </Button>
             <Button asChild variant="outline" className="ui-chip">
-              <Link href="/bac/musculation">Retour liste</Link>
+              <Link href={BAC_MUSCULATION_PATH}>Retour liste</Link>
             </Button>
           </div>
         </div>
@@ -80,7 +84,7 @@ export default async function BacMusculationDocPage(props: unknown) {
           />
         </div>
         <p className="text-sm text-white/60">
-          Si le PDF ne s affiche pas (iOS), utilisez le bouton d ouverture.
+          Si le PDF ne s&apos;affiche pas (iOS), utilisez le bouton d&apos;ouverture.
         </p>
       </GlassCard>
     </div>

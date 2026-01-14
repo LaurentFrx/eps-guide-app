@@ -23,7 +23,7 @@ export default function OfflinePage() {
           Hors ligne actif. Reconnectez-vous pour mettre à jour les données.
         </p>
         <Button asChild className="ui-btn-primary">
-          <Link href="/">Retour a l&apos;accueil</Link>
+          <Link href="/accueil">Retour à l&apos;accueil</Link>
         </Button>
       </GlassCard>
     </div>
