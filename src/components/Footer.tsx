@@ -43,6 +43,7 @@ export default function Footer({ className }: FooterProps) {
   }, [fallback]);
 
   const short = runtime.commitSha ? runtime.commitSha.slice(0, 7) : "unknown";
+  const displayVersion = runtime.version?.trim() || APP_VERSION;
 
   return (
     <div
@@ -52,7 +53,7 @@ export default function Footer({ className }: FooterProps) {
       )}
     >
       <span className="pointer-events-none text-[11px] font-medium tracking-wide tabular-nums text-white/60 md:text-xs">
-        v{runtime.version} · {short}
+        v{displayVersion} · {short}
       </span>
     </div>
   );
