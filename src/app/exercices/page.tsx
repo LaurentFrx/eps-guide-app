@@ -29,7 +29,7 @@ export default function ExercicesPage() {
           Exercices
         </h1>
         <p className="text-sm text-white/70">
-          Accès aux exercices musculation et filtres EPS.
+          Accès aux exercices de musculation et filtres EPS.
         </p>
       </header>
 
