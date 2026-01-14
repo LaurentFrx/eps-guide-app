@@ -82,7 +82,7 @@ export default function MuscuAccueilPage() {
               Exercices et outils
             </h3>
             <p className="text-sm text-white/70">
-              Exercices / Sessions / Étirements
+              Exercices / Étirements / Outils
             </p>
             <div className="flex flex-wrap gap-2 text-xs text-white/70">
               <span className="ui-chip">{muscuExercises.length} exercices</span>
@@ -98,6 +98,9 @@ export default function MuscuAccueilPage() {
         </p>
         <MuscuProjectPicker />
         <MuscuQuickLog />
+        <Button asChild size="sm" variant="secondary" className="ui-chip">
+          <Link href="/musculation/carnet">Ouvrir le carnet</Link>
+        </Button>
       </div>
 
       <section className="space-y-3">
@@ -135,43 +138,6 @@ export default function MuscuAccueilPage() {
             </Button>
           </form>
         </GlassCard>
-      </section>
-
-      <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="font-display text-xl font-semibold text-white">
-            Bibliothèque
-          </h3>
-          <Link href="/musculation/bibliotheque" className="ui-link text-sm">
-            Tout ouvrir
-          </Link>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          <Link href="/musculation/bibliotheque" className="block">
-            <GlassCard className="space-y-2 text-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-              <p className="text-xs uppercase tracking-widest text-white/60">
-                Sessions
-              </p>
-              <p className="text-white/70">Parcours guidés</p>
-            </GlassCard>
-          </Link>
-          <Link href="/musculation/exercices" className="block">
-            <GlassCard className="space-y-2 text-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-              <p className="text-xs uppercase tracking-widest text-white/60">
-                Exercices
-              </p>
-              <p className="text-white/70">Par zones musculaires</p>
-            </GlassCard>
-          </Link>
-          <Link href="/musculation/etirements" className="block">
-            <GlassCard className="space-y-2 text-sm transition hover:-translate-y-0.5 hover:shadow-lg">
-              <p className="text-xs uppercase tracking-widest text-white/60">
-                Étirements
-              </p>
-              <p className="text-white/70">Récupération rapide</p>
-            </GlassCard>
-          </Link>
-        </div>
       </section>
     </div>
   );
