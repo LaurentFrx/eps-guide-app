@@ -12,7 +12,7 @@ export default function MusculationLayout({ children }: { children: ReactNode })
             Musculation
           </h1>
           <p className="mt-2 text-sm text-white/70">
-            Reperes essentiels, seances et ressources.
+            Repères essentiels, séances et ressources.
           </p>
         </div>
       </FlyerFrame>

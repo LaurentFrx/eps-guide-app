@@ -9,7 +9,7 @@ export default function MuscuEvaluationTerminalePage() {
           Terminale
         </p>
         <h2 className="font-display text-2xl font-semibold text-white">
-          Repères d evaluation
+          Repères d’évaluation
         </h2>
         <p className="text-sm text-white/70">
           Affiner le projet, stabiliser les paramètres et se situer.
@@ -18,7 +18,7 @@ export default function MuscuEvaluationTerminalePage() {
 
       <GlassCard className="space-y-2">
         <p className="text-xs uppercase tracking-widest text-white/60">
-          Referentiels
+          Référentiels
         </p>
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <Link href="/musculation/evaluation/terminale/bac-lgt" className="ui-link">
