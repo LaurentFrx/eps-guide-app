@@ -49,7 +49,7 @@ export function getCatalogItem(code: string): SeriesCard | null {
     title: title || normalized,
     level: detail?.level,
     status,
-    href: `/exercises/detail/${normalized}`,
+    href: `/v2/exercises/detail/${normalized}`,
     image,
     series,
   };
@@ -69,7 +69,7 @@ export function getSeriesCards(series: string): SeriesCard[] {
       title: title || code,
       level: detail?.level,
       status,
-      href: `/exercises/detail/${code}`,
+      href: `/v2/exercises/detail/${code}`,
       image,
       series: item.series,
     };

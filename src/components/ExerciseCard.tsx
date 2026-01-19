@@ -41,7 +41,7 @@ export const ExerciseCard = ({
   return (
     <div className="ui-card group relative overflow-hidden">
       <Link
-        href={`/exercises/detail/${normalizeExerciseCode(exercise.code)}`}
+        href={`/v2/exercises/detail/${normalizeExerciseCode(exercise.code)}`}
         className="block"
       >
         <div className="relative h-36 overflow-hidden">
@@ -105,4 +105,3 @@ export const ExerciseCard = ({
     </div>
   );
 };
-

@@ -11,7 +11,7 @@ type BackButtonProps = {
 };
 
 export const BackButton = ({
-  fallbackHref = "/exercises",
+  fallbackHref = "/v2/exercises",
   label = "Retour",
   className,
 }: BackButtonProps) => {

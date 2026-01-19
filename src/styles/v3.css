@@ -1,0 +1,51 @@
+.v3-root {
+  --v3-bg: #0b1220;
+  --v3-surface: #111a2e;
+  --v3-card: #141f38;
+  --v3-text: #eaf0ff;
+  --v3-text-muted: #a9b4d0;
+  --v3-border: rgba(255, 255, 255, 0.1);
+  --v3-accent-power: #ff4d4d;
+  --v3-accent-endurance: #2d9cdb;
+  --v3-accent-volume: #27ae60;
+  --v3-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  --v3-radius-card: 16px;
+  --v3-radius-btn: 12px;
+  color: var(--v3-text);
+  background:
+    radial-gradient(1200px circle at 10% 0%, rgba(45, 156, 219, 0.16), transparent 60%),
+    radial-gradient(800px circle at 90% 10%, rgba(255, 77, 77, 0.12), transparent 55%),
+    var(--v3-bg);
+  min-height: 100dvh;
+}
+
+.v3-surface {
+  background: var(--v3-surface);
+  border: 1px solid var(--v3-border);
+}
+
+.v3-card {
+  background: var(--v3-card);
+  border: 1px solid var(--v3-border);
+  box-shadow: var(--v3-shadow);
+  border-radius: var(--v3-radius-card);
+}
+
+.v3-muted {
+  color: var(--v3-text-muted);
+}
+
+@media print {
+  .v3-root {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .v3-card {
+    box-shadow: none;
+  }
+
+  .v3-bottom-nav {
+    display: none;
+  }
+}

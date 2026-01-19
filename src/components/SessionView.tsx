@@ -61,7 +61,7 @@ export const SessionView = ({ session }: { session: Session }) => {
   return (
     <div className="space-y-6 pb-8 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="space-y-4">
-        <BackButton className="self-start" fallbackHref="/exercises" />
+        <BackButton className="self-start" fallbackHref="/v2/exercises" />
         <div className="space-y-2">
           <p className="text-xs uppercase tracking-widest text-white/60">
             Session {session.num}

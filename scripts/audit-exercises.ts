@@ -17,7 +17,7 @@ const PUBLIC_DIR = path.join(ROOT, "public");
 const EXERCISES_DIR = path.join(PUBLIC_DIR, "exercises");
 const OUT_DIR = path.join(ROOT, "scripts", "out");
 const OUT_FILE = path.join(OUT_DIR, "audit-exercises.report.md");
-const LIST_PAGE = path.join(ROOT, "src", "app", "exercises", "[sessionId]", "page.tsx");
+const LIST_PAGE = path.join(ROOT, "src", "app", "v2", "exercises", "[sessionId]", "page.tsx");
 const ASSET_EXTS = new Set([".webp", ".avif", ".jpg", ".jpeg", ".png"]);
 const CODE_RE = /^S([1-5])-(\d{1,2})$/i;
 

@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { BookOpen, Home, Search, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+const V2_BASE = "/v2";
+
 const navItems = [
-  { href: "/", label: "Accueil", icon: Home },
-  { href: "/search", label: "Recherche", icon: Search },
-  { href: "/guide", label: "Guide", icon: BookOpen },
-  { href: "/favorites", label: "Favoris", icon: Star },
+  { href: V2_BASE, label: "Accueil", icon: Home },
+  { href: `${V2_BASE}/search`, label: "Recherche", icon: Search },
+  { href: `${V2_BASE}/guide`, label: "Guide", icon: BookOpen },
+  { href: `${V2_BASE}/favorites`, label: "Favoris", icon: Star },
 ];
 
 export const BottomNav = () => {
@@ -22,10 +24,10 @@ export const BottomNav = () => {
           <div className="ui-surface ui-bottomnav flex items-center justify-between gap-2 rounded-full px-4 py-2 shadow-lg">
             {navItems.map((item) => {
               const isActive =
-                item.href === "/"
-                  ? pathname === "/" ||
-                    pathname?.startsWith("/sessions") ||
-                    pathname?.startsWith("/exercises")
+                item.href === V2_BASE
+                  ? pathname === V2_BASE ||
+                    pathname?.startsWith(`${V2_BASE}/sessions`) ||
+                    pathname?.startsWith(`${V2_BASE}/exercises`)
                   : pathname?.startsWith(item.href);
               const Icon = item.icon;
               return (

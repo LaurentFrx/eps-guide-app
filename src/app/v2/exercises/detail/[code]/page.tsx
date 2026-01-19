@@ -1,5 +1,6 @@
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ExerciseDetail } from "@/components/ExerciseDetail";
+import ClientRedirect from "@/components/ClientRedirect";
 import { getExerciseByCode } from "@/lib/exercises/index";
 import { normalizeExerciseCode, isValidExerciseCode } from "@/lib/exerciseCode";
 import { getHeroSrc } from "@/lib/exerciseAssets";
@@ -16,7 +17,7 @@ export default async function ExercisePage({
   }
 
   if (code !== normalized) {
-    permanentRedirect(`/exercises/detail/${normalized}`);
+    return <ClientRedirect to={`/v2/exercises/detail/${normalized}`} />;
   }
 
   const exercise = getExerciseByCode(normalized);

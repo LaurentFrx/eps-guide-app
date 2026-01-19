@@ -159,7 +159,7 @@ export const ExerciseDetail = ({
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
           <BackButton
-            fallbackHref={sessionId ? `/exercises/${sessionId}` : "/exercises"}
+            fallbackHref={sessionId ? `/v2/exercises/${sessionId}` : "/v2/exercises"}
           />
         </div>
         <div className="relative h-64 w-full">
@@ -334,7 +334,6 @@ export const ExerciseDetail = ({
     </div>
   );
 };
-
 
 
 

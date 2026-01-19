@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/exercices/:path*",
-        destination: "/exercises/:path*",
+        destination: "/v2/exercises/:path*",
         permanent: true,
       },
     ];

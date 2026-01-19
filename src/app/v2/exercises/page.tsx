@@ -15,7 +15,7 @@ export default function ExercicesPage() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {sessions.map((s) => (
           <article key={s.id} className="ui-card overflow-hidden">
-            <Link href={`/exercises/${s.id}`} className="block">
+            <Link href={`/v2/exercises/${s.id}`} className="block">
               <div className="relative h-40 w-full">
                 <Image
                   src={s.heroImage}

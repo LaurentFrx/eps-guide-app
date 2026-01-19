@@ -1,4 +1,5 @@
-import { notFound, permanentRedirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import ClientRedirect from "@/components/ClientRedirect";
 import { isValidExerciseCode, normalizeExerciseCode } from "@/lib/exerciseCode";
 import { pdfHasCode } from "@/data/pdfIndex";
 
@@ -12,5 +13,5 @@ export default async function ExerciseRedirect({
   if (!isValidExerciseCode(normalized) || !pdfHasCode(normalized)) {
     notFound();
   }
-  permanentRedirect(`/exercises/detail/${normalized}`);
+  return <ClientRedirect to={`/v2/exercises/detail/${normalized}`} />;
 }

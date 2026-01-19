@@ -31,7 +31,7 @@ export default function HomePage() {
             {stats.totalExercises} exercices
           </Badge>
           <Button asChild variant="outline" size="sm" className="ui-chip">
-            <Link href="/docs">Docs</Link>
+            <Link href="/v2/docs">Docs</Link>
           </Button>
         </div>
       </div>
@@ -40,7 +40,7 @@ export default function HomePage() {
         <p className="text-xs uppercase tracking-widest text-white/60">
           Recherche rapide
         </p>
-        <form action="/search" method="get" className="flex gap-2">
+        <form action="/v2/search" method="get" className="flex gap-2">
           <div className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/60" />
             <Input
@@ -64,7 +64,11 @@ export default function HomePage() {
         </div>
         <div className="grid gap-4">
           {sessions.map((session) => (
-            <Link key={session.id} href={`/exercises/${session.id}`} className="block">
+            <Link
+              key={session.id}
+              href={`/v2/exercises/${session.id}`}
+              className="block"
+            >
               <GlassCard className="transition hover:-translate-y-0.5 hover:shadow-lg">
                 <div className="flex items-start justify-between">
                   <div>
