@@ -1,4 +1,4 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 
 export default function VolumePage() {
   return (
@@ -7,24 +7,30 @@ export default function VolumePage() {
 
       <section className="space-y-2">
         <h2>Topo</h2>
-        <p>…</p>
-        <p>…</p>
+        <p>
+          Objectif: augmenter le volume musculaire grâce à des charges modérées et
+          un travail proche de l’échec contrôlé.
+        </p>
+        <p>
+          Priorité: technique propre, progression régulière, récupération suffisante
+          entre séances.
+        </p>
       </section>
 
       <section className="space-y-2">
         <h2>Paramètres</h2>
-        <p>Séries: …</p>
-        <p>Reps: …</p>
-        <p>Repos: …</p>
-        <p>Intensité: …</p>
+        <p>Séries: 3–5</p>
+        <p>Reps: 8–12</p>
+        <p>Repos: 60–120s</p>
+        <p>Intensité: RPE 7–8 (charge modérée)</p>
       </section>
 
       <section className="space-y-2">
         <h2>Méthodes</h2>
         <ul className="list-disc pl-5 space-y-1">
-          <li>…</li>
-          <li>…</li>
-          <li>…</li>
+          <li>Superset (enchaîner 2 exercices, repos réduit)</li>
+          <li>Pyramidal (augmenter ou diminuer la charge sur les séries)</li>
+          <li>Tempo (ralentir la descente pour augmenter le temps sous tension)</li>
         </ul>
       </section>
 
