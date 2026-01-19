@@ -20,7 +20,7 @@ export default function GuideLayout({
   return (
     <main className="min-h-dvh flex flex-col">
       <div className="flex-1 px-4 pt-4 pb-24">{children}</div>
-      <nav className="sticky bottom-0 w-full border-t bg-white text-slate-900">
+      <nav className="sticky bottom-0 w-full border-t bg-white/90 backdrop-blur">
         <div className="mx-auto grid max-w-md grid-cols-4 text-sm">
           {navItems.map((item) => {
             const isActive =

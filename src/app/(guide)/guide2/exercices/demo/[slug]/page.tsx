@@ -1,5 +1,9 @@
+type Params = {
+  slug: string;
+};
+
 type PageProps = {
-  params: Promise<{ slug: string }>;
+  params: Promise<Params>;
 };
 
 export default async function ExerciceDemoPage({ params }: PageProps) {
