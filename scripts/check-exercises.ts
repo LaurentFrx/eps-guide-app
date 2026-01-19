@@ -9,7 +9,7 @@ type SeriesId = "S1" | "S2" | "S3" | "S4" | "S5";
 
 const ROOT = process.cwd();
 const PUBLIC_DIR = path.join(ROOT, "public", "exercises");
-const LIST_PAGE = path.join(ROOT, "src", "app", "exercises", "[sessionId]", "page.tsx");
+const LIST_PAGE = path.join(ROOT, "src", "app", "v2", "exercises", "[sessionId]", "page.tsx");
 const ASSET_EXTS = new Set([".webp", ".avif", ".jpg", ".jpeg", ".png"]);
 const CODE_RE = /^S([1-5])-(\d{1,2})$/i;
 
@@ -174,6 +174,13 @@ async function main() {
 
   if (hardFailures.length > 0) {
     console.error("check-exercises: failed", hardFailures.join(", "));
+    console.error("SCANNED_EXERCISES:", appCodes.length);
+    if (duplicateCodes.length) {
+      console.error("DUPLICATE_CODES:", duplicateCodes.join(", "));
+    } else {
+      console.error("DUPLICATE_CODES: none");
+    }
+    console.error("LIST_PAGE:", LIST_PAGE);
     process.exit(1);
   }
 
