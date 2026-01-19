@@ -1,5 +1,5 @@
-import { AccueilView } from "@/app/_views/AccueilView";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  return <AccueilView />;
+  redirect("/exos");
 }
