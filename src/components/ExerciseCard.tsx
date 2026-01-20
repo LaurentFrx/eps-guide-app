@@ -41,7 +41,7 @@ export const ExerciseCard = ({
   );
 
   return (
-    <div className="ui-card group relative overflow-hidden">
+    <div className="ui-card ui-pressable group relative overflow-hidden">
       <Link
         href={
           from
@@ -113,4 +113,3 @@ export const ExerciseCard = ({
     </div>
   );
 };
-

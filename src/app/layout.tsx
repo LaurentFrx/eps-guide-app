@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Work_Sans } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
+import { AppShell } from "@/components/AppShell";
 import Footer from "@/components/Footer";
 import { DataWarning } from "@/components/DataWarning";
 import { Providers } from "@/components/Providers";
 import { ICON_V } from "@/lib/version";
+import { WavesBackground } from "@/ui/WavesBackground";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -54,10 +56,11 @@ export default function RootLayout({
     <html lang="fr">
       <body className={`${spaceGrotesk.variable} ${workSans.variable} eps-app`}>
         <Providers>
-          <main className="eps-app__content px-5 pt-6 pb-[calc(env(safe-area-inset-bottom)+120px)]">
+          <WavesBackground />
+          <AppShell>
             <DataWarning className="mb-6" />
             {children}
-          </main>
+          </AppShell>
           <Footer />
           <BottomNav />
         </Providers>

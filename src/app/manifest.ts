@@ -5,11 +5,11 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Guide Musculation",
     short_name: "Musculation",
-    start_url: "/accueil",
+    start_url: "/",
     scope: "/",
     display: "standalone",
-    background_color: "#eef2f7",
-    theme_color: "#dbeafe",
+    background_color: "#0b1020",
+    theme_color: "#0b1020",
     icons: [
       {
         src: `/icon-192.png?v=${ICON_V}`,
