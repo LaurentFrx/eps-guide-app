@@ -16,7 +16,7 @@ export default function GuidePage() {
           Sommaire Muscu&apos;Tazieff
         </h1>
         <p className="text-sm text-white/70">
-          Parcours rapide par themes, connaissances, demarche et evaluation.
+          Parcours rapide par themes, connaissances, methodes, demarche et evaluation.
         </p>
       </header>
 
@@ -31,7 +31,7 @@ export default function GuidePage() {
             </p>
           </div>
           <Link
-            href="/content/muscutazieff.pdf"
+            href="/muscutazieff.pdf"
             target="_blank"
             rel="noreferrer"
             className="ui-link text-sm font-medium"

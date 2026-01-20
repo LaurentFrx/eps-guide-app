@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { GuideSectionClient } from "@/components/GuideSectionClient";
 import { getMuscutazieffSection } from "@/content/muscutazieffMap";
 
-const PDF_URL = "/content/muscutazieff.pdf";
+const PDF_URL = "/muscutazieff.pdf";
 
 export default async function GuideSectionPage(props: unknown) {
   const { params } = props as {

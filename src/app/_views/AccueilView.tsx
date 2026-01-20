@@ -10,6 +10,8 @@ import { MUSCUTAZIEFF_GROUPS } from "@/content/muscutazieffMap";
 import { sessions } from "@/lib/exercises";
 import { cn } from "@/lib/utils";
 
+const HOME_GROUP_ORDER = ["themes", "connaissances", "demarche", "projets"];
+
 const tileStyle = (accent: string): CSSProperties =>
   ({ "--tile-accent": accent } as CSSProperties);
 
@@ -82,7 +84,11 @@ export function AccueilView() {
         </div>
 
         <div className="grid gap-6">
-          {MUSCUTAZIEFF_GROUPS.map((group) => (
+          {HOME_GROUP_ORDER.map((id) =>
+            MUSCUTAZIEFF_GROUPS.find((group) => group.id === id)
+          )
+            .filter((group): group is NonNullable<typeof group> => Boolean(group))
+            .map((group) => (
             <div key={group.title} className="space-y-3">
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold text-white">{group.title}</h3>
