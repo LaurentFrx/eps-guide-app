@@ -45,41 +45,45 @@ export default function GuidePage() {
       </section>
 
       <div className="grid gap-6">
-        {MUSCUTAZIEFF_GROUPS.map((group) => (
-          <section key={group.id} className="space-y-3">
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-white">{group.title}</h2>
-              {group.description ? (
-                <p className="text-sm text-white/65">{group.description}</p>
-              ) : null}
-            </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {group.items.map((item) => (
-                <Link
-                  key={item.route}
-                  href={item.route}
-                  className={cn(
-                    "ui-tile ui-pressable relative overflow-hidden px-4 py-4",
-                    item.variant === "light" && "ui-tile--light",
-                    item.variant === "pill" && "rounded-full px-5"
-                  )}
-                  style={tileStyle(item.accent)}
-                >
-                  <div className="relative z-10 space-y-1">
-                    <h3 className="text-base font-semibold">{item.title}</h3>
-                    {item.subtitle ? (
-                      <p className="text-sm text-white/70">{item.subtitle}</p>
-                    ) : null}
-                  </div>
-                  <span className="relative z-10 mt-3 inline-flex items-center gap-2 text-sm font-medium text-white">
-                    Lire
-                    <ArrowRight className="h-4 w-4" />
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ))}
+        {MUSCUTAZIEFF_GROUPS.filter((group) => group.id !== "hub").map(
+          (group) => (
+            <section key={group.id} className="space-y-3">
+              <div className="space-y-1">
+                <h2 className="text-lg font-semibold text-white">
+                  {group.title}
+                </h2>
+                {group.description ? (
+                  <p className="text-sm text-white/65">{group.description}</p>
+                ) : null}
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {group.items.map((item) => (
+                  <Link
+                    key={item.route}
+                    href={item.route}
+                    className={cn(
+                      "ui-tile ui-pressable relative overflow-hidden px-4 py-4",
+                      item.variant === "light" && "ui-tile--light",
+                      item.variant === "pill" && "rounded-full px-5"
+                    )}
+                    style={tileStyle(item.accent)}
+                  >
+                    <div className="relative z-10 space-y-1">
+                      <h3 className="text-base font-semibold">{item.title}</h3>
+                      {item.subtitle ? (
+                        <p className="text-sm text-white/70">{item.subtitle}</p>
+                      ) : null}
+                    </div>
+                    <span className="relative z-10 mt-3 inline-flex items-center gap-2 text-sm font-medium text-white">
+                      Lire
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )
+        )}
       </div>
     </div>
   );
