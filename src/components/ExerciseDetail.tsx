@@ -17,15 +17,13 @@ import {
   splitByInlineLabels,
   type LabelSpec,
 } from "@/lib/editorial/uiParse";
+import { normalizeLevelLabel, splitEquipment } from "@/lib/exercise-data";
 import type { ExerciseRecord } from "@/lib/exercises/schema";
 
 const levelStyles: Record<string, string> = {
   Débutant: "bg-emerald-400/20 text-emerald-100",
-  Debutant: "bg-emerald-400/20 text-emerald-100",
   Intermédiaire: "bg-sky-400/20 text-sky-100",
-  Intermediaire: "bg-sky-400/20 text-sky-100",
   Avancé: "bg-rose-400/20 text-rose-100",
-  Avance: "bg-rose-400/20 text-rose-100",
 };
 
 const DETAIL_LABEL_SPECS: LabelSpec[] = [
@@ -42,12 +40,16 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
   {
     key: "justif",
     title: "Justifications biomécaniques",
-    labels: ["Justifications biomécaniques", "Justifications"],
+    labels: [
+      "Justifications biomécaniques",
+      "Justifications biomecaniques",
+      "Justifications",
+    ],
   },
   {
     key: "benefices",
     title: "Bénéfices avérés",
-    labels: ["Bénéfices avérés", "Benefices"],
+    labels: ["Bénéfices avérés", "Benefices", "Bénéfices"],
   },
   {
     key: "contreind",
@@ -65,6 +67,7 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
     title: "Progressions / régressions",
     labels: [
       "Progressions / régressions",
+      "Progressions / regressions",
       "Progressions/Regressions",
       "Progression",
       "Regression",
@@ -74,12 +77,16 @@ const DETAIL_LABEL_SPECS: LabelSpec[] = [
   {
     key: "consignes",
     title: "Consignes pédagogiques",
-    labels: ["Consignes pédagogiques", "Consignes"],
+    labels: [
+      "Consignes pédagogiques",
+      "Consignes pedagogiques",
+      "Consignes",
+    ],
   },
   {
     key: "dosage",
     title: "Dosage recommandé",
-    labels: ["Dosage recommandé", "Dosage"],
+    labels: ["Dosage recommandé", "Dosage recommande", "Dosage"],
   },
 ];
 
@@ -100,7 +107,8 @@ export const ExerciseDetail = ({
   const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image ?? "");
   const favorite = isFavorite(exercise.code);
   const isSvg = heroIsSvg ?? imageSrc.toLowerCase().endsWith(".svg");
-  const levelClass = levelStyles[exercise.level] ?? "ui-chip";
+  const levelLabel = normalizeLevelLabel(exercise.level);
+  const levelClass = levelStyles[levelLabel] ?? "ui-chip";
 
   const sessionId = exercise.code.split("-")[0] ?? "";
   const fallbackBackHref = sessionId ? `/exercises/${sessionId}` : "/exercises";
@@ -111,6 +119,10 @@ export const ExerciseDetail = ({
       .map((item) => item.trim())
       .filter(Boolean);
   }, [exercise.muscles]);
+  const equipmentChips = useMemo(
+    () => splitEquipment(exercise.equipment),
+    [exercise.equipment]
+  );
   const keyPoints = exercise.key_points.length
     ? exercise.key_points
     : exercise.cues ?? [];
@@ -146,7 +158,7 @@ export const ExerciseDetail = ({
   const materielText = (() => {
     const fromEditorial = resolveText(exercise.materielMd);
     if (fromEditorial && !isMaterialEmpty(fromEditorial)) return fromEditorial;
-    if (!isMaterialEmpty(exercise.equipment)) return exercise.equipment;
+    if (!isMaterialEmpty(exercise.equipment)) return equipmentChips.join(", ");
     return "Aucun";
   })();
   const detailSource = resolveText(exercise.detailMd, exercise.fullMdRaw);
@@ -163,7 +175,7 @@ export const ExerciseDetail = ({
         <div className="absolute left-5 top-4 z-10">
           <BackLink
             href={backHref}
-            label="← Retour"
+            label="Retour"
             fallbackHref={fallbackBackHref}
           />
         </div>
@@ -224,16 +236,16 @@ export const ExerciseDetail = ({
                 {sessionLabel}
               </Badge>
             ) : null}
-            {exercise.level ? (
+            {levelLabel ? (
               <Badge className={cn("ui-chip border-0", levelClass)}>
-                {exercise.level}
+                {levelLabel}
               </Badge>
             ) : null}
-            {exercise.equipment ? (
-              <Badge className="ui-chip border-0">
-                {exercise.equipment}
+            {equipmentChips.map((equipment) => (
+              <Badge key={equipment} className="ui-chip border-0">
+                {equipment}
               </Badge>
-            ) : null}
+            ))}
           </div>
         </div>
       </div>
@@ -254,9 +266,6 @@ export const ExerciseDetail = ({
       <Tabs defaultValue="terrain" className="space-y-4">
         <TabsList className="ui-surface gap-2 p-1">
           <TabsTrigger className="ui-chip" value="terrain">Terrain</TabsTrigger>
-          <span className="text-xs text-white/60 px-1" aria-hidden="true">
-            &middot;
-          </span>
           <TabsTrigger className="ui-chip" value="detail">Détail</TabsTrigger>
         </TabsList>
 
@@ -270,13 +279,13 @@ export const ExerciseDetail = ({
             <EditorialCard
               title="Consignes clés"
               content={consignesText}
-              copyLabel="Copier consignes"
+              copyLabel="Copier"
               displayMode="smartList"
             />
             <EditorialCard
               title="Dosage"
               content={dosageText}
-              copyLabel="Copier dosage"
+              copyLabel="Copier"
               displayMode="smartList"
             />
             <EditorialCard
@@ -326,7 +335,7 @@ export const ExerciseDetail = ({
             {sourcesText ? (
               <GlassCard>
                 <p className="text-xs uppercase tracking-widest text-white/60">
-                  Sources de l’exercice
+                  Sources de l&apos;exercice
                 </p>
                 <div className="mt-3 max-w-prose whitespace-pre-wrap text-sm leading-relaxed text-white/75">
                   {sourcesText}
@@ -339,8 +348,4 @@ export const ExerciseDetail = ({
     </div>
   );
 };
-
-
-
-
 

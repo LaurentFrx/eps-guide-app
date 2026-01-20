@@ -21,8 +21,8 @@ const makeRoute = (slug: string) => `/guide/${slug}`;
 export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
   {
     id: "hub",
-    title: "Page d ouverture",
-    description: "Repere rapide du PDF Muscu'Tazieff.",
+    title: "Page d'ouverture",
+    description: "Repère rapide du PDF Muscu'Tazieff.",
     items: [
       {
         slug: "hub",
@@ -36,7 +36,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
   },
   {
     id: "themes",
-    title: "Les 3 themes",
+    title: "Les 3 thèmes",
     description: "Trois logiques pour structurer les cycles.",
     items: [
       {
@@ -61,7 +61,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
         slug: "themes/puissance",
         route: makeRoute("themes/puissance"),
         title: "Gain de puissance",
-        subtitle: "Explosivite",
+        subtitle: "Explosivité",
         accent: "var(--accent-theme)",
         startPage: 10,
         endPage: 13,
@@ -76,7 +76,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "connaissances/securite",
         route: makeRoute("connaissances/securite"),
-        title: "Principes securitaires",
+        title: "Principes sécuritaires",
         accent: "var(--accent-eval)",
         variant: "pill",
         startPage: 14,
@@ -103,7 +103,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "connaissances/methodes-overview",
         route: makeRoute("connaissances/methodes-overview"),
-        title: "Methodes d entrainement",
+        title: "Méthodes d'entraînement",
         accent: "var(--accent-knowledge)",
         variant: "light",
         startPage: 19,
@@ -113,8 +113,8 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
   },
   {
     id: "methodes",
-    title: "Methodes",
-    description: "Protocoles et formats pour varier les seances.",
+    title: "Méthodes",
+    description: "Protocoles et formats pour varier les séances.",
     items: [
       {
         slug: "methodes/superset",
@@ -135,7 +135,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "methodes/serie-brulante",
         route: makeRoute("methodes/serie-brulante"),
-        title: "Serie brulante",
+        title: "Série brûlante",
         accent: "var(--accent-process)",
         startPage: 24,
         endPage: 24,
@@ -167,7 +167,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "methodes/defi-centurion",
         route: makeRoute("methodes/defi-centurion"),
-        title: "Defi Centurion",
+        title: "Défi Centurion",
         accent: "var(--accent-process)",
         startPage: 28,
         endPage: 28,
@@ -199,7 +199,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "methodes/pre-activation",
         route: makeRoute("methodes/pre-activation"),
-        title: "Pre-activation",
+        title: "Pré-activation",
         accent: "var(--accent-process)",
         startPage: 34,
         endPage: 34,
@@ -224,13 +224,13 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
   },
   {
     id: "projets",
-    title: "Projets specifiques",
+    title: "Projets spécifiques",
     description: "Focus terrain et sports collectifs.",
     items: [
       {
         slug: "projets/detente-verticale",
         route: makeRoute("projets/detente-verticale"),
-        title: "Detente verticale",
+        title: "Détente verticale",
         accent: "var(--accent-projects)",
         startPage: 29,
         endPage: 29,
@@ -238,7 +238,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "projets/vitesse-agilite",
         route: makeRoute("projets/vitesse-agilite"),
-        title: "Vitesse & agilite",
+        title: "Vitesse & agilité",
         subtitle: "Sports co",
         accent: "var(--accent-projects)",
         startPage: 30,
@@ -248,14 +248,14 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
   },
   {
     id: "demarche",
-    title: "Demarche & evaluation",
-    description: "Competences, niveaux et bilan.",
+    title: "Démarche & évaluation",
+    description: "Compétences, niveaux et bilan.",
     items: [
       {
         slug: "demarche/spiralaire",
         route: makeRoute("demarche/spiralaire"),
-        title: "Competences attendues",
-        subtitle: "Demarche spiralaire",
+        title: "Compétences attendues",
+        subtitle: "Démarche spiralaire",
         accent: "var(--accent-process)",
         startPage: 2,
         endPage: 2,
@@ -263,7 +263,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "evaluation/seconde",
         route: makeRoute("evaluation/seconde"),
-        title: "Evaluation 2nde",
+        title: "Évaluation 2nde",
         accent: "var(--accent-eval)",
         startPage: 39,
         endPage: 39,
@@ -271,7 +271,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "evaluation/premiere",
         route: makeRoute("evaluation/premiere"),
-        title: "Evaluation 1ere",
+        title: "Évaluation 1ère",
         accent: "var(--accent-eval)",
         startPage: 40,
         endPage: 40,
@@ -279,7 +279,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "evaluation/terminale",
         route: makeRoute("evaluation/terminale"),
-        title: "Evaluation terminale",
+        title: "Évaluation terminale",
         accent: "var(--accent-eval)",
         startPage: 41,
         endPage: 41,
@@ -287,7 +287,7 @@ export const MUSCUTAZIEFF_GROUPS: MuscuGroup[] = [
       {
         slug: "evaluation/certificative",
         route: makeRoute("evaluation/certificative"),
-        title: "Evaluation certificative",
+        title: "Évaluation certificative",
         accent: "var(--accent-eval)",
         startPage: 42,
         endPage: 42,
@@ -306,3 +306,4 @@ const sectionsBySlug = new Map(
 
 export const getMuscutazieffSection = (slug: string) =>
   sectionsBySlug.get(slug);
+

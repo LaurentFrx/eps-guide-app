@@ -24,11 +24,11 @@ const workSans = Work_Sans({
 export const metadata: Metadata = {
   title: {
     default: "Guide Musculation",
-    template: "%s · Guide Musculation",
+    template: "%s | Guide Musculation",
   },
   applicationName: "Guide Musculation",
   description:
-    "Guide musculation terrain: projets, séances, exercices, révisions et évaluation.",
+    "Guide musculation terrain : projets, séances, exercices, révisions et évaluation.",
   icons: {
     icon: [
       {
@@ -68,3 +68,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -188,3 +188,4 @@ export const SessionView = ({ session }: { session: Session }) => {
     </div>
   );
 };
+

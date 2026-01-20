@@ -95,7 +95,7 @@ export const SearchView = ({ initialQuery }: { initialQuery?: string }) => {
       </div>
       <div className="h-px bg-white/10" />
       <div className="space-y-2">
-        <p className="text-xs uppercase tracking-widest text-white/55">Materiel</p>
+        <p className="text-xs uppercase tracking-widest text-white/55">Matériel</p>
         <div className="flex flex-wrap gap-2">
           {["Tous", ...equipmentOptions].map((equipment) => (
             <Button
@@ -125,7 +125,7 @@ export const SearchView = ({ initialQuery }: { initialQuery?: string }) => {
           Trouver un exercice
         </h1>
         <p className="text-sm text-white/70">
-          Filtrer par titre, code, muscles ou materiel.
+          Filtrer par titre, code, muscles ou matériel.
         </p>
       </header>
 
@@ -193,10 +193,10 @@ export const SearchView = ({ initialQuery }: { initialQuery?: string }) => {
 
       <div className="space-y-3">
         <div className="flex items-center justify-between text-sm text-white/70">
-          <Badge className="ui-chip border-0">{results.length} resultats</Badge>
+          <Badge className="ui-chip border-0">{results.length} résultats</Badge>
           {hasFilters ? (
             <button type="button" className="ui-link font-medium" onClick={resetFilters}>
-              Reinitialiser
+              Réinitialiser
             </button>
           ) : null}
         </div>
@@ -214,3 +214,4 @@ export const SearchView = ({ initialQuery }: { initialQuery?: string }) => {
     </div>
   );
 };
+

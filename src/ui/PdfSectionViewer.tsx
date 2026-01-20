@@ -39,6 +39,7 @@ export function PdfSectionViewer({
   const [scale, setScale] = useState(1);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const range = useMemo(() => {
@@ -173,7 +174,7 @@ export function PdfSectionViewer({
             size="icon"
             className="ui-chip min-h-10 min-w-10"
             onClick={toggleFullscreen}
-            aria-label="Plein ecran"
+            aria-label="Plein écran"
           >
             {isFullscreen ? (
               <Minimize2 className="h-4 w-4" />
@@ -188,7 +189,17 @@ export function PdfSectionViewer({
         <Document
           file={fileUrl}
           loading={<div className="p-6 text-sm text-white/70">Chargement...</div>}
-          onLoadSuccess={(data) => setNumPages(data.numPages)}
+          error={
+            <div className="p-6 text-sm text-amber-200/90">
+              Impossible de charger le PDF.
+            </div>
+          }
+          onLoadSuccess={(data) => {
+            setNumPages(data.numPages);
+            setLoadError(null);
+          }}
+          onLoadError={(error) => setLoadError(error.message)}
+          onSourceError={(error) => setLoadError(error.message)}
         >
           <Page
             pageNumber={clampedPage}
@@ -199,6 +210,12 @@ export function PdfSectionViewer({
         </Document>
       </div>
 
+      {loadError ? (
+        <p className="text-xs text-amber-200/80">
+          Erreur PDF: vérifiez que <span className="font-semibold">/muscutazieff.pdf</span> est disponible.
+        </p>
+      ) : null}
+
       <div className="flex flex-wrap items-center justify-between text-xs text-white/60">
         <span>
           Page {sectionIndex} / {sectionCount} (PDF {clampedPage})
@@ -208,3 +225,4 @@ export function PdfSectionViewer({
     </div>
   );
 }
+

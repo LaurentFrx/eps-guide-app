@@ -16,7 +16,7 @@ export default async function ExercicesPage(props: unknown) {
     <div className="space-y-6 p-6">
       <header className="space-y-2">
         <h1 className="text-3xl font-semibold">Exercices</h1>
-        <p className="text-sm text-white/70">Parcours image-first des 5 sessions du guide.</p>
+        <p className="text-sm text-white/70">Parcours image-first des 5 séances du guide.</p>
       </header>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

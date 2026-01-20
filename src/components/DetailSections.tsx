@@ -139,3 +139,4 @@ export function DetailSections({ sections }: DetailSectionsProps) {
     </div>
   );
 }
+

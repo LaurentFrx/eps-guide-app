@@ -30,7 +30,7 @@ export function GuideSectionClient({ section, fileUrl }: GuideSectionClientProps
   return (
     <div className="space-y-6 pb-8">
       <Link href="/guide" className="ui-link text-sm font-medium">
-        Retour guide
+        Retour au guide
       </Link>
 
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -61,7 +61,7 @@ export function GuideSectionClient({ section, fileUrl }: GuideSectionClientProps
             ) : (
               <BookmarkPlus className="h-4 w-4" />
             )}
-            {bookmarked ? "Mis a jour" : "Enregistrer"}
+            {bookmarked ? "Mis à jour" : "Enregistrer"}
           </Button>
           {bookmarked ? (
             <Button
@@ -87,3 +87,4 @@ export function GuideSectionClient({ section, fileUrl }: GuideSectionClientProps
     </div>
   );
 }
+

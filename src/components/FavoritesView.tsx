@@ -30,7 +30,7 @@ export const FavoritesView = () => {
           Vos raccourcis
         </h1>
         <p className="text-sm text-white/70">
-          Exercices sauvegardes et marque-pages guide.
+          Exercices sauvegardés et marque-pages guide.
         </p>
       </div>
 

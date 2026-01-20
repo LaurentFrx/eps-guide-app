@@ -43,6 +43,87 @@ export type ExerciseWithSession = Exercise & {
   sessionTitle: string;
 };
 
+const MOJIBAKE_REPLACEMENTS: Array<[RegExp, string]> = [
+  [/\u00C3\u00A9/g, "\u00E9"],
+  [/\u00C3\u00A8/g, "\u00E8"],
+  [/\u00C3\u00AA/g, "\u00EA"],
+  [/\u00C3\u00AB/g, "\u00EB"],
+  [/\u00C3\u00A0/g, "\u00E0"],
+  [/\u00C3\u00A2/g, "\u00E2"],
+  [/\u00C3\u00AE/g, "\u00EE"],
+  [/\u00C3\u00AF/g, "\u00EF"],
+  [/\u00C3\u00B4/g, "\u00F4"],
+  [/\u00C3\u00B6/g, "\u00F6"],
+  [/\u00C3\u00B9/g, "\u00F9"],
+  [/\u00C3\u00BB/g, "\u00FB"],
+  [/\u00C3\u00BC/g, "\u00FC"],
+  [/\u00C3\u00A7/g, "\u00E7"],
+  [/\u00C3\u0089/g, "\u00C9"],
+  [/\u00C3\u0080/g, "\u00C0"],
+  [/\u00C3\u0082/g, "\u00C2"],
+  [/\u00C3\u0087/g, "\u00C7"],
+  [/\u201A/g, "\u00E9"],
+];
+
+function fixMojibake(value: string) {
+  let out = value;
+  for (const [pattern, replacement] of MOJIBAKE_REPLACEMENTS) {
+    out = out.replace(pattern, replacement);
+  }
+  return out;
+}
+
+function normalizeText(value: string) {
+  return fixMojibake(value)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "");
+}
+
+export function normalizeLevelLabel(value: string): string {
+  const normalized = normalizeText(value);
+  if (!normalized) return fixMojibake(value.trim());
+  if (normalized === "debutant") return "D\u00E9butant";
+  if (normalized === "intermediaire") return "Interm\u00E9diaire";
+  if (normalized === "avance") return "Avanc\u00E9";
+  return fixMojibake(value.trim());
+}
+
+export function normalizeEquipmentLabel(value: string): string {
+  const trimmed = fixMojibake(value.trim());
+  const normalized = normalizeText(trimmed)
+    .replace(/[()]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (!normalized || normalized === "aucun" || normalized === "sans materiel") {
+    return "Aucun";
+  }
+  if (
+    normalized === "medecine ball" ||
+    normalized === "medecine-ball" ||
+    normalized === "medicine ball"
+  ) {
+    return "M\u00E9decine-ball";
+  }
+  if (normalized === "tapis") {
+    return "Tapis";
+  }
+  if (normalized.startsWith("swiss ball")) {
+    return "Swiss Ball (gros ballon)";
+  }
+  return trimmed;
+}
+
+export function splitEquipment(value: string): string[] {
+  const tokens = value
+    .split(",")
+    .map((item) => normalizeEquipmentLabel(item))
+    .filter(Boolean);
+  return Array.from(new Set(tokens));
+}
+
+
 const typed = data as ExercisesData;
 
 function getSessionNumFromCode(code: string): number | null {
@@ -121,7 +202,7 @@ mergedSessions.sort((a, b) => a.num - b.num);
 export const sessions = mergedSessions;
 export const isMockData = Boolean(typed.meta?.is_mock);
 export const mockWarning =
-  typed.meta?.warning ?? "Données de démonstration actives.";
+  typed.meta?.warning ?? "Donn\u00E9es de d\u00E9monstration actives.";
 
 export const allExercises: ExerciseWithSession[] = sessions.flatMap((session) =>
   session.exercises.map((exercise) => ({
@@ -131,60 +212,11 @@ export const allExercises: ExerciseWithSession[] = sessions.flatMap((session) =>
   }))
 );
 
-function normalizeText(value: string) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
-}
-
-export function normalizeLevelLabel(value: string): string {
-  const normalized = normalizeText(value);
-  if (!normalized) return value.trim();
-  if (normalized === "debutant") return "Débutant";
-  if (normalized === "intermediaire") return "Intermédiaire";
-  if (normalized === "avance") return "Avancé";
-  return value.trim();
-}
-
-export function normalizeEquipmentLabel(value: string): string {
-  const trimmed = value.trim();
-  const normalized = normalizeText(trimmed)
-    .replace(/[()]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  if (!normalized || normalized === "aucun" || normalized === "sans materiel") {
-    return "Aucun";
-  }
-  if (
-    normalized === "medecine ball" ||
-    normalized === "medecine-ball" ||
-    normalized === "medicine ball"
-  ) {
-    return "Médecine-ball";
-  }
-  if (normalized === "tapis") {
-    return "Tapis";
-  }
-  if (normalized.startsWith("swiss ball")) {
-    return "Swiss Ball (gros ballon)";
-  }
-  return trimmed;
-}
-
-export function splitEquipment(value: string): string[] {
-  const tokens = value
-    .split(",")
-    .map((item) => normalizeEquipmentLabel(item))
-    .filter(Boolean);
-  return Array.from(new Set(tokens));
-}
 
 const levelSet = new Set(
   allExercises.map((exercise) => normalizeLevelLabel(exercise.level))
 );
-const LEVEL_ORDER = ["Débutant", "Intermédiaire", "Avancé"];
+const LEVEL_ORDER = ["D\u00E9butant", "Interm\u00E9diaire", "Avanc\u00E9"];
 export const levels = LEVEL_ORDER.filter((level) => levelSet.has(level));
 
 export const equipmentOptions = Array.from(
@@ -245,3 +277,6 @@ export const filterExercises = (options: {
     return haystack.includes(query);
   });
 };
+
+
+

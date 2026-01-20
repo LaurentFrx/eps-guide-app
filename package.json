@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && next dev --webpack",
-    "build": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && npm run check:stats && npm run check:editorial && npm run report:editorial:audit && npm run check:editorial:coverage && npm run check:editorial:no-referrals && npm run check:editorial:no-leaks && npm run check:editorial:markdown && npm run check:editorial:no-editor-comments && npm run check:exercises:text && npm run check:no-referrals && npm run check:typography && npm run check:mojibake && npm run validate:assets && npm run validate:images && next build --webpack",
+    "build": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && npm run check:stats && npm run check:editorial && npm run report:editorial:audit && npm run check:editorial:coverage && npm run check:editorial:no-referrals && npm run check:editorial:no-leaks && npm run check:editorial:markdown && npm run check:editorial:no-editor-comments && npm run check:exercises:text && npm run check:no-referrals && npm run check:typography && npm run check:mojibake && npm run check:pdf && npm run validate:assets && npm run validate:images && next build --webpack",
     "audit:exercises": "tsx scripts/audit-exercises.ts",
     "audit:crossrefs": "tsx scripts/audit-crossrefs.ts",
     "gen:editorial:audit": "tsx scripts/parse-audit-editorial-report.ts",
@@ -28,6 +28,7 @@
     "check:no-referrals": "tsx scripts/check-no-referrals.ts",
     "check:typography": "tsx scripts/check-typography.ts",
     "check:mojibake": "tsx scripts/check-mojibake.ts",
+    "check:pdf": "tsx scripts/check-pdf-header.ts",
     "report:editorial:audit": "tsx scripts/report-audit-editorial-coverage.ts",
     "validate:assets": "tsx scripts/validate-assets.ts",
     "validate:images": "tsx scripts/validate-public-images.ts",

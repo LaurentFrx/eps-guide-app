@@ -38,7 +38,7 @@ export function AccueilView() {
               Guide de musculation
             </h1>
             <p className="text-sm text-white/70">
-              Sessions, exercices, methodes et evaluation terminale. Mode terrain.
+              Sessions, exercices, méthodes et évaluation terminale. Mode terrain.
             </p>
           </div>
         </div>
@@ -47,10 +47,10 @@ export function AccueilView() {
       <section className="ui-card space-y-4 p-4">
         <div className="space-y-1">
           <p className="text-xs uppercase tracking-widest text-white/55">
-            Acces rapide
+            Accès rapide
           </p>
           <h2 className="font-display text-xl font-semibold text-white">
-            Aller a l essentiel
+            Aller à l&apos;essentiel
           </h2>
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -66,7 +66,7 @@ export function AccueilView() {
             className="ui-chip ui-pressable min-h-11 w-full"
           >
             <Link href="#sessions" className="flex items-center justify-between gap-2">
-              Parcourir les seances
+              Parcourir les séances
               <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
@@ -129,7 +129,7 @@ export function AccueilView() {
               Sessions
             </p>
             <h2 className="font-display text-2xl font-semibold text-white">
-              Les 5 seances terrain
+              Les 5 séances terrain
             </h2>
           </div>
           <Link href="/exercises" className="ui-link text-sm font-medium">
@@ -206,3 +206,4 @@ export function AccueilView() {
     </div>
   );
 }
+

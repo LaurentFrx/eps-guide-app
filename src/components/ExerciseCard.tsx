@@ -8,15 +8,13 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
 import { normalizeExerciseCode } from "@/lib/exerciseCode";
+import { normalizeLevelLabel, splitEquipment } from "@/lib/exercise-data";
 import type { ExerciseWithSession } from "@/lib/exercise-data";
 
 const levelStyles: Record<string, string> = {
   Débutant: "bg-emerald-400/20 text-emerald-100",
-  Debutant: "bg-emerald-400/20 text-emerald-100",
   Intermédiaire: "bg-sky-400/20 text-sky-100",
-  Intermediaire: "bg-sky-400/20 text-sky-100",
   Avancé: "bg-rose-400/20 text-rose-100",
-  Avance: "bg-rose-400/20 text-rose-100",
 };
 
 type ExerciseCardProps = {
@@ -35,10 +33,15 @@ export const ExerciseCard = ({
   const favorite = isFavorite(exercise.code);
   const isSvg = imageSrc.toLowerCase().endsWith(".svg");
 
-  const levelClass = useMemo(
-    () => levelStyles[exercise.level] ?? "ui-chip",
+  const levelLabel = useMemo(
+    () => normalizeLevelLabel(exercise.level),
     [exercise.level]
   );
+  const levelClass = levelStyles[levelLabel] ?? "ui-chip";
+  const equipmentLabel = useMemo(() => {
+    const [first] = splitEquipment(exercise.equipment);
+    return first ?? exercise.equipment;
+  }, [exercise.equipment]);
 
   return (
     <div className="ui-card ui-pressable group relative overflow-hidden">
@@ -97,15 +100,15 @@ export const ExerciseCard = ({
           </div>
           {showSession ? (
             <p className="text-sm text-white/70">
-              Session {exercise.sessionNum} — {exercise.sessionTitle}
+              Session {exercise.sessionNum} - {exercise.sessionTitle}
             </p>
           ) : null}
           <div className="flex flex-wrap gap-2">
             <Badge className={cn("ui-chip border-0", levelClass)}>
-              {exercise.level}
+              {levelLabel}
             </Badge>
             <Badge className="ui-chip border-0">
-              {exercise.equipment}
+              {equipmentLabel}
             </Badge>
           </div>
         </div>
@@ -113,3 +116,4 @@ export const ExerciseCard = ({
     </div>
   );
 };
+

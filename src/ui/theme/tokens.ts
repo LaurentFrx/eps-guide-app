@@ -4,7 +4,7 @@ export const themeTokens = {
     surface: "#111827",
     surface2: "#171E2E",
     text: "#F5F7FF",
-    textSecondary: "#B9C0D4",
+    textSecondary: "#C8D0EA",
     accents: {
       themes: "#C9B3FF",
       knowledge: "#F3F5F7",
