@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { getExerciseStats } from "@/lib/stats";
-import { APP_VERSION, BUILD_TIME, COMMIT_REF, COMMIT_SHA } from "@/lib/version";
+import { APP_VERSION, COMMIT_SHA } from "@/lib/version";
 import { cn } from "@/lib/utils";
 
 type FooterProps = {
@@ -12,18 +11,13 @@ type FooterProps = {
 type VersionPayload = {
   version: string;
   commitSha?: string;
-  commitRef?: string;
-  buildTime?: string | null;
 };
 
 export default function Footer({ className }: FooterProps) {
-  const stats = useMemo(() => getExerciseStats(), []);
   const fallback = useMemo<VersionPayload>(
     () => ({
       version: APP_VERSION,
       commitSha: COMMIT_SHA ?? "unknown",
-      commitRef: COMMIT_REF ?? "",
-      buildTime: BUILD_TIME ?? null,
     }),
     []
   );
@@ -48,8 +42,8 @@ export default function Footer({ className }: FooterProps) {
     };
   }, [fallback]);
 
-  const short = runtime.commitSha ? runtime.commitSha.slice(0, 7) : null;
-  const buildDate = runtime.buildTime ? runtime.buildTime.slice(0, 10) : null;
+  const short = runtime.commitSha ? runtime.commitSha.slice(0, 7) : "unknown";
+  const displayVersion = runtime.version?.trim() || APP_VERSION;
 
   return (
     <div
@@ -58,12 +52,8 @@ export default function Footer({ className }: FooterProps) {
         className
       )}
     >
-      <span className="text-[11px] text-white/60 pointer-events-none">
-        v{runtime.version} ú Sessions: {stats.sessionsCount} ú Exercices:{" "}
-        {stats.totalExercises}
-        {buildDate ? ` ú Build: ${buildDate}` : ""}
-        {short ? ` ú Commit: ${short}` : ""}
-        {runtime.commitRef ? ` ú ${runtime.commitRef}` : ""}
+      <span className="pointer-events-none text-[11px] font-medium tracking-wide tabular-nums text-white/60 md:text-xs">
+        v{displayVersion} · {short}
       </span>
     </div>
   );

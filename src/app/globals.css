@@ -145,9 +145,7 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     color: rgb(var(--text));
-    background:
-      radial-gradient(1200px circle at 10% 0%, rgba(var(--ring) / 0.22), transparent 60%),
-      linear-gradient(180deg, rgb(var(--bg)), rgb(var(--surface)) 55%, rgb(var(--bg)) 120%);
+    background: var(--bg-gradient);
     min-height: 100vh;
   }
 
@@ -160,26 +158,11 @@
    EPS APP THEME (GLOBAL)
    ========================= */
 .eps-app {
-  color: rgba(255, 255, 255, 0.92);
+  color: rgb(var(--text));
   position: relative;
-  background:
-    radial-gradient(900px circle at 12% 8%, rgba(100, 158, 205, 0.38), transparent 58%),
-    radial-gradient(900px circle at 92% 0%, rgba(176, 216, 132, 0.18), transparent 55%),
-    linear-gradient(180deg, #041159 0%, #053884 46%, #041159 110%);
+  background: rgb(var(--bg));
   min-height: 100dvh;
-}
-
-.eps-app::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: url("/theme/eps-circuit.svg");
-  background-repeat: repeat;
-  background-size: 680px 680px;
-  opacity: 0.12;
-  mix-blend-mode: screen;
+  --app-header-height: 64px;
 }
 
 .eps-app__content {
@@ -190,87 +173,158 @@
 .eps-app h1,
 .eps-app h2,
 .eps-app h3 {
-  color: rgba(255, 255, 255, 0.94);
+  color: rgb(var(--text));
 }
 
 .eps-app p,
 .eps-app li {
-  color: rgba(255, 255, 255, 0.74);
+  color: rgb(var(--text-secondary));
 }
 
 .eps-app .ui-surface,
 .eps-app .ui-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(100, 158, 205, 0.2);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(3, 7, 18, 0.35);
 }
 
 .eps-app .ui-chip {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(100, 158, 205, 0.22);
-  color: rgba(255, 255, 255, 0.86);
+  background: rgba(15, 20, 35, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgb(var(--text));
   border-radius: 999px;
 }
 
 .eps-app .ui-chip.is-active,
 .eps-app .ui-chip[data-active="true"],
 .eps-app .ui-chip[data-state="active"] {
-  border-color: rgba(176, 216, 132, 0.8);
-  box-shadow: 0 0 0 3px rgba(176, 216, 132, 0.16);
+  border-color: rgba(201, 179, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(201, 179, 255, 0.2);
 }
 
 .eps-app .ui-input {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(100, 158, 205, 0.22);
-  color: rgba(255, 255, 255, 0.92);
-  border-radius: 14px;
+  background: rgba(12, 16, 32, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgb(var(--text));
+  border-radius: 16px;
 }
 
 .eps-app .ui-input::placeholder {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(185, 192, 212, 0.7);
 }
 
 .eps-app .ui-input:focus {
   outline: none;
-  border-color: rgba(176, 216, 132, 0.6);
-  box-shadow: 0 0 0 4px rgba(100, 158, 205, 0.2);
+  border-color: rgba(201, 179, 255, 0.7);
+  box-shadow: 0 0 0 4px rgba(91, 119, 172, 0.25);
 }
 
 .eps-app .ui-btn-primary {
-  background: linear-gradient(135deg, #1056a3 0%, #276aaf 60%, #649ecd 120%);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+  background: linear-gradient(135deg, #3b4a78 0%, #7b6db5 55%, #c9b3ff 110%);
+  color: #0b1020;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  box-shadow: 0 16px 30px rgba(3, 7, 18, 0.3);
 }
 
 .eps-app .ui-btn-primary:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.05);
 }
 
 .eps-app .ui-link {
-  color: rgba(185, 218, 241, 0.92);
+  color: rgba(201, 179, 255, 0.95);
 }
 
 .eps-app .ui-link:hover {
-  color: rgba(176, 216, 132, 0.95);
+  color: rgba(244, 168, 184, 0.95);
 }
 
 .eps-app .ui-bottomnav {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(100, 158, 205, 0.22);
-  backdrop-filter: blur(14px);
+  background: rgba(12, 16, 32, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 50px rgba(3, 7, 18, 0.5);
 }
 
 .eps-app .ui-navitem {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(185, 192, 212, 0.9);
+  min-height: 44px;
 }
 
 .eps-app .ui-navitem.is-active,
 .eps-app .ui-navitem[data-active="true"] {
-  color: rgba(176, 216, 132, 0.95);
+  color: rgb(var(--text));
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.eps-app .ui-navitem.is-active::after,
+.eps-app .ui-navitem[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(201, 179, 255, 0.9), rgba(244, 168, 184, 0.9));
+}
+
+.eps-app .ui-pressable {
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+@media (hover: hover) {
+  .eps-app .ui-pressable:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 50px rgba(3, 7, 18, 0.45);
+  }
+}
+
+.eps-app .ui-pressable:active {
+  transform: scale(0.98);
+}
+
+.eps-app .ui-tile {
+  position: relative;
+  background:
+    linear-gradient(145deg, rgb(var(--tile-accent, var(--accent-theme)) / 0.2), rgba(12, 16, 32, 0.85));
+  border: 1px solid rgb(var(--tile-accent, var(--accent-theme)) / 0.28);
+  color: rgb(var(--text));
+  border-radius: 22px;
+  box-shadow: 0 18px 40px rgba(3, 7, 18, 0.4);
+}
+
+.eps-app .ui-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at 0% 0%,
+    rgb(var(--tile-accent, var(--accent-theme)) / 0.18),
+    transparent 65%
+  );
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.eps-app .ui-tile--light {
+  background: rgb(var(--accent-knowledge));
+  color: #0b1020;
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.eps-app .ui-tile--light p {
+  color: rgba(15, 23, 42, 0.7);
+}
+
+.eps-app .ui-tile--light .ui-chip {
+  color: #0b1020;
+  border-color: rgba(15, 23, 42, 0.2);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 /* =========================
@@ -278,7 +332,7 @@
    (Home only: .eps-home)
    ========================= */
 .eps-home {
-  color: rgba(255, 255, 255, 0.92);
+  color: rgb(var(--text));
   background: transparent;
   min-height: 100dvh;
 }
@@ -331,74 +385,74 @@
 }
 
 .eps-chip {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(100, 158, 205, 0.22);
-  color: rgba(255, 255, 255, 0.86);
+  background: rgba(15, 20, 35, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgb(var(--text));
   border-radius: 999px;
 }
 
 .eps-chip.is-active,
 .eps-chip[data-active="true"] {
-  border-color: rgba(176, 216, 132, 0.8);
-  box-shadow: 0 0 0 3px rgba(176, 216, 132, 0.16);
+  border-color: rgba(201, 179, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(201, 179, 255, 0.2);
 }
 
 .eps-search {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(100, 158, 205, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 18px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  box-shadow: 0 18px 40px rgba(3, 7, 18, 0.35);
 }
 
 .eps-search__input {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(100, 158, 205, 0.22);
-  color: rgba(255, 255, 255, 0.92);
+  background: rgba(12, 16, 32, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgb(var(--text));
 }
 
 .eps-search__input::placeholder {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(185, 192, 212, 0.7);
 }
 
 .eps-search__input:focus {
   outline: none;
-  border-color: rgba(176, 216, 132, 0.6);
-  box-shadow: 0 0 0 4px rgba(100, 158, 205, 0.2);
+  border-color: rgba(201, 179, 255, 0.7);
+  box-shadow: 0 0 0 4px rgba(91, 119, 172, 0.25);
 }
 
 .eps-btn-primary {
-  background: linear-gradient(135deg, #1056a3 0%, #276aaf 60%, #649ecd 120%);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+  background: linear-gradient(135deg, #3b4a78 0%, #7b6db5 55%, #c9b3ff 110%);
+  color: #0b1020;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 16px 30px rgba(3, 7, 18, 0.3);
 }
 
 .eps-btn-primary:hover {
-  filter: brightness(1.06);
+  filter: brightness(1.05);
 }
 
 .eps-card {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(100, 158, 205, 0.2);
-  backdrop-filter: blur(12px);
-  border-radius: 18px;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+  background: rgba(17, 24, 39, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  box-shadow: 0 18px 44px rgba(3, 7, 18, 0.35);
 }
 
 .eps-card h3,
 .eps-card h2 {
-  color: rgba(255, 255, 255, 0.94);
+  color: rgb(var(--text));
 }
 
 .eps-card p {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgb(var(--text-secondary));
 }
 
 .eps-home a {
-  color: rgba(185, 218, 241, 0.9);
+  color: rgba(201, 179, 255, 0.95);
 }
 
 .eps-home a:hover {
-  color: rgba(176, 216, 132, 0.95);
+  color: rgba(244, 168, 184, 0.95);
 }

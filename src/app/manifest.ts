@@ -1,22 +1,23 @@
 import type { MetadataRoute } from "next";
-import { withAssetVersion } from "@/lib/assetVersion";
+import { ICON_V } from "@/lib/version";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Guide EPS",
-    short_name: "Guide EPS",
+    name: "Guide Musculation",
+    short_name: "Musculation",
     start_url: "/",
+    scope: "/",
     display: "standalone",
-    background_color: "#eef2f7",
-    theme_color: "#dbeafe",
+    background_color: "#0b1020",
+    theme_color: "#0b1020",
     icons: [
       {
-        src: withAssetVersion("/icon-192.png"),
+        src: `/icon-192.png?v=${ICON_V}`,
         sizes: "192x192",
         type: "image/png",
       },
       {
-        src: withAssetVersion("/icon-512.png"),
+        src: `/icon-512.png?v=${ICON_V}`,
         sizes: "512x512",
         type: "image/png",
       },

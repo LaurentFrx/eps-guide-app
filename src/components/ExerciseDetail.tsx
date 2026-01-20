@@ -9,7 +9,7 @@ import { GlassCard } from "@/components/GlassCard";
 import { EditorialCard } from "@/components/EditorialCard";
 import { DetailSections } from "@/components/DetailSections";
 import { GlossaryText } from "@/components/GlossaryText";
-import { BackButton } from "@/components/BackButton";
+import { BackLink } from "@/components/BackLink";
 import { cn } from "@/lib/utils";
 import { useFavorites } from "@/lib/favorites";
 import {
@@ -87,12 +87,14 @@ type ExerciseDetailProps = {
   exercise: ExerciseRecord;
   heroSrc?: string | null;
   heroIsSvg?: boolean;
+  backHref?: string;
 };
 
 export const ExerciseDetail = ({
   exercise,
   heroSrc,
   heroIsSvg,
+  backHref,
 }: ExerciseDetailProps) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [imageSrc, setImageSrc] = useState(heroSrc ?? exercise.image ?? "");
@@ -101,6 +103,7 @@ export const ExerciseDetail = ({
   const levelClass = levelStyles[exercise.level] ?? "ui-chip";
 
   const sessionId = exercise.code.split("-")[0] ?? "";
+  const fallbackBackHref = sessionId ? `/exercises/${sessionId}` : "/exercises";
   const sessionLabel = sessionId ? `Session ${sessionId.replace("S", "")}` : "";
   const muscleChips = useMemo(() => {
     return exercise.muscles
@@ -158,8 +161,10 @@ export const ExerciseDetail = ({
     <div className="space-y-6 animate-in fade-in-0 slide-in-from-bottom-3">
       <div className="relative -mx-5 overflow-hidden rounded-b-[2.5rem]">
         <div className="absolute left-5 top-4 z-10">
-          <BackButton
-            fallbackHref={sessionId ? `/exercises/${sessionId}` : "/exercises"}
+          <BackLink
+            href={backHref}
+            label="← Retour"
+            fallbackHref={fallbackBackHref}
           />
         </div>
         <div className="relative h-64 w-full">
@@ -334,7 +339,6 @@ export const ExerciseDetail = ({
     </div>
   );
 };
-
 
 
 

@@ -19,6 +19,10 @@
     "check:editorial:no-leaks": "tsx scripts/check-editorial-no-leaks.ts",
     "check:editorial:markdown": "tsx scripts/check-editorial-markdown.ts",
     "check:editorial:no-editor-comments": "tsx scripts/check-editorial-no-editor-comments.ts",
+    "check:muscu": "npm run check:muscu:placeholders && tsx scripts/check-muscu.ts",
+    "check:muscu:placeholders": "tsx scripts/check-muscu-placeholders.ts",
+    "check:bac:musculation": "tsx scripts/check-bac-musculation-docs.ts",
+    "check:eps-tags": "tsx scripts/check-eps-tags.ts",
     "check:stats": "tsx scripts/check-stats.ts",
     "check:exercises:text": "tsx scripts/validate-exercises-text.ts",
     "check:no-referrals": "tsx scripts/check-no-referrals.ts",
@@ -33,6 +37,7 @@
     "icons:web": "tsx scripts/generate-web-icons.ts",
     "start": "next start",
     "lint": "eslint",
+    "version:bump": "node scripts/bump-version.mjs",
     "check:security": "node tools/check-no-ha-refs.js",
     "images:optimize": "node tools/generate-responsive-images.js",
     "extract:data": "python3 tools/extract_eps_docx.py ../../source_docs/EPS-1.docx ../../source_docs/EPS-2.docx"
@@ -47,8 +52,10 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
+    "pdfjs-dist": "^5.4.530",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-pdf": "^10.3.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

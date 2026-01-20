@@ -44,5 +44,7 @@ jobs:
         run: npm run lint
       - name: Exercises check
         run: npm run check:exercises
+      - name: Muscu check
+        run: npm run check:muscu
       - name: Build
         run: npm run build

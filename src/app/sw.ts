@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 import { defaultCache } from "@serwist/next/worker";
 import type { PrecacheEntry, SerwistGlobalConfig } from "serwist";
+import { CacheFirst, ExpirationPlugin } from "serwist";
 import { Serwist } from "serwist";
 
 type ServiceWorkerManifestScope = ServiceWorkerGlobalScope &
@@ -14,10 +15,41 @@ const CACHE_VERSION = "v2026-01-12-banner";
 const CACHE_PREFIX = "eps-guide-";
 const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 const OFFLINE_URL = "/~offline";
+const BAC_BASE = "/bac";
+const MUSCULATION_SLUG = "musculation";
+const BAC_PDF_PATH = `${BAC_BASE}/${MUSCULATION_SLUG}/pdfs/`;
+
+const shouldPrecache = (entry: PrecacheEntry | string) => {
+  const url = typeof entry === "string" ? entry : entry.url;
+  return (
+    !/\/muscu[\\/]+infographies[\\/]+/i.test(url) &&
+    !/\/bac[\\/]+musculation[\\/]+pdfs[\\/]+/i.test(url)
+  );
+};
+
+const runtimeCaching = [
+  {
+    matcher: ({ sameOrigin, url }: { sameOrigin: boolean; url: URL }) =>
+      sameOrigin &&
+      url.pathname.startsWith(BAC_PDF_PATH) &&
+      url.pathname.endsWith(".pdf"),
+    handler: new CacheFirst({
+      cacheName: "musculation-pdfs",
+      plugins: [
+        new ExpirationPlugin({
+          maxEntries: 24,
+          maxAgeSeconds: 60 * 60 * 24 * 90,
+          maxAgeFrom: "last-used",
+        }),
+      ],
+    }),
+  },
+  ...defaultCache,
+];
 
 const serwist = new Serwist({
-  precacheEntries: self.__SW_MANIFEST,
-  runtimeCaching: defaultCache,
+  precacheEntries: (self.__SW_MANIFEST ?? []).filter(shouldPrecache),
+  runtimeCaching,
   skipWaiting: false,
   clientsClaim: false,
   navigationPreload: true,

@@ -11,19 +11,19 @@ export default function OfflinePage() {
           Mode hors ligne
         </p>
         <h1 className="font-display text-3xl font-semibold text-white">
-          Vous etes hors connexion
+          Vous êtes hors connexion
         </h1>
         <p className="text-sm text-white/70">
-          Les fiches deja consultees restent disponibles.
+          Les fiches déjà consultées restent disponibles.
         </p>
       </div>
       <GlassCard className="flex flex-col items-center gap-3 text-center">
         <WifiOff className="h-6 w-6 text-white/60" />
         <p className="text-sm text-white/70">
-          Hors ligne actif. Reconnectez-vous pour mettre a jour les donnees.
+          Hors ligne actif. Reconnectez-vous pour mettre à jour les données.
         </p>
         <Button asChild className="ui-btn-primary">
-          <Link href="/">Retour a l&apos;accueil</Link>
+          <Link href="/accueil">Retour à l&apos;accueil</Link>
         </Button>
       </GlassCard>
     </div>
