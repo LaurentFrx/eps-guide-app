@@ -53,6 +53,10 @@ Source: `docs/audit_eps_musculation.md`
   - Attendu: contrastes/verifs clavier/labels.
   - Fichiers: `src/app/globals.css`, `src/components/*`
   - Etat: TODO
+- [TODO] Tech debt: avertissement CI source-map beta (Serwist)
+  - Attendu: mettre a jour @serwist/build/@serwist/next quand la dependance source-map sort de la beta.
+  - Note: warning accepte, pas d'override.
+  - Etat: TODO
 
 ## IA Fred (Refonte)
 - [DONE] Phase 1 - Navigation: S'entraîner / Connaissances / Evaluation / Bibliotheque
