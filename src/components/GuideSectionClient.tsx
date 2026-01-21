@@ -2,11 +2,23 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { BookmarkCheck, BookmarkPlus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { MuscuSection } from "@/content/muscutazieffMap";
 import { useGuideBookmarks } from "@/lib/guideBookmarks";
-import { PdfSectionViewer } from "@/ui/PdfSectionViewer";
+
+const PdfSectionViewer = dynamic(
+  () => import("@/ui/PdfSectionViewer").then((mod) => mod.PdfSectionViewer),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="ui-card p-4 text-sm text-white/70">
+        Chargement du PDF...
+      </div>
+    ),
+  }
+);
 
 type GuideSectionClientProps = {
   section: MuscuSection;
@@ -87,4 +99,3 @@ export function GuideSectionClient({ section, fileUrl }: GuideSectionClientProps
     </div>
   );
 }
-

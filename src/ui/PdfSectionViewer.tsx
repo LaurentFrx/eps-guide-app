@@ -12,10 +12,6 @@ import {
 import { Document, Page, pdfjs } from "react-pdf";
 import { Button } from "@/components/ui/button";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url
-).toString();
 
 type PdfSectionViewerProps = {
   fileUrl: string;
@@ -75,6 +71,14 @@ export function PdfSectionViewer({
   const [loadError, setLoadError] = useState<string | null>(null);
   const [health, setHealth] = useState<PdfHealthState>({ state: "loading" });
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/build/pdf.worker.min.mjs",
+      import.meta.url
+    ).toString();
+  }, []);
 
   const range = useMemo(() => {
     const min = Math.min(startPage, endPage);
