@@ -26,11 +26,8 @@ export default function Footer({ className }: FooterProps) {
   );
   const [runtime, setRuntime] = useState<VersionPayload>(fallback);
 
-  if (!isHome) {
-    return null;
-  }
-
   useEffect(() => {
+    if (!isHome) return;
     let mounted = true;
     const load = async () => {
       try {
@@ -47,10 +44,14 @@ export default function Footer({ className }: FooterProps) {
     return () => {
       mounted = false;
     };
-  }, [fallback]);
+  }, [fallback, isHome]);
 
   const short = runtime.commitSha ? runtime.commitSha.slice(0, 7) : "unknown";
   const displayVersion = runtime.version?.trim() || APP_VERSION;
+
+  if (!isHome) {
+    return null;
+  }
 
   return (
     <div
