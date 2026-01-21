@@ -12,7 +12,6 @@ import {
 import { Document, Page, pdfjs } from "react-pdf";
 import { Button } from "@/components/ui/button";
 
-
 type PdfSectionViewerProps = {
   fileUrl: string;
   startPage: number;
@@ -36,17 +35,17 @@ const isPdfContentType = (value: string) =>
   value.toLowerCase().includes("application/pdf");
 
 const formatSnippet = (value: string) =>
-  value.replace(/\s+/g, " ").trim().slice(0, 20);
+  value.replace(/\s+/g, " ").trim().slice(0, 80);
 
 const buildHealthMessage = (status?: number, contentType?: string) => {
   if (status === 404) {
-    return "PDF introuvable (404) : vérifiez public/muscutazieff.pdf.";
+    return "PDF introuvable (404) : verifiez public/muscutazieff.pdf.";
   }
   if (status === 401 || status === 403) {
-    return "Accès refusé (auth Vercel) : désactivez la protection preview ou autorisez les assets.";
+    return "Acces refuse (auth Vercel) : desactivez la protection preview ou autorisez les assets.";
   }
   if (contentType && !isPdfContentType(contentType)) {
-    return `Réponse non-PDF (content-type=${contentType || "inconnu"}).`;
+    return `Reponse non-PDF (content-type=${contentType || "inconnu"}).`;
   }
   if (status && status >= 500) {
     return `Erreur serveur (status ${status}).`;
@@ -68,16 +67,13 @@ export function PdfSectionViewer({
   const [scale, setScale] = useState(1);
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
+  const [viewerError, setViewerError] = useState<string | null>(null);
   const [health, setHealth] = useState<PdfHealthState>({ state: "loading" });
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-      "pdfjs-dist/build/pdf.worker.min.mjs",
-      import.meta.url
-    ).toString();
+    pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
   }, []);
 
   const range = useMemo(() => {
@@ -100,6 +96,20 @@ export function PdfSectionViewer({
   const clampedPage = clamp(pageNumber, range.min, maxPage);
   const sectionCount = maxPage - range.min + 1;
   const sectionIndex = clampedPage - range.min + 1;
+  const isIOS = useMemo(() => {
+    if (typeof navigator === "undefined") return false;
+    const ua = navigator.userAgent ?? "";
+    const isAppleMobile = /iPad|iPhone|iPod/i.test(ua);
+    const isIpadOS =
+      navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+    return isAppleMobile || isIpadOS;
+  }, []);
+  const fallbackUrl = useMemo(
+    () => `${fileUrl}#page=${clampedPage}`,
+    [fileUrl, clampedPage]
+  );
+  const shouldFallback = isIOS || Boolean(viewerError);
+  const shouldShowDiagnostics = health.state === "error" || Boolean(viewerError);
 
   useEffect(() => {
     onPageChange?.(clampedPage);
@@ -133,6 +143,7 @@ export function PdfSectionViewer({
 
     const checkPdf = async () => {
       setSafe({ state: "loading" });
+      setViewerError(null);
       try {
         const headRes = await fetch(fileUrl, {
           method: "HEAD",
@@ -160,11 +171,13 @@ export function PdfSectionViewer({
         }
 
         let snippet = "";
-        try {
-          const text = await rangeRes.text();
-          snippet = formatSnippet(text);
-        } catch {
-          snippet = "";
+        if (!isPdfContentType(contentType)) {
+          try {
+            const text = await rangeRes.text();
+            snippet = formatSnippet(text);
+          } catch {
+            snippet = "";
+          }
         }
 
         setSafe({
@@ -177,7 +190,7 @@ export function PdfSectionViewer({
       } catch {
         setSafe({
           state: "error",
-          message: "Erreur réseau : impossible de joindre le PDF.",
+          message: "Erreur reseau : impossible de joindre le PDF.",
         });
       }
     };
@@ -275,7 +288,7 @@ export function PdfSectionViewer({
             size="icon"
             className="ui-chip min-h-10 min-w-10"
             onClick={toggleFullscreen}
-            aria-label="Plein écran"
+            aria-label="Plein ecran"
           >
             {isFullscreen ? (
               <Minimize2 className="h-4 w-4" />
@@ -289,18 +302,34 @@ export function PdfSectionViewer({
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30">
         {health.state === "loading" ? (
           <div className="p-6 text-sm text-white/70">
-            Vérification du PDF...
+            Verification du PDF...
           </div>
         ) : health.state === "error" ? (
-          <div className="p-6 text-sm text-amber-200/90">
+          <div className="space-y-3 p-6 text-sm text-amber-200/90">
             <p>{health.message ?? "Impossible de charger le PDF."}</p>
-            {health.contentType || health.snippet ? (
-              <p className="mt-2 text-xs text-amber-200/75">
-                {health.contentType ? `content-type=${health.contentType}` : ""}
-                {health.contentType && health.snippet ? " — " : ""}
-                {health.snippet ? `Extrait: "${health.snippet}"` : ""}
-              </p>
-            ) : null}
+            <Button asChild className="ui-btn-primary ui-pressable">
+              <a href={fallbackUrl} target="_blank" rel="noreferrer">
+                Ouvrir le PDF
+              </a>
+            </Button>
+          </div>
+        ) : shouldFallback ? (
+          <div className="space-y-3 p-4">
+            <p className="text-sm text-white/70">
+              Affichage natif du PDF pour iOS ou en cas d erreur.
+            </p>
+            <Button asChild className="ui-btn-primary ui-pressable">
+              <a href={fallbackUrl} target="_blank" rel="noreferrer">
+                Ouvrir le PDF
+              </a>
+            </Button>
+            <div className="overflow-hidden rounded-xl border border-white/10">
+              <iframe
+                title="muscutazieff-pdf"
+                src={fallbackUrl}
+                className="h-[70vh] w-full"
+              />
+            </div>
           </div>
         ) : (
           <Document
@@ -314,10 +343,10 @@ export function PdfSectionViewer({
             options={{ withCredentials: true }}
             onLoadSuccess={(data) => {
               setNumPages(data.numPages);
-              setLoadError(null);
+              setViewerError(null);
             }}
-            onLoadError={(error) => setLoadError(error.message)}
-            onSourceError={(error) => setLoadError(error.message)}
+            onLoadError={(error) => setViewerError(error.message)}
+            onSourceError={(error) => setViewerError(error.message)}
           >
             <Page
               pageNumber={clampedPage}
@@ -329,10 +358,14 @@ export function PdfSectionViewer({
         )}
       </div>
 
-      {loadError && health.state === "ok" ? (
-        <p className="text-xs text-amber-200/80">
-          Erreur PDF: vérifiez que <span className="font-semibold">/muscutazieff.pdf</span> est disponible.
-        </p>
+      {shouldShowDiagnostics ? (
+        <div className="space-y-1 text-xs text-amber-200/80">
+          <p>URL: {fileUrl}</p>
+          <p>Status: {health.status ?? "n/a"}</p>
+          <p>Content-Type: {health.contentType ?? "n/a"}</p>
+          {health.snippet ? <p>Extrait: {health.snippet}</p> : null}
+          {viewerError ? <p>Erreur viewer: {viewerError}</p> : null}
+        </div>
       ) : null}
 
       <div className="flex flex-wrap items-center justify-between text-xs text-white/60">
@@ -344,4 +377,3 @@ export function PdfSectionViewer({
     </div>
   );
 }
-

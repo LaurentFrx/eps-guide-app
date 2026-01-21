@@ -41,7 +41,8 @@
     "version:bump": "node scripts/bump-version.mjs",
     "check:security": "node tools/check-no-ha-refs.js",
     "images:optimize": "node tools/generate-responsive-images.js",
-    "extract:data": "python3 tools/extract_eps_docx.py ../../source_docs/EPS-1.docx ../../source_docs/EPS-2.docx"
+    "extract:data": "python3 tools/extract_eps_docx.py ../../source_docs/EPS-1.docx ../../source_docs/EPS-2.docx",
+    "postinstall": "node scripts/copy-pdf-worker.mjs"
   },
   "dependencies": {
     "@radix-ui/react-popover": "^1.1.15",

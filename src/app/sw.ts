@@ -86,11 +86,11 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  if (
-    url.origin === self.location.origin &&
-    (url.pathname === "/muscutazieff.pdf" ||
-      url.pathname === "/pdfs/muscutazieff.pdf")
-  ) {
+  const pathname = url.pathname;
+  const isPdfRequest = pathname.endsWith(".pdf");
+  const isPdfWorker = pathname === "/pdf.worker.min.mjs";
+
+  if (url.origin === self.location.origin && (isPdfRequest || isPdfWorker)) {
     event.respondWith(fetch(req));
     return;
   }
