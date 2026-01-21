@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Work_Sans } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
 import { AppShell } from "@/components/AppShell";
-import Footer from "@/components/Footer";
 import { DataWarning } from "@/components/DataWarning";
 import { Providers } from "@/components/Providers";
 import { ICON_V } from "@/lib/version";
@@ -61,11 +60,9 @@ export default function RootLayout({
             <DataWarning className="mb-6" />
             {children}
           </AppShell>
-          <Footer />
           <BottomNav />
         </Providers>
       </body>
     </html>
   );
 }
-

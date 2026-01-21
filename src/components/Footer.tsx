@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { usePathname } from "next/navigation";
 import { APP_VERSION, COMMIT_SHA } from "@/lib/version";
 import { cn } from "@/lib/utils";
 
@@ -15,8 +14,6 @@ type VersionPayload = {
 };
 
 export default function Footer({ className }: FooterProps) {
-  const pathname = usePathname() ?? "/";
-  const isHome = pathname === "/" || pathname.startsWith("/accueil");
   const fallback = useMemo<VersionPayload>(
     () => ({
       version: APP_VERSION,
@@ -27,7 +24,6 @@ export default function Footer({ className }: FooterProps) {
   const [runtime, setRuntime] = useState<VersionPayload>(fallback);
 
   useEffect(() => {
-    if (!isHome) return;
     let mounted = true;
     const load = async () => {
       try {
@@ -44,14 +40,10 @@ export default function Footer({ className }: FooterProps) {
     return () => {
       mounted = false;
     };
-  }, [fallback, isHome]);
+  }, [fallback]);
 
   const short = runtime.commitSha ? runtime.commitSha.slice(0, 7) : "unknown";
   const displayVersion = runtime.version?.trim() || APP_VERSION;
-
-  if (!isHome) {
-    return null;
-  }
 
   return (
     <div
