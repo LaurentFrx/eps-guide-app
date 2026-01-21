@@ -25,8 +25,41 @@ type PdfSectionViewerProps = {
   onPageChange?: (page: number) => void;
 };
 
+type PdfHealthState = {
+  state: "loading" | "ok" | "error";
+  status?: number;
+  contentType?: string;
+  snippet?: string;
+  message?: string;
+};
+
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
+
+const isPdfContentType = (value: string) =>
+  value.toLowerCase().includes("application/pdf");
+
+const formatSnippet = (value: string) =>
+  value.replace(/\s+/g, " ").trim().slice(0, 20);
+
+const buildHealthMessage = (status?: number, contentType?: string) => {
+  if (status === 404) {
+    return "PDF introuvable (404) : vérifiez public/muscutazieff.pdf.";
+  }
+  if (status === 401 || status === 403) {
+    return "Accès refusé (auth Vercel) : désactivez la protection preview ou autorisez les assets.";
+  }
+  if (contentType && !isPdfContentType(contentType)) {
+    return `Réponse non-PDF (content-type=${contentType || "inconnu"}).`;
+  }
+  if (status && status >= 500) {
+    return `Erreur serveur (status ${status}).`;
+  }
+  if (status && status !== 200 && status !== 206) {
+    return `Erreur serveur (status ${status}).`;
+  }
+  return "Impossible de charger le PDF.";
+};
 
 export function PdfSectionViewer({
   fileUrl,
@@ -40,6 +73,7 @@ export function PdfSectionViewer({
   const [containerWidth, setContainerWidth] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [health, setHealth] = useState<PdfHealthState>({ state: "loading" });
   const containerRef = useRef<HTMLDivElement>(null);
 
   const range = useMemo(() => {
@@ -64,6 +98,11 @@ export function PdfSectionViewer({
   const sectionIndex = clampedPage - range.min + 1;
 
   useEffect(() => {
+    setLoadError(null);
+    setNumPages(null);
+  }, [fileUrl]);
+
+  useEffect(() => {
     onPageChange?.(clampedPage);
   }, [clampedPage, onPageChange]);
 
@@ -86,6 +125,69 @@ export function PdfSectionViewer({
     document.addEventListener("fullscreenchange", handleChange);
     return () => document.removeEventListener("fullscreenchange", handleChange);
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    const setSafe = (next: PdfHealthState) => {
+      if (active) setHealth(next);
+    };
+
+    const checkPdf = async () => {
+      setSafe({ state: "loading" });
+      try {
+        const headRes = await fetch(fileUrl, {
+          method: "HEAD",
+          cache: "no-store",
+          credentials: "include",
+        });
+        let status = headRes.status;
+        let contentType = headRes.headers.get("content-type") ?? "";
+        if (headRes.ok && isPdfContentType(contentType)) {
+          setSafe({ state: "ok", status, contentType });
+          return;
+        }
+
+        const rangeRes = await fetch(fileUrl, {
+          method: "GET",
+          headers: { Range: "bytes=0-255" },
+          cache: "no-store",
+          credentials: "include",
+        });
+        status = rangeRes.status;
+        contentType = rangeRes.headers.get("content-type") ?? "";
+        if ((status === 200 || status === 206) && isPdfContentType(contentType)) {
+          setSafe({ state: "ok", status, contentType });
+          return;
+        }
+
+        let snippet = "";
+        try {
+          const text = await rangeRes.text();
+          snippet = formatSnippet(text);
+        } catch {
+          snippet = "";
+        }
+
+        setSafe({
+          state: "error",
+          status,
+          contentType,
+          snippet,
+          message: buildHealthMessage(status, contentType),
+        });
+      } catch {
+        setSafe({
+          state: "error",
+          message: "Erreur réseau : impossible de joindre le PDF.",
+        });
+      }
+    };
+
+    checkPdf();
+    return () => {
+      active = false;
+    };
+  }, [fileUrl]);
 
   const zoomIn = () => setScale((prev) => clamp(prev + 0.1, 0.8, 1.6));
   const zoomOut = () => setScale((prev) => clamp(prev - 0.1, 0.8, 1.6));
@@ -186,31 +288,49 @@ export function PdfSectionViewer({
       </div>
 
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-black/30">
-        <Document
-          file={fileUrl}
-          loading={<div className="p-6 text-sm text-white/70">Chargement...</div>}
-          error={
-            <div className="p-6 text-sm text-amber-200/90">
-              Impossible de charger le PDF.
-            </div>
-          }
-          onLoadSuccess={(data) => {
-            setNumPages(data.numPages);
-            setLoadError(null);
-          }}
-          onLoadError={(error) => setLoadError(error.message)}
-          onSourceError={(error) => setLoadError(error.message)}
-        >
-          <Page
-            pageNumber={clampedPage}
-            width={pageWidth}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-          />
-        </Document>
+        {health.state === "loading" ? (
+          <div className="p-6 text-sm text-white/70">
+            Vérification du PDF...
+          </div>
+        ) : health.state === "error" ? (
+          <div className="p-6 text-sm text-amber-200/90">
+            <p>{health.message ?? "Impossible de charger le PDF."}</p>
+            {health.contentType || health.snippet ? (
+              <p className="mt-2 text-xs text-amber-200/75">
+                {health.contentType ? `content-type=${health.contentType}` : ""}
+                {health.contentType && health.snippet ? " — " : ""}
+                {health.snippet ? `Extrait: "${health.snippet}"` : ""}
+              </p>
+            ) : null}
+          </div>
+        ) : (
+          <Document
+            file={fileUrl}
+            loading={<div className="p-6 text-sm text-white/70">Chargement...</div>}
+            error={
+              <div className="p-6 text-sm text-amber-200/90">
+                Impossible de charger le PDF.
+              </div>
+            }
+            options={{ withCredentials: true }}
+            onLoadSuccess={(data) => {
+              setNumPages(data.numPages);
+              setLoadError(null);
+            }}
+            onLoadError={(error) => setLoadError(error.message)}
+            onSourceError={(error) => setLoadError(error.message)}
+          >
+            <Page
+              pageNumber={clampedPage}
+              width={pageWidth}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
+            />
+          </Document>
+        )}
       </div>
 
-      {loadError ? (
+      {loadError && health.state === "ok" ? (
         <p className="text-xs text-amber-200/80">
           Erreur PDF: vérifiez que <span className="font-semibold">/muscutazieff.pdf</span> est disponible.
         </p>

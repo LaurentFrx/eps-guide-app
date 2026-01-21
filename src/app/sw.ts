@@ -86,6 +86,11 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
+  if (url.origin === self.location.origin && url.pathname === "/muscutazieff.pdf") {
+    event.respondWith(fetch(req));
+    return;
+  }
+
   // Cache-first explicite pour /branding (évite les images cassées en PWA)
   if (url.origin === self.location.origin && url.pathname.startsWith("/branding/")) {
     event.respondWith(
