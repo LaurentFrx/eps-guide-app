@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import withSerwistInit from "@serwist/next";
+import packageJson from "./package.json";
 
 const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
@@ -7,7 +8,15 @@ const withSerwist = withSerwistInit({
   disable: process.env.NODE_ENV === "development",
 });
 
+const appVersion =
+  typeof packageJson?.version === "string" ? packageJson.version : "0.0.0";
+
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_APP_VERSION: appVersion,
+    NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA:
+      process.env.VERCEL_GIT_COMMIT_SHA ?? "",
+  },
   images: {
     formats: ["image/avif", "image/webp"],
   },
