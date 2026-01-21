@@ -98,11 +98,6 @@ export function PdfSectionViewer({
   const sectionIndex = clampedPage - range.min + 1;
 
   useEffect(() => {
-    setLoadError(null);
-    setNumPages(null);
-  }, [fileUrl]);
-
-  useEffect(() => {
     onPageChange?.(clampedPage);
   }, [clampedPage, onPageChange]);
 
