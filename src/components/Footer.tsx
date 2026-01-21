@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { usePathname } from "next/navigation";
 import { APP_VERSION, COMMIT_SHA } from "@/lib/version";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +15,8 @@ type VersionPayload = {
 };
 
 export default function Footer({ className }: FooterProps) {
+  const pathname = usePathname() ?? "/";
+  const isHome = pathname === "/" || pathname.startsWith("/accueil");
   const fallback = useMemo<VersionPayload>(
     () => ({
       version: APP_VERSION,
@@ -22,6 +25,10 @@ export default function Footer({ className }: FooterProps) {
     []
   );
   const [runtime, setRuntime] = useState<VersionPayload>(fallback);
+
+  if (!isHome) {
+    return null;
+  }
 
   useEffect(() => {
     let mounted = true;
@@ -53,7 +60,7 @@ export default function Footer({ className }: FooterProps) {
       )}
     >
       <span className="pointer-events-none text-[11px] font-medium tracking-wide tabular-nums text-white/60 md:text-xs">
-        v{displayVersion} · {short}
+        v{displayVersion} &middot; {short}
       </span>
     </div>
   );

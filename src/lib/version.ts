@@ -1,5 +1,5 @@
 // Versioning: PATCH (2.0.1) small UI/text/bugfix, MINOR (2.1.0) new visible feature, MAJOR (3.0.0) structural revamp.
-export const APP_VERSION = "2.0.0";
+export const APP_VERSION = "2.0.1";
 // Icon cache busting: bump only when icons/manifest assets change.
 export const ICON_V = "2";
 
