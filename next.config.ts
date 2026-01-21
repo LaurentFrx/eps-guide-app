@@ -37,6 +37,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: "/pdfs/muscutazieff.pdf",
+        destination: "/muscutazieff.pdf",
+        permanent: true,
+      },
+      {
         source: "/guide/bac",
         destination: "/guide/evaluation/certificative",
         permanent: true,
