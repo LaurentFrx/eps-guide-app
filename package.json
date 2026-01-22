@@ -3,8 +3,8 @@
   "version": "0.2.7",
   "private": true,
   "scripts": {
-    "dev": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && next dev --webpack",
-    "build": "npm run gen:editorial && npm run gen:heroes && npm run gen:exercises && npm run audit:exercises && npm run check:stats && npm run check:editorial && npm run report:editorial:audit && npm run check:editorial:coverage && npm run check:editorial:no-referrals && npm run check:editorial:no-leaks && npm run check:editorial:markdown && npm run check:editorial:no-editor-comments && npm run check:exercises:text && npm run check:no-referrals && npm run check:typography && npm run check:mojibake && npm run check:pdf && npm run validate:assets && npm run validate:images && next build --webpack",
+    "dev": "next dev",
+    "build": "next build",
     "audit:exercises": "tsx scripts/audit-exercises.ts",
     "audit:crossrefs": "tsx scripts/audit-crossrefs.ts",
     "gen:editorial:audit": "tsx scripts/parse-audit-editorial-report.ts",

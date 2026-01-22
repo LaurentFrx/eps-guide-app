@@ -1,11 +1,5 @@
-import { AccueilView } from "@/app/_views/AccueilView";
-import Footer from "@/components/Footer";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  return (
-    <>
-      <AccueilView />
-      <Footer />
-    </>
-  );
+  redirect("/exos");
 }

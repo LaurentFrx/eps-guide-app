@@ -1,67 +1,47 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Work_Sans } from "next/font/google";
-import { BottomNav } from "@/components/BottomNav";
-import { AppShell } from "@/components/AppShell";
-import { DataWarning } from "@/components/DataWarning";
-import { Providers } from "@/components/Providers";
-import { ICON_V } from "@/lib/version";
-import { WavesBackground } from "@/ui/WavesBackground";
+import { Space_Grotesk, Sora } from "next/font/google";
+import { TabNav } from "@/components/TabNav";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
-  variable: "--font-display",
   subsets: ["latin"],
+  variable: "--font-display",
   weight: ["400", "500", "600", "700"],
 });
 
-const workSans = Work_Sans({
-  variable: "--font-body",
+const sora = Sora({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  weight: ["300", "400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: "Guide Musculation",
-    template: "%s | Guide Musculation",
-  },
-  applicationName: "Guide Musculation",
-  description:
-    "Guide musculation terrain : projets, séances, exercices, révisions et évaluation.",
-  icons: {
-    icon: [
-      {
-        url: `/icon.png?v=${ICON_V}`,
-        type: "image/png",
-      },
-    ],
-    apple: [
-      {
-        url: `/apple-icon.png?v=${ICON_V}`,
-        type: "image/png",
-      },
-    ],
-    shortcut: [`/favicon.ico?v=${ICON_V}`],
-  },
-  manifest: `/manifest.webmanifest?v=${ICON_V}`,
+  title: "EPS Guide",
+  description: "Mobile first training guide with simple tabs.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="fr">
-      <body className={`${spaceGrotesk.variable} ${workSans.variable} eps-app`}>
-        <Providers>
-          <WavesBackground />
-          <AppShell>
-            <DataWarning className="mb-6" />
-            {children}
-          </AppShell>
-          <BottomNav />
-        </Providers>
+      <body className={`${spaceGrotesk.variable} ${sora.variable}`}>
+        <div className="app-shell">
+          <header className="app-header">
+            <div className="brand">
+              <span className="brand-mark">EPS</span>
+              <div className="brand-text">
+                <span className="brand-title">Guide</span>
+                <span className="brand-subtitle">Fresh app shell</span>
+              </div>
+            </div>
+            <div className="status-chip">Rebuild</div>
+          </header>
+          <main className="app-main">{children}</main>
+        </div>
+        <TabNav />
       </body>
     </html>
   );
