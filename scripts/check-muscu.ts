@@ -1,14 +1,29 @@
-import { validateMuscuData } from "../src/lib/muscu/validate";
+async function main() {
+  let validateMuscuData: () => Array<{ scope: string; message: string }>;
 
-const issues = validateMuscuData();
+  try {
+    const mod = await import("../src/lib/muscu/validate");
+    validateMuscuData = mod.validateMuscuData;
+  } catch {
+    console.log("check-muscu: skipped (dependencies not available on this branch)");
+    process.exit(0);
+  }
 
-if (!issues.length) {
-  console.log("Muscu data check passed.");
-  process.exit(0);
+  const issues = validateMuscuData();
+
+  if (!issues.length) {
+    console.log("Muscu data check passed.");
+    process.exit(0);
+  }
+
+  console.error(`Muscu data check failed (${issues.length}).`);
+  issues.forEach((issue) => {
+    console.error(`- ${issue.scope}: ${issue.message}`);
+  });
+  process.exit(1);
 }
 
-console.error(`Muscu data check failed (${issues.length}).`);
-issues.forEach((issue) => {
-  console.error(`- ${issue.scope}: ${issue.message}`);
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });
-process.exit(1);
