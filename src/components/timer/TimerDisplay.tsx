@@ -70,7 +70,6 @@ interface PhaseBandProps {
 function PhaseBand({ phase, isActive, secondsLeft, index }: PhaseBandProps) {
   const colors = getPhaseColor(phase.type);
   const isDone = phase.status === 'done';
-  const isUpcoming = phase.status === 'upcoming';
   const showCountdown = isActive && secondsLeft <= 3 && secondsLeft > 0;
   const scale = showCountdown ? 1 + (4 - secondsLeft) * 0.1 : 1;
 

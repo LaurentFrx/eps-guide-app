@@ -175,10 +175,6 @@ export default function TimerPage() {
     setShowTimer(true);
   };
 
-  const handleBack = useCallback(() => {
-    setShowTimer(false);
-  }, []);
-
   const handleBackToPresets = useCallback(() => {
     setShowTimer(false);
     setSelectedPreset(null);
@@ -327,7 +323,6 @@ export default function TimerPage() {
       <TimerRunner
         preset={activePreset}
         presetName={selectedPreset.name}
-        onBack={handleBack}
         onBackToPresets={handleBackToPresets}
       />
     );
@@ -341,11 +336,10 @@ export default function TimerPage() {
 interface TimerRunnerProps {
   preset: TimerPreset;
   presetName: string;
-  onBack: () => void;
   onBackToPresets: () => void;
 }
 
-function TimerRunner({ preset, presetName, onBack, onBackToPresets }: TimerRunnerProps) {
+function TimerRunner({ preset, presetName, onBackToPresets }: TimerRunnerProps) {
   const callbacks = useMemo(
     () => ({
       onPhaseChange: (phase: { type: string }) => {

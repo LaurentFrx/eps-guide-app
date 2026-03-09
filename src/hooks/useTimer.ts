@@ -155,6 +155,11 @@ export function useTimer(preset: TimerPreset, callbacks?: TimerCallbacks) {
   const lastRoundFiredRef = useRef(false);
   const presetRef = useRef(preset);
 
+  // Keep presetRef in sync for use inside callbacks
+  useEffect(() => {
+    presetRef.current = preset;
+  }, [preset]);
+
   // Wake Lock
   const wakeLockRef = useRef<WakeLockSentinel | null>(null);
 
@@ -172,33 +177,6 @@ export function useTimer(preset: TimerPreset, callbacks?: TimerCallbacks) {
     wakeLockRef.current?.release();
     wakeLockRef.current = null;
   }, []);
-
-  // Reset when preset changes
-  useEffect(() => {
-    if (presetRef.current !== preset) {
-      presetRef.current = preset;
-      const phases = buildPhases(preset);
-      setState({
-        status: 'idle',
-        phases,
-        activePhaseIndex: 0,
-        secondsLeft: phases[0]?.duration ?? 0,
-        totalSecondsLeft: phases.reduce((s, p) => s + p.duration, 0),
-        currentRound: 1,
-        totalRounds: preset.rounds,
-        currentCycle: 1,
-        totalCycles: preset.cycles,
-        elapsedSeconds: 0,
-      });
-      halfwayFiredRef.current = false;
-      lastRoundFiredRef.current = false;
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      releaseWakeLock();
-    }
-  }, [preset, releaseWakeLock]);
 
   const clearTimer = useCallback(() => {
     if (intervalRef.current) {
