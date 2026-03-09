@@ -147,7 +147,9 @@ export function useTimer(preset: TimerPreset, callbacks?: TimerCallbacks) {
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const callbacksRef = useRef(callbacks);
-  callbacksRef.current = callbacks;
+  useEffect(() => {
+    callbacksRef.current = callbacks;
+  }, [callbacks]);
 
   const halfwayFiredRef = useRef(false);
   const lastRoundFiredRef = useRef(false);
