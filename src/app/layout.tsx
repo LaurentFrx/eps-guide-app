@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Sora } from "next/font/google";
+import { Space_Grotesk, Sora, Orbitron } from "next/font/google";
 import { TabNav } from "@/components/TabNav";
 import "./globals.css";
 
@@ -15,6 +15,12 @@ const sora = Sora({
   weight: ["300", "400", "500", "600"],
 });
 
+const orbitron = Orbitron({
+  subsets: ["latin"],
+  variable: "--font-orbitron",
+  weight: ["700", "900"],
+});
+
 export const metadata: Metadata = {
   title: "EPS Guide",
   description: "Mobile first training guide with simple tabs.",
@@ -27,7 +33,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body className={`${spaceGrotesk.variable} ${sora.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${sora.variable} ${orbitron.variable}`}>
         <div className="app-shell">
           <header className="app-header">
             <div className="brand">
